@@ -10,6 +10,10 @@ class HNItem
     }
   end
 
+  def original_title
+    @title
+  end
+
   def title
   	t = ""
   	t << "✓ " if App::Persistence[@link]

@@ -31,7 +31,7 @@ class AppDelegate
     @menu.removeAllItems
 
     @items.each_with_index do |item, tag|
-      @menu.addItem create_item(item.title, "launch_hn:", tag)
+      @menu.addItem create_item(item, "launch_hn:", tag)
     end
 
     @menu.addItem separator
@@ -86,9 +86,23 @@ class AppDelegate
     end
   end
 
-  def create_item(name, action, tag = nil)
-    item = NSMenuItem.alloc.initWithTitle(name, action: action, keyEquivalent: '')
+  def create_item(object, action, tag = nil)
+    title = (object.is_a? String) ? object : object.title
+
+    item = NSMenuItem.alloc.initWithTitle(title, action: action, keyEquivalent: '')
     item.tag = tag if tag
+
+    unless object.is_a? String
+      # This is a custom view item
+      menuItemHeight = 19
+      viewRect = NSMakeRect(0, 0, 1, menuItemHeight) # width autoresizes
+      item_view = HNItemView.alloc.initWithFrame(viewRect)
+      item_view.autoresizingMask = NSViewWidthSizable;
+
+      item_view.item = object
+      item.view = item_view
+    end
+
     item
   end
 
