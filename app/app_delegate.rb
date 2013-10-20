@@ -7,7 +7,7 @@ class AppDelegate
     @menu = NSMenu.new
 
     @items = []
-    App::Persistence['check_interval'] ||= 60 # In seconds
+    App::Persistence['check_interval'] ||= 120 # In seconds
 
     @status_item = NSStatusBar.systemStatusBar.statusItemWithLength(NSVariableStatusItemLength).init
     @status_item.menu = @menu
