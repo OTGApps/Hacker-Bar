@@ -26,6 +26,15 @@ class AppDelegate
     Scheduler.shared_scheduler.stop_polling
   end
 
+  def applicationWillResignActive(notification)
+    Scheduler.shared_scheduler.stop_polling
+    @animTimer.invalidate if @animTimer
+  end
+
+  def applicationWillBecomeActive(notification)
+    Scheduler.shared_scheduler.start_polling
+  end
+
   def update_menu
     stop_animating
     @menu.removeAllItems
