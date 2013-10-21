@@ -11,6 +11,7 @@ end
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'YCMenu'
+  app.icon = 'AppIcon.icns'
   app.identifier = "com.mohawkapps.#{app.name}"
   app.info_plist['LSUIElement'] = true
 end
