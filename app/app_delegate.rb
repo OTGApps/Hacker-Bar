@@ -94,13 +94,14 @@ class AppDelegate
 
     unless object.is_a? String
       # This is a custom view item
-      menuItemHeight = 19
-      viewRect = NSMakeRect(0, 0, 1, menuItemHeight) # width autoresizes
-      item_view = HNItemView.alloc.initWithFrame(viewRect)
-      item_view.autoresizingMask = NSViewWidthSizable;
+      # menuItemHeight = 19
+      # viewRect = NSMakeRect(0, 0, 1, menuItemHeight) # width autoresizes
+      # item_view = HNItemView.alloc.initWithFrame(viewRect)
+      # item_view.autoresizingMask = NSViewWidthSizable;
+      item_view = HNItemViewController.new
 
       item_view.item = object
-      item.view = item_view
+      item.view = item_view.view
     end
 
     item
