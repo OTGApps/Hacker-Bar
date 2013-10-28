@@ -11,6 +11,10 @@ class HNItemViewController < NSWindowController
   #   @item = item
   # end
 
+  def windowDidLoad
+    @headline.setStringValue @item.original_title
+  end
+
   # def loadView
   # 	ap "view loaded with title: #{@item.original_title}"
   # 	ap @headline
