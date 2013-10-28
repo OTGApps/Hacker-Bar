@@ -1,9 +1,9 @@
-class HNItemViewController < NSViewController
+class HNItemViewController < NSWindowController
   extend IB
 
   outlet :votes_image, NSImageView
   outlet :comments_image, NSImageView
-  outlet :title_textfield, NSTextField
+  outlet :headline, NSTextField
 
 	attr_accessor :item
 
@@ -11,9 +11,10 @@ class HNItemViewController < NSViewController
   #   @item = item
   # end
 
-  def loadView
-  	ap "view loaded with title: #{@item.original_title}"
-  	# @title_textfield.setStringValue @item.original_title
-  end
+  # def loadView
+  # 	ap "view loaded with title: #{@item.original_title}"
+  # 	ap @headline
+  #   # @headline.setStringValue @item.original_title
+  # end
 
 end
