@@ -5,6 +5,10 @@ This is a system bar application that fetches the top items from HackerNews ever
 
 The application will remember which links you've clicked before!
 
+---
+[![Code Climate](https://codeclimate.com/github/MohawkApps/YCMenu.png)](https://codeclimate.com/github/MohawkApps/YCMenu) [![Stories in Ready](https://badge.waffle.io/MohawkApps/YCMenu.png)](http://waffle.io/MohawkApps/YCMenu)
+---
+
 ## Running the app
 
 ### Prerequisites:
