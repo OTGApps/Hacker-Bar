@@ -6,48 +6,62 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="HNItemViewController">
             <connections>
-                <outlet property="comments_image" destination="rJu-29-E4h" id="LYA-Gh-LsT"/>
-                <outlet property="headline" destination="7s6-h9-xCZ" id="TEj-Rm-QmD"/>
-                <outlet property="votes_image" destination="ka0-1z-FN5" id="IeJ-hV-Q8v"/>
-                <outlet property="window" destination="Rad-Ri-krF" id="KZX-Xe-fRu"/>
+                <outlet property="comment_count" destination="pfc-vf-Sfg" id="JgT-OW-Ma8"/>
+                <outlet property="comment_image" destination="1L3-HV-ILO" id="6Mi-12-2cs"/>
+                <outlet property="headline" destination="CNh-x5-nuj" id="Byc-za-iIF"/>
+                <outlet property="view" destination="1Ct-to-H3W" id="gYm-ZN-IBc"/>
+                <outlet property="votes_count" destination="Mit-H4-c65" id="P0q-Ck-goi"/>
+                <outlet property="votes_image" destination="PJX-qx-Vte" id="BtC-qS-GM0"/>
             </connections>
         </customObject>
+        <view id="1Ct-to-H3W">
+            <rect key="frame" x="0.0" y="0.0" width="480" height="22"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PJX-qx-Vte">
+                    <rect key="frame" x="2" y="1" width="24" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="UpvotesBadge" id="vxI-Eu-Gxy"/>
+                </imageView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CNh-x5-nuj">
+                    <rect key="frame" x="28" y="2" width="420" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Headline" usesSingleLineMode="YES" id="Kho-cS-7Bo">
+                        <font key="font" metaFont="system"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mit-H4-c65">
+                    <rect key="frame" x="2" y="1" width="24" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" title="0" usesSingleLineMode="YES" id="hqD-Ps-Hjw">
+                        <font key="font" size="11" name="LucidaGrande"/>
+                        <color key="textColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1L3-HV-ILO">
+                    <rect key="frame" x="452" y="1" width="24" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="left" imageScaling="proportionallyDown" image="comments" id="P6r-wt-Hz4"/>
+                </imageView>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pfc-vf-Sfg">
+                    <rect key="frame" x="452" y="2" width="24" height="17"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" title="0" usesSingleLineMode="YES" id="m2L-BY-iYL">
+                        <font key="font" size="11" name="LucidaGrande"/>
+                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+        </view>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
-        <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" animationBehavior="default" id="Rad-Ri-krF">
-            <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
-            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="1636" y="102" width="480" height="26"/>
-            <rect key="screenRect" x="1440" y="-138" width="1920" height="1178"/>
-            <view key="contentView" id="X6k-Ou-ctA">
-                <rect key="frame" x="0.0" y="0.0" width="480" height="26"/>
-                <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rJu-29-E4h">
-                        <rect key="frame" x="2" y="5" width="24" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="UpvotesBadge" id="gVF-JH-o7C"/>
-                    </imageView>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7s6-h9-xCZ">
-                        <rect key="frame" x="32" y="6" width="298" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="e22-SK-vmq">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
-                    <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ka0-1z-FN5">
-                        <rect key="frame" x="463" y="-2" width="48" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="left" imageScaling="proportionallyDown" image="Status" id="7rY-4G-fS8"/>
-                    </imageView>
-                </subviews>
-            </view>
-        </window>
     </objects>
     <resources>
-        <image name="Status" width="16" height="16"/>
         <image name="UpvotesBadge" width="24" height="19"/>
+        <image name="comments" width="24" height="19"/>
     </resources>
 </document>

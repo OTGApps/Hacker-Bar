@@ -98,11 +98,11 @@ class AppDelegate
       # viewRect = NSMakeRect(0, 0, 1, menuItemHeight) # width autoresizes
       # item_view = HNItemView.alloc.initWithFrame(viewRect)
       # item_view.autoresizingMask = NSViewWidthSizable;
-      item_view_controller = HNItemViewController.alloc.initWithWindowNibName("HNItemViewController")
+      item_view_controller = HNItemViewController.alloc.initWithNibName("HNItemViewController", bundle:nil)
       item_view_controller.item = object
       # item_view_controller.loadView
 
-      item.setView item_view_controller.window.contentView
+      item.setView item_view_controller.view
     end
 
     item
