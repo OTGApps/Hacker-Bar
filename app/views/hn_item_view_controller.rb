@@ -20,13 +20,12 @@ class HNItemViewController < NSViewController
 
   def viewDidLoad
     set_interface
-    @headline.setStringValue @item.original_title
-    @comment_count.setStringValue @item.comments['count']
-    @votes_count.setStringValue @item.points
   end
 
   def set_interface
-
+    @headline.setStringValue @item.original_title
+    @comment_count.setStringValue( @item.comments['count'] || 0 )
+    @votes_count.setStringValue( @item.points || 0 )
   end
 
 end

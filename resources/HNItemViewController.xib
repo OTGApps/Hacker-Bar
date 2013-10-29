@@ -33,7 +33,7 @@
                     </textFieldCell>
                 </textField>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mit-H4-c65">
-                    <rect key="frame" x="2" y="1" width="24" height="17"/>
+                    <rect key="frame" x="0.0" y="1" width="28" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" title="0" usesSingleLineMode="YES" id="hqD-Ps-Hjw">
                         <font key="font" size="11" name="LucidaGrande"/>
@@ -47,10 +47,10 @@
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="left" imageScaling="proportionallyDown" image="comments" id="P6r-wt-Hz4"/>
                 </imageView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pfc-vf-Sfg">
-                    <rect key="frame" x="452" y="2" width="24" height="17"/>
+                    <rect key="frame" x="450" y="2" width="28" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" title="0" usesSingleLineMode="YES" id="m2L-BY-iYL">
-                        <font key="font" size="11" name="LucidaGrande"/>
+                        <font key="font" size="10" name="LucidaGrande"/>
                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
@@ -62,6 +62,6 @@
     </objects>
     <resources>
         <image name="UpvotesBadge" width="24" height="19"/>
-        <image name="comments" width="24" height="19"/>
+        <image name="comments" width="24.338027954101562" height="19.267604827880859"/>
     </resources>
 </document>

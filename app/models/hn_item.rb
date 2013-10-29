@@ -1,5 +1,5 @@
 class HNItem
-  PROPERTIES = [:rank, :title, :link, :points, :submitter, :comments]
+  PROPERTIES = [:id, :rank, :title, :link, :points, :submitter, :comments]
   PROPERTIES.each { |prop|
     attr_accessor prop
   }

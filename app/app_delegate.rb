@@ -31,7 +31,7 @@ class AppDelegate
     @menu.removeAllItems
 
     @items.each_with_index do |item, tag|
-      @menu.addItem create_item(item, "launch_hn:", tag)
+      @menu.addItem create_item(item, "launch_hn:", tag) unless item.id.nil?
     end
 
     @menu.addItem separator
