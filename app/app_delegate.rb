@@ -5,6 +5,7 @@ class AppDelegate
     @app_name = NSBundle.mainBundle.infoDictionary['CFBundleDisplayName']
 
     @menu = NSMenu.new
+    @menu.delegate = self
 
     @items = []
     App::Persistence['check_interval'] ||= 120 # In seconds
@@ -31,7 +32,7 @@ class AppDelegate
     @menu.removeAllItems
 
     @items.each_with_index do |item, tag|
-      @menu.addItem create_item(item, "launch_hn:", tag) unless item.id.nil?
+      @menu.addItem create_item(item, "launch_hn:", tag) unless item.hnitem.id.nil?
     end
 
     @menu.addItem separator
@@ -49,13 +50,14 @@ class AppDelegate
         @items = [] # Clear out the item array
 
         json['submissions'].each do |news|
-          news_item = HNItem.new(news)
+          news_item = HNItemViewController.alloc.initWithNibName("HNItemViewController", bundle:nil)
+          news_item.hnitem = HNItem.new(news)
           @items << news_item
         end
         ap "Got news"
         update_menu
       else
-        # Handle this.
+        # TODO Handle this.
       end
     end
   end
@@ -87,22 +89,15 @@ class AppDelegate
   end
 
   def create_item(object, action, tag = nil)
-    title = (object.is_a? String) ? object : object.title
+    title = (object.is_a? String) ? object : object.hnitem.title
 
     item = NSMenuItem.alloc.initWithTitle(title, action: action, keyEquivalent: '')
     item.tag = tag if tag
 
     unless object.is_a? String
       # This is a custom view item
-      # menuItemHeight = 19
-      # viewRect = NSMakeRect(0, 0, 1, menuItemHeight) # width autoresizes
-      # item_view = HNItemView.alloc.initWithFrame(viewRect)
-      # item_view.autoresizingMask = NSViewWidthSizable;
-      item_view_controller = HNItemViewController.alloc.initWithNibName("HNItemViewController", bundle:nil)
-      item_view_controller.item = object
-      # item_view_controller.loadView
-
-      item.setView item_view_controller.view
+      object.tag = tag if tag
+      item.setView object.view
     end
 
     item
@@ -144,5 +139,13 @@ class AppDelegate
     @status_item.image = "Status".image
     @status_item.alternateImage = "StatusHighlighted".image
   end
+
+  # NSMenu Delegate
+  def menu(menu, willHighlightItem:item)
+    ap item.tag
+    @items.each{|i| i.unhighlight }
+    @items.select{|i| i.tag == item.tag}.first.highlight
+  end
+
 
 end

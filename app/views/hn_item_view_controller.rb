@@ -7,7 +7,7 @@ class HNItemViewController < NSViewController
   outlet :comment_count, NSTextField
   outlet :comment_image, NSImageView
 
-	attr_accessor :item
+	attr_accessor :hnitem, :tag
 
   def loadView
     viewWillLoad
@@ -23,9 +23,18 @@ class HNItemViewController < NSViewController
   end
 
   def set_interface
-    @headline.setStringValue @item.original_title
-    @comment_count.setStringValue( @item.comments['count'] || 0 )
-    @votes_count.setStringValue( @item.points || 0 )
+    @headline.setStringValue @hnitem.original_title
+    @comment_count.setStringValue( @hnitem.comments['count'] || 0 )
+    @votes_count.setStringValue( @hnitem.points || 0 )
+  end
+
+  def highlight
+    ap "highlighting #{self.tag}"
+    view.backgroundColor = NSColor.blueColor
+  end
+
+  def unhighlight
+    view.backgroundColor = NSColor.whiteColor
   end
 
 end
