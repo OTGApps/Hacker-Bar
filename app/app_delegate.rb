@@ -31,8 +31,8 @@ class AppDelegate
     stop_animating
     @menu.removeAllItems
 
-    @items.each_with_index do |item, tag|
-      @menu.addItem create_item(item, "blank_action:", tag) unless item.hnitem.id.nil?
+    @items.each do |news_item|
+      @menu.addItem create_item(news_item, "blank_action:", news_item.hnitem.id.to_f)
     end
 
     @menu.addItem separator
@@ -42,8 +42,6 @@ class AppDelegate
   end
 
   def fetch
-    i = []
-    ap "Fetching news"
     start_animating
     HNAPI.get_news do |json, error|
       if error.nil? && json.count > 0
@@ -54,7 +52,6 @@ class AppDelegate
           news_item.hnitem = HNItem.new(news)
           @items << news_item
         end
-        ap "Got news"
         update_menu
       else
         # TODO Handle this.
@@ -69,7 +66,6 @@ class AppDelegate
     end
 
     fetch
-    # @status_item.popUpStatusItemMenu(@menu) # This immediately reopens the menu
   end
 
   def create_item(object, action, tag = nil)
@@ -126,8 +122,9 @@ class AppDelegate
 
   # NSMenu Delegate
   def menu(menu, willHighlightItem:item)
-    @items.each{|i| i.unhighlight }
-    return if item.nil? || !item.tag
+    return if item.nil? || item.tag < 10
+
+    @items.each{|i| i.unhighlight}
     @items.select{|i| i.tag == item.tag}.first.highlight
   end
 

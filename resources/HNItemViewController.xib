@@ -6,13 +6,13 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="HNItemViewController">
             <connections>
-                <outlet property="background_image" destination="XSj-Uf-QFq" id="V3y-03-vGH"/>
-                <outlet property="comment_count" destination="pfc-vf-Sfg" id="JgT-OW-Ma8"/>
-                <outlet property="comment_image" destination="1L3-HV-ILO" id="6Mi-12-2cs"/>
-                <outlet property="headline" destination="CNh-x5-nuj" id="Byc-za-iIF"/>
-                <outlet property="view" destination="1Ct-to-H3W" id="gYm-ZN-IBc"/>
-                <outlet property="votes_count" destination="Mit-H4-c65" id="P0q-Ck-goi"/>
-                <outlet property="votes_image" destination="PJX-qx-Vte" id="BtC-qS-GM0"/>
+                <outlet property="background_image" destination="XSj-Uf-QFq" id="cm8-qU-S3C"/>
+                <outlet property="comment_count" destination="pfc-vf-Sfg" id="vvW-dU-IYy"/>
+                <outlet property="comment_image" destination="1L3-HV-ILO" id="Ydm-Ba-Y7e"/>
+                <outlet property="headline" destination="CNh-x5-nuj" id="kT3-WP-v5V"/>
+                <outlet property="view" destination="1Ct-to-H3W" id="BPd-gl-ggC"/>
+                <outlet property="votes_count" destination="Mit-H4-c65" id="Sjf-om-Jww"/>
+                <outlet property="votes_image" destination="PJX-qx-Vte" id="kbQ-d9-K0K"/>
             </connections>
         </customObject>
         <view id="1Ct-to-H3W">
