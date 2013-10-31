@@ -6,6 +6,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="HNItemViewController">
             <connections>
+                <outlet property="background_image" destination="XSj-Uf-QFq" id="V3y-03-vGH"/>
                 <outlet property="comment_count" destination="pfc-vf-Sfg" id="JgT-OW-Ma8"/>
                 <outlet property="comment_image" destination="1L3-HV-ILO" id="6Mi-12-2cs"/>
                 <outlet property="headline" destination="CNh-x5-nuj" id="Byc-za-iIF"/>
@@ -18,13 +19,13 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="22"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PJX-qx-Vte">
-                    <rect key="frame" x="2" y="1" width="24" height="19"/>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XSj-Uf-QFq">
+                    <rect key="frame" x="0.0" y="0.0" width="480" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="UpvotesBadge" id="vxI-Eu-Gxy"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="left" imageScaling="proportionallyDown" image="background" id="dra-XH-qa8"/>
                 </imageView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CNh-x5-nuj">
-                    <rect key="frame" x="28" y="2" width="420" height="17"/>
+                    <rect key="frame" x="32" y="2" width="416" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Headline" usesSingleLineMode="YES" id="Kho-cS-7Bo">
                         <font key="font" metaFont="system"/>
@@ -32,8 +33,13 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PJX-qx-Vte">
+                    <rect key="frame" x="2" y="1" width="29" height="19"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="UpvotesBadge" id="vxI-Eu-Gxy"/>
+                </imageView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mit-H4-c65">
-                    <rect key="frame" x="0.0" y="1" width="28" height="17"/>
+                    <rect key="frame" x="1" y="1" width="31" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" title="0" usesSingleLineMode="YES" id="hqD-Ps-Hjw">
                         <font key="font" size="11" name="LucidaGrande"/>
@@ -42,12 +48,12 @@
                     </textFieldCell>
                 </textField>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1L3-HV-ILO">
-                    <rect key="frame" x="452" y="1" width="24" height="19"/>
+                    <rect key="frame" x="454" y="1" width="24" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="left" imageScaling="proportionallyDown" image="comments" id="P6r-wt-Hz4"/>
                 </imageView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pfc-vf-Sfg">
-                    <rect key="frame" x="450" y="2" width="28" height="17"/>
+                    <rect key="frame" x="452" y="2" width="30" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" title="0" usesSingleLineMode="YES" id="m2L-BY-iYL">
                         <font key="font" size="10" name="LucidaGrande"/>
@@ -55,13 +61,36 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zUP-1t-auf">
+                    <rect key="frame" x="0.0" y="0.0" width="451" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" alignment="center" transparent="YES" imageScaling="proportionallyDown" inset="2" id="sC2-RU-Csj">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="clicked_item:" target="-2" id="VEb-wd-JLe"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lW0-Mp-Lmb">
+                    <rect key="frame" x="454" y="-1" width="26" height="22"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" alignment="center" transparent="YES" imageScaling="proportionallyDown" inset="2" id="pZj-ug-atZ">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="clicked_comments:" target="-2" id="ske-Rp-qDn"/>
+                    </connections>
+                </button>
             </subviews>
         </view>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
     </objects>
     <resources>
-        <image name="UpvotesBadge" width="24" height="19"/>
+        <image name="UpvotesBadge" width="58.816902160644531" height="38.535209655761719"/>
+        <image name="background" width="480" height="22"/>
         <image name="comments" width="24.338027954101562" height="19.267604827880859"/>
     </resources>
 </document>

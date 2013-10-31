@@ -6,6 +6,7 @@ class HNItemViewController < NSViewController
   outlet :headline, NSTextField
   outlet :comment_count, NSTextField
   outlet :comment_image, NSImageView
+  outlet :background_image, NSImageView
 
 	attr_accessor :hnitem, :tag
 
@@ -23,24 +24,60 @@ class HNItemViewController < NSViewController
   end
 
   def set_interface
-    ap "#{@hnitem.points.to_i} = #{SI.convert( @hnitem.points.to_i )}"
-    ap "#{@hnitem.comments['count'].to_i} = #{SI.convert( @hnitem.comments['count'].to_i )}"
+    # ap "#{@hnitem.points.to_i} = #{SI.convert( @hnitem.points.to_i )}"
+    # ap "#{@hnitem.comments['count'].to_i} = #{SI.convert( @hnitem.comments['count'].to_i )}"
     @headline.setStringValue @hnitem.original_title
     @comment_count.setStringValue( SI.convert( @hnitem.comments['count'].to_i ) || 0 )
     @votes_count.setStringValue( SI.convert(@hnitem.points.to_i) || 0 )
   end
 
+  def clicked_item(sender)
+    ap "Clicked Item: #{@hnitem.original_title}"
+    launch_link
+  end
+
+  def clicked_comments(sender)
+    ap "Clicked Comments: #{@hnitem.original_title}"
+    launch_comments
+  end
+
   def highlight
-    ap "highlighting #{self.tag}"
-    @headline.setStringValue "WUT?"
-    view.backgroundColor = NSColor.blueColor
+    # ap "highlighting #{self.tag}"
+    # @headline.setStringValue "WUT?"
+    @headline.setTextColor NSColor.highlightColor
+    @background_image.setImage "background-highlighted".image
     view.setNeedsDisplay(true)
   end
 
   def unhighlight
-    @headline.setStringValue @hnitem.original_title
-    view.backgroundColor = NSColor.whiteColor
+    # @headline.setStringValue @hnitem.original_title
+    @headline.setTextColor NSColor.controlTextColor
+    @background_image.setImage "background".image
     view.setNeedsDisplay(true)
+  end
+
+  def launch_link
+    launch_browser @hnitem.link
+  end
+
+  def launch_comments
+    launch_browser @hnitem.comments['url']
+  end
+
+  def launch_browser(url)
+    url_string = @hnitem.link
+    url = NSURL.URLWithString(url_string)
+    if NSWorkspace.sharedWorkspace.openURL(url)
+      # Log that the user went to that site.
+      App::Persistence[@hnitem.link] = true
+
+      # mi = @menu.itemWithTag(sender.tag)
+      # mi.setTitle(@items[sender.tag].title)
+      # @menu.itemChanged(mi)
+    else
+      # TODO: Make this more betterer
+      NSLog("Failed to open url: %@", url.description)
+    end
   end
 
 end
