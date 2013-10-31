@@ -32,7 +32,7 @@ class AppDelegate
     @menu.removeAllItems
 
     @items.each_with_index do |item, tag|
-      @menu.addItem create_item(item, "launch_hn:", tag) unless item.hnitem.id.nil?
+      @menu.addItem create_item(item, "blank_action:", tag) unless item.hnitem.id.nil?
     end
 
     @menu.addItem separator
@@ -70,22 +70,6 @@ class AppDelegate
 
     fetch
     # @status_item.popUpStatusItemMenu(@menu) # This immediately reopens the menu
-  end
-
-  def launch_hn(sender)
-    url_string = @items[sender.tag].link
-    url = NSURL.URLWithString(url_string)
-    if NSWorkspace.sharedWorkspace.openURL(url)
-      # Log that the user went to that site.
-      App::Persistence[@items[sender.tag].link] = true
-
-      mi = @menu.itemWithTag(sender.tag)
-      mi.setTitle(@items[sender.tag].title)
-      @menu.itemChanged(mi)
-    else
-      # TODO: Make this more betterer
-      NSLog("Failed to open url: %@", url.description)
-    end
   end
 
   def create_item(object, action, tag = nil)
@@ -145,6 +129,10 @@ class AppDelegate
     @items.each{|i| i.unhighlight }
     return if item.nil? || !item.tag
     @items.select{|i| i.tag == item.tag}.first.highlight
+  end
+
+  def blank_action(sender)
+    # Whatever
   end
 
 end
