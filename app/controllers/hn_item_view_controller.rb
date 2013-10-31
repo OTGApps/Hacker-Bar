@@ -45,14 +45,14 @@ class HNItemViewController < NSViewController
     # ap "highlighting #{self.tag}"
     # @headline.setStringValue "WUT?"
     @headline.setTextColor NSColor.highlightColor
-    @background_image.setImage "background-highlighted".image
+    @background_image.setImage "background".image
     view.setNeedsDisplay(true)
   end
 
   def unhighlight
     # @headline.setStringValue @hnitem.original_title
     @headline.setTextColor NSColor.controlTextColor
-    @background_image.setImage "background".image
+    @background_image.setImage nil
     view.setNeedsDisplay(true)
   end
 
