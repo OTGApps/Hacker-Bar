@@ -72,6 +72,22 @@ class AppDelegate
     # @status_item.popUpStatusItemMenu(@menu) # This immediately reopens the menu
   end
 
+  def launch_hn(sender)
+    url_string = @items[sender.tag].link
+    url = NSURL.URLWithString(url_string)
+    if NSWorkspace.sharedWorkspace.openURL(url)
+      # Log that the user went to that site.
+      App::Persistence[@items[sender.tag].link] = true
+
+      mi = @menu.itemWithTag(sender.tag)
+      mi.setTitle(@items[sender.tag].title)
+      @menu.itemChanged(mi)
+    else
+      # TODO: Make this more betterer
+      NSLog("Failed to open url: %@", url.description)
+    end
+  end
+
   def create_item(object, action, tag = nil)
     title = (object.is_a? String) ? object : object.hnitem.title
 

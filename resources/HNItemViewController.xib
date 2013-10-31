@@ -62,14 +62,14 @@
                     </textFieldCell>
                 </textField>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zUP-1t-auf">
-                    <rect key="frame" x="0.0" y="0.0" width="451" height="22"/>
+                    <rect key="frame" x="0.0" y="0.0" width="441" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" alignment="center" transparent="YES" imageScaling="proportionallyDown" inset="2" id="sC2-RU-Csj">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="clicked_item:" target="-2" id="VEb-wd-JLe"/>
+                        <action selector="clicked_link:" target="-2" id="ZFF-up-w4S"/>
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lW0-Mp-Lmb">
@@ -80,7 +80,7 @@
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                     <connections>
-                        <action selector="clicked_comments:" target="-2" id="ske-Rp-qDn"/>
+                        <action selector="clicked_comments:" target="-2" id="uDY-EC-k3b"/>
                     </connections>
                 </button>
             </subviews>

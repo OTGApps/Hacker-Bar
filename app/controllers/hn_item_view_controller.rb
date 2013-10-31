@@ -31,7 +31,7 @@ class HNItemViewController < NSViewController
     @votes_count.setStringValue( SI.convert(@hnitem.points.to_i) || 0 )
   end
 
-  def clicked_item(sender)
+  def clicked_link(sender)
     ap "Clicked Item: #{@hnitem.original_title}"
     launch_link
   end
@@ -65,6 +65,8 @@ class HNItemViewController < NSViewController
   end
 
   def launch_browser(url)
+    unhighlight
+
     url_string = @hnitem.link
     url = NSURL.URLWithString(url_string)
     if NSWorkspace.sharedWorkspace.openURL(url)
