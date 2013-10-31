@@ -89,7 +89,7 @@
         <customObject id="-3" userLabel="Application"/>
     </objects>
     <resources>
-        <image name="UpvotesBadge" width="58.816902160644531" height="38.535209655761719"/>
+        <image name="UpvotesBadge" width="29.408451080322266" height="19.267604827880859"/>
         <image name="background" width="480" height="22"/>
         <image name="comments" width="24.338027954101562" height="19.267604827880859"/>
     </resources>
