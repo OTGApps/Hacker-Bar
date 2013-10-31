@@ -23,18 +23,24 @@ class HNItemViewController < NSViewController
   end
 
   def set_interface
+    ap "#{@hnitem.points.to_i} = #{SI.convert( @hnitem.points.to_i )}"
+    ap "#{@hnitem.comments['count'].to_i} = #{SI.convert( @hnitem.comments['count'].to_i )}"
     @headline.setStringValue @hnitem.original_title
-    @comment_count.setStringValue( @hnitem.comments['count'] || 0 )
-    @votes_count.setStringValue( @hnitem.points || 0 )
+    @comment_count.setStringValue( SI.convert( @hnitem.comments['count'].to_i ) || 0 )
+    @votes_count.setStringValue( SI.convert(@hnitem.points.to_i) || 0 )
   end
 
   def highlight
     ap "highlighting #{self.tag}"
+    @headline.setStringValue "WUT?"
     view.backgroundColor = NSColor.blueColor
+    view.setNeedsDisplay(true)
   end
 
   def unhighlight
+    @headline.setStringValue @hnitem.original_title
     view.backgroundColor = NSColor.whiteColor
+    view.setNeedsDisplay(true)
   end
 
 end

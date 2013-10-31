@@ -142,10 +142,9 @@ class AppDelegate
 
   # NSMenu Delegate
   def menu(menu, willHighlightItem:item)
-    ap item.tag
     @items.each{|i| i.unhighlight }
+    return if item.nil? || !item.tag
     @items.select{|i| i.tag == item.tag}.first.highlight
   end
-
 
 end
