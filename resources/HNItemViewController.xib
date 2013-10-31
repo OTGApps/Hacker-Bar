@@ -22,7 +22,7 @@
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XSj-Uf-QFq">
                     <rect key="frame" x="0.0" y="0.0" width="480" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="left" imageScaling="proportionallyDown" image="background" id="dra-XH-qa8"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="left" imageScaling="proportionallyDown" image="background-highlighted" id="dra-XH-qa8"/>
                 </imageView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CNh-x5-nuj">
                     <rect key="frame" x="32" y="2" width="416" height="17"/>
@@ -48,12 +48,12 @@
                     </textFieldCell>
                 </textField>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1L3-HV-ILO">
-                    <rect key="frame" x="454" y="1" width="24" height="19"/>
+                    <rect key="frame" x="452" y="1" width="24" height="19"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="left" imageScaling="proportionallyDown" image="comments" id="P6r-wt-Hz4"/>
                 </imageView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pfc-vf-Sfg">
-                    <rect key="frame" x="452" y="2" width="30" height="17"/>
+                    <rect key="frame" x="449" y="2" width="30" height="17"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" title="0" usesSingleLineMode="YES" id="m2L-BY-iYL">
                         <font key="font" size="10" name="LucidaGrande"/>
@@ -90,7 +90,7 @@
     </objects>
     <resources>
         <image name="UpvotesBadge" width="29.408451080322266" height="19.267604827880859"/>
-        <image name="background" width="480" height="22"/>
+        <image name="background-highlighted" width="480" height="22"/>
         <image name="comments" width="24.338027954101562" height="19.267604827880859"/>
     </resources>
 </document>

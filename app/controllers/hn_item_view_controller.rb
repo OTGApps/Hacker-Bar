@@ -67,8 +67,7 @@ class HNItemViewController < NSViewController
   def launch_browser(url)
     unhighlight
 
-    url_string = @hnitem.link
-    url = NSURL.URLWithString(url_string)
+    url = NSURL.URLWithString(url)
     if NSWorkspace.sharedWorkspace.openURL(url)
       # Log that the user went to that site.
       App::Persistence[@hnitem.link] = true
