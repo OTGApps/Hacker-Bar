@@ -5,6 +5,7 @@ class AppDelegate
     @app_name = NSBundle.mainBundle.infoDictionary['CFBundleDisplayName']
 
     @menu = NSMenu.new
+    @menu.delegate = self
 
     @items = []
     App::Persistence['check_interval'] ||= 120 # In seconds
@@ -39,32 +40,34 @@ class AppDelegate
     stop_animating
     @menu.removeAllItems
 
-    @items.each_with_index do |item, tag|
-      @menu.addItem create_item(item.title, "launch_hn:", tag)
+    @items.each do |news_item|
+      @menu.addItem create_item(object:news_item, action:"blank_action:", tag:news_item.hnitem.id.to_f)
     end
 
-    @menu.addItem separator
-    @menu.addItem create_item("Manual Refresh", 'refresh')
-    @menu.addItem separator
-    @menu.addItem create_item("Quit", 'terminate:')
+    @menu.addItem NSMenuItem.separatorItem
+    @menu.addItem create_item(title: "Preferences", enabled: false)
+    @menu.addItem create_item(title: "Launch at startup", action:'refresh')
+    @menu.addItem create_item(title: "Open links in background", action:'refresh')
+    @menu.addItem NSMenuItem.separatorItem
+    @menu.addItem create_item(title: "Refresh", action:'refresh')
+    @menu.addItem NSMenuItem.separatorItem
+    @menu.addItem create_item(title: "Quit", action:'terminate:')
   end
 
   def fetch
-    i = []
-    ap "Fetching news"
     start_animating
     HNAPI.get_news do |json, error|
       if error.nil? && json.count > 0
         @items = [] # Clear out the item array
 
         json['submissions'].each do |news|
-          news_item = HNItem.new(news)
+          news_item = HNItemViewController.alloc.initWithNibName("HNItemViewController", bundle:nil)
+          news_item.hnitem = HNItem.new(news)
           @items << news_item
         end
-        ap "Got news"
         update_menu
       else
-        # Handle this.
+        # TODO Handle this.
       end
     end
   end
@@ -76,33 +79,27 @@ class AppDelegate
     end
 
     fetch
-    # @status_item.popUpStatusItemMenu(@menu) # This immediately reopens the menu
   end
 
-  def launch_hn(sender)
-    url_string = @items[sender.tag].link
-    url = NSURL.URLWithString(url_string)
-    if NSWorkspace.sharedWorkspace.openURL(url)
-      # Log that the user went to that site.
-      App::Persistence[@items[sender.tag].link] = true
+  def create_item(args={})
+    args = {
+      key:'',
+      action: '',
+      tag: nil
+      }.merge(args)
+    args[:title] = args[:object].hnitem.title if args[:object]
 
-      mi = @menu.itemWithTag(sender.tag)
-      mi.setTitle(@items[sender.tag].title)
-      @menu.itemChanged(mi)
-    else
-      # TODO: Make this more betterer
-      NSLog("Failed to open url: %@", url.description)
+    item = NSMenuItem.alloc.initWithTitle(args[:title], action: args[:action], keyEquivalent: args[:key])
+    item.tag = args[:tag] if args[:tag]
+
+    if args[:object]
+      # This is a custom view item
+      args[:object].tag = args[:tag] if args[:tag]
+      item.setView args[:object].view
     end
-  end
 
-  def create_item(name, action, tag = nil)
-    item = NSMenuItem.alloc.initWithTitle(name, action: action, keyEquivalent: '')
-    item.tag = tag if tag
+    item.setEnabled(args[:enabled]) if args[:enabled]
     item
-  end
-
-  def separator
-    NSMenuItem.separatorItem
   end
 
   # Animated icon while the API is pulling new results
@@ -136,6 +133,25 @@ class AppDelegate
   def reset_image
     @status_item.image = "Status".image
     @status_item.alternateImage = "StatusHighlighted".image
+  end
+
+  # NSMenu Delegate
+  def menu(menu, willHighlightItem:item)
+    @items.each{|i| i.unhighlight}
+    return if item.nil? || item.tag < 10
+    @items.select{|i| i.tag == item.tag}.first.highlight
+  end
+
+  def blank_action(sender)
+    # Whatever
+  end
+
+def start_at_login enabled
+    url = NSBundle.mainBundle.bundleURL.URLByAppendingPathComponent("Contents/Library/LoginItems/ycmenu-app-launcher.app")
+    LSRegisterURL(url, true)
+    unless SMLoginItemSetEnabled("com.mohawkapps.ycmenu-app-launcher", enabled)
+      NSLog "SMLoginItemSetEnabled failed!"
+    end
   end
 
 end

@@ -1,5 +1,5 @@
 class HNItem
-  PROPERTIES = [:rank, :title, :link, :points, :submitter, :comments]
+  PROPERTIES = [:id, :rank, :title, :link, :points, :submitter, :comments]
   PROPERTIES.each { |prop|
     attr_accessor prop
   }
@@ -8,6 +8,10 @@ class HNItem
     attributes.each { |key, value|
       self.send("#{key}=", value) if PROPERTIES.member? key.to_sym
     }
+  end
+
+  def original_title
+    @title
   end
 
   def title
