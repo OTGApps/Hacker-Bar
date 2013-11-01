@@ -137,4 +137,12 @@ class AppDelegate
     # Whatever
   end
 
+def start_at_login enabled
+    url = NSBundle.mainBundle.bundleURL.URLByAppendingPathComponent("Contents/Library/LoginItems/ycmenu-app-launcher.app")
+    LSRegisterURL(url, true)
+    unless SMLoginItemSetEnabled("com.mohawkapps.ycmenu-app-launcher", enabled)
+      NSLog "SMLoginItemSetEnabled failed!"
+    end
+  end
+
 end
