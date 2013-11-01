@@ -32,13 +32,17 @@ class AppDelegate
     @menu.removeAllItems
 
     @items.each do |news_item|
-      @menu.addItem create_item(news_item, "blank_action:", news_item.hnitem.id.to_f)
+      @menu.addItem create_item(object:news_item, action:"blank_action:", tag:news_item.hnitem.id.to_f)
     end
 
-    @menu.addItem separator
-    @menu.addItem create_item("Manual Refresh", 'refresh')
-    @menu.addItem separator
-    @menu.addItem create_item("Quit", 'terminate:')
+    @menu.addItem NSMenuItem.separatorItem
+    @menu.addItem create_item(title: "Preferences", enabled: false)
+    @menu.addItem create_item(title: "Launch at startup", action:'refresh')
+    @menu.addItem create_item(title: "Open links in background", action:'refresh')
+    @menu.addItem NSMenuItem.separatorItem
+    @menu.addItem create_item(title: "Refresh", action:'refresh')
+    @menu.addItem NSMenuItem.separatorItem
+    @menu.addItem create_item(title: "Quit", action:'terminate:')
   end
 
   def fetch
@@ -68,23 +72,25 @@ class AppDelegate
     fetch
   end
 
-  def create_item(object, action, tag = nil)
-    title = (object.is_a? String) ? object : object.hnitem.title
+  def create_item(args={})
+    args = {
+      key:'',
+      action: '',
+      tag: nil
+      }.merge(args)
+    args[:title] = args[:object].hnitem.title if args[:object]
 
-    item = NSMenuItem.alloc.initWithTitle(title, action: action, keyEquivalent: '')
-    item.tag = tag if tag
+    item = NSMenuItem.alloc.initWithTitle(args[:title], action: args[:action], keyEquivalent: args[:key])
+    item.tag = args[:tag] if args[:tag]
 
-    unless object.is_a? String
+    if args[:object]
       # This is a custom view item
-      object.tag = tag if tag
-      item.setView object.view
+      args[:object].tag = args[:tag] if args[:tag]
+      item.setView args[:object].view
     end
 
+    item.setEnabled(args[:enabled]) if args[:enabled]
     item
-  end
-
-  def separator
-    NSMenuItem.separatorItem
   end
 
   # Animated icon while the API is pulling new results
@@ -122,9 +128,8 @@ class AppDelegate
 
   # NSMenu Delegate
   def menu(menu, willHighlightItem:item)
-    return if item.nil? || item.tag < 10
-
     @items.each{|i| i.unhighlight}
+    return if item.nil? || item.tag < 10
     @items.select{|i| i.tag == item.tag}.first.highlight
   end
 
