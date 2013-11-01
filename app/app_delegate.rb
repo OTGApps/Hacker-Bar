@@ -41,15 +41,15 @@ class AppDelegate
     @menu.removeAllItems
 
     @items.each do |news_item|
-      @menu.addItem create_item(object:news_item, action:"blank_action:", tag:news_item.hnitem.id.to_f)
+      @menu.addItem create_item(object:news_item, tag:news_item.hnitem.id.to_f)
     end
 
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: "Preferences", enabled: false)
-    @menu.addItem create_item(title: "Launch at startup", action:'refresh')
-    @menu.addItem create_item(title: "Open links in background", action:'refresh')
+    @menu.addItem create_item(title: "Launch at startup")
+    @menu.addItem create_item(title: "Open links in background")
     @menu.addItem NSMenuItem.separatorItem
-    @menu.addItem create_item(title: "Refresh", action:'refresh')
+    @menu.addItem create_item(title: "Refresh", action:'refresh', image: "refresh")
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: "Quit", action:'terminate:')
   end
@@ -84,18 +84,23 @@ class AppDelegate
   def create_item(args={})
     args = {
       key:'',
-      action: '',
-      tag: nil
+      action: 'blank_action:',
       }.merge(args)
     args[:title] = args[:object].hnitem.title if args[:object]
 
     item = NSMenuItem.alloc.initWithTitle(args[:title], action: args[:action], keyEquivalent: args[:key])
     item.tag = args[:tag] if args[:tag]
 
+    # Custom view
     if args[:object]
-      # This is a custom view item
       args[:object].tag = args[:tag] if args[:tag]
       item.setView args[:object].view
+    end
+
+    # Image
+    if args[:image]
+      item.setImage args[:image].image
+      item.offStateImage.setTemplate(true)
     end
 
     item.setEnabled(args[:enabled]) if args[:enabled]
