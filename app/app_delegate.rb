@@ -10,6 +10,8 @@ class AppDelegate
 
     @items = []
     App::Persistence['check_interval'] ||= 120 # In seconds
+    App::Persistence['launch_on_start'] ||= false
+    App::Persistence['open_links_in_background'] ||= true
 
     @status_item = NSStatusBar.systemStatusBar.statusItemWithLength(NSVariableStatusItemLength).init
     @status_item.menu = @menu
@@ -47,8 +49,8 @@ class AppDelegate
 
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: "Preferences:", enabled: false)
-    @menu.addItem create_item(title: "Launch on system start")
-    @menu.addItem create_item(title: "Open links in background")
+    @menu.addItem create_item(title: " Launch on system start", checked: App::Persistence['launch_on_start'])
+    @menu.addItem create_item(title: " Open links in background", checked: App::Persistence['open_links_in_background'])
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: " Refresh", action:'refresh', image: 'refresh')
     @menu.addItem NSMenuItem.separatorItem
@@ -98,6 +100,8 @@ class AppDelegate
       args[:object].tag = args[:tag] if args[:tag]
       item.setView args[:object].view
     end
+
+    args[:image] = "check" if args[:checked]
 
     # Image
     if args[:image]
