@@ -24,7 +24,7 @@ class HNItemViewController < NSViewController
   end
 
   def set_interface
-    @headline.setStringValue title
+    @headline.setStringValue @hnitem.title
 
     if @hnitem.submitter == "yc_advertisement"
       @comment_count.hidden = true
@@ -39,12 +39,12 @@ class HNItemViewController < NSViewController
   end
 
   def clicked_link(sender)
-    ap "Clicked Item: #{@hnitem.original_title}"
+    ap "Clicked Item: #{@hnitem.title}"
     launch_link
   end
 
   def clicked_comments(sender)
-    ap "Clicked Comments: #{@hnitem.original_title}"
+    ap "Clicked Comments: #{@hnitem.title}"
     launch_comments
   end
 
@@ -80,7 +80,7 @@ class HNItemViewController < NSViewController
       # Log that the user went to that site.
       App::Persistence[@hnitem.link] = true
 
-      @headline.setStringValue title
+      @headline.setStringValue @hnitem.title
 
       # mi = @menu.itemWithTag(sender.tag)
       # mi.setTitle(@items[sender.tag].title)

@@ -16,7 +16,7 @@ class HNItem
 
   def title
     if App::Persistence[@link]
-      "✓ #{@hnitem.original_title}"
+      "✓ #{@title}"
     else
       @title
     end

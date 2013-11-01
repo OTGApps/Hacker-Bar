@@ -12,7 +12,7 @@
                 <outlet property="headline" destination="CNh-x5-nuj" id="kT3-WP-v5V"/>
                 <outlet property="view" destination="1Ct-to-H3W" id="BPd-gl-ggC"/>
                 <outlet property="votes_count" destination="Mit-H4-c65" id="Sjf-om-Jww"/>
-                <outlet property="votes_image" destination="PJX-qx-Vte" id="kbQ-d9-K0K"/>
+                <outlet property="votes_image" destination="PJX-qx-Vte" id="jpu-Cn-51E"/>
             </connections>
         </customObject>
         <view id="1Ct-to-H3W">
