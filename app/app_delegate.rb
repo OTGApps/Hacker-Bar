@@ -5,6 +5,7 @@ class AppDelegate
     @app_name = NSBundle.mainBundle.infoDictionary['CFBundleDisplayName']
 
     @menu = NSMenu.new
+    @menu.setAutoenablesItems(false)
     @menu.delegate = self
 
     @items = []
@@ -45,11 +46,11 @@ class AppDelegate
     end
 
     @menu.addItem NSMenuItem.separatorItem
-    @menu.addItem create_item(title: "Preferences", enabled: false)
-    @menu.addItem create_item(title: "Launch at startup")
+    @menu.addItem create_item(title: "Preferences:", enabled: false)
+    @menu.addItem create_item(title: "Launch on system start")
     @menu.addItem create_item(title: "Open links in background")
     @menu.addItem NSMenuItem.separatorItem
-    @menu.addItem create_item(title: "Refresh", action:'refresh', image: "refresh")
+    @menu.addItem create_item(title: " Refresh", action:'refresh', image: 'refresh')
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: "Quit", action:'terminate:')
   end
@@ -85,13 +86,14 @@ class AppDelegate
     args = {
       key:'',
       action: 'blank_action:',
+      enabled: true
       }.merge(args)
     args[:title] = args[:object].hnitem.title if args[:object]
 
     item = NSMenuItem.alloc.initWithTitle(args[:title], action: args[:action], keyEquivalent: args[:key])
     item.tag = args[:tag] if args[:tag]
+    item.setEnabled(args[:enabled])
 
-    # Custom view
     if args[:object]
       args[:object].tag = args[:tag] if args[:tag]
       item.setView args[:object].view
@@ -99,13 +101,15 @@ class AppDelegate
 
     # Image
     if args[:image]
-      item.setImage args[:image].image
-      item.offStateImage.setTemplate(true)
+      i = args[:image].image
+      item.setOffStateImage i
+      item.setOnStateImage i
+      item.onStateImage.setTemplate(true)
     end
 
-    item.setEnabled(args[:enabled]) if args[:enabled]
     item
   end
+
 
   # Animated icon while the API is pulling new results
   def start_animating
