@@ -15,9 +15,11 @@ class HNItem
   end
 
   def title
-  	t = ""
-  	t << "✓ " if App::Persistence[@link]
-  	t << "(#{@points}/#{@comments['count']}) #{@title}"
-  	t
+    if App::Persistence[@link]
+      "✓ #{@hnitem.original_title}"
+    else
+      @title
+    end
   end
+
 end

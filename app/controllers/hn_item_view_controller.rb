@@ -24,9 +24,7 @@ class HNItemViewController < NSViewController
   end
 
   def set_interface
-    # ap "#{@hnitem.points.to_i} = #{SI.convert( @hnitem.points.to_i )}"
-    # ap "#{@hnitem.comments['count'].to_i} = #{SI.convert( @hnitem.comments['count'].to_i )}"
-    @headline.setStringValue @hnitem.original_title
+    @headline.setStringValue title
 
     if @hnitem.submitter == "yc_advertisement"
       @comment_count.hidden = true
@@ -81,6 +79,8 @@ class HNItemViewController < NSViewController
     if NSWorkspace.sharedWorkspace.openURL(url)
       # Log that the user went to that site.
       App::Persistence[@hnitem.link] = true
+
+      @headline.setStringValue title
 
       # mi = @menu.itemWithTag(sender.tag)
       # mi.setTitle(@items[sender.tag].title)
