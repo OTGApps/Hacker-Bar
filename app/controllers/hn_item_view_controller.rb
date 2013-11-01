@@ -27,8 +27,17 @@ class HNItemViewController < NSViewController
     # ap "#{@hnitem.points.to_i} = #{SI.convert( @hnitem.points.to_i )}"
     # ap "#{@hnitem.comments['count'].to_i} = #{SI.convert( @hnitem.comments['count'].to_i )}"
     @headline.setStringValue @hnitem.original_title
-    @comment_count.setStringValue( SI.convert( @hnitem.comments['count'].to_i ) || 0 )
-    @votes_count.setStringValue( SI.convert(@hnitem.points.to_i) || 0 )
+
+    if @hnitem.submitter == "yc_advertisement"
+      @comment_count.hidden = true
+      @votes_count.hidden = true
+      @comment_image.hidden = true
+      @votes_image.setImage "ad".image
+    else
+      @comment_count.setStringValue( SI.convert( @hnitem.comments['count'].to_i ) || 0 )
+      @votes_count.setStringValue( SI.convert(@hnitem.points.to_i) || 0 )
+    end
+
   end
 
   def clicked_link(sender)
@@ -62,8 +71,12 @@ class HNItemViewController < NSViewController
   end
 
   def launch_browser(url)
-    unhighlight
+    if App::Persistence['open_links_in_background'] == true
+      unhighlight
+      # App.delegate.menu.cancelTracking
+    end
 
+    url = "https://news.ycombinator.com/" << url unless url.start_with? "http"
     url = NSURL.URLWithString(url)
     if NSWorkspace.sharedWorkspace.openURL(url)
       # Log that the user went to that site.

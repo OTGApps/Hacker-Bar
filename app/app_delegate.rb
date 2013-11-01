@@ -44,13 +44,14 @@ class AppDelegate
     @menu.removeAllItems
 
     @items.each do |news_item|
-      @menu.addItem create_item(object:news_item, tag:news_item.hnitem.id.to_f)
+      tag = news_item.hnitem.id || 99999
+      @menu.addItem create_item(object:news_item, tag:tag.to_i)
     end
 
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: "Preferences:", enabled: false)
-    @menu.addItem create_item(title: " Launch on system start", checked: App::Persistence['launch_on_start'])
-    @menu.addItem create_item(title: " Open links in background", checked: App::Persistence['open_links_in_background'])
+    @menu.addItem create_item(title: " Launch on system start", action: "set_autolaunch:", checked: App::Persistence['launch_on_start'])
+    @menu.addItem create_item(title: " Open links in background", action: "toggle_background:", checked: App::Persistence['open_links_in_background'])
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: " Refresh", action:'refresh', image: 'refresh')
     @menu.addItem NSMenuItem.separatorItem
@@ -159,7 +160,38 @@ class AppDelegate
     # Whatever
   end
 
-def start_at_login enabled
+  def toggle_autolaunch sender
+    autolaunch = !App::Persistence['launch_on_start']
+    App::Persistence['launch_on_start'] = autolaunch
+    start_at_login autolaunch
+
+    if autolaunch == true
+      i = 'check'.image
+      sender.setOffStateImage i
+      sender.setOnStateImage i
+      sender.onStateImage.setTemplate(true)
+    else
+      sender.setOffStateImage nil
+      sender.setOnStateImage nil
+    end
+  end
+
+  def toggle_background sender
+    background = !App::Persistence['open_links_in_background']
+    App::Persistence['open_links_in_background'] = background
+
+    if background == true
+      i = 'check'.image
+      sender.setOffStateImage i
+      sender.setOnStateImage i
+      sender.onStateImage.setTemplate(true)
+    else
+      sender.setOffStateImage nil
+      sender.setOnStateImage nil
+    end
+  end
+
+  def start_at_login enabled
     url = NSBundle.mainBundle.bundleURL.URLByAppendingPathComponent("Contents/Library/LoginItems/ycmenu-app-launcher.app")
     LSRegisterURL(url, true)
     unless SMLoginItemSetEnabled("com.mohawkapps.ycmenu-app-launcher", enabled)
