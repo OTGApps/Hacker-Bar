@@ -53,7 +53,7 @@ class AppDelegate
 
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: "Preferences:", enabled: false)
-    @menu.addItem create_item(title: " Launch on system start", action: "set_autolaunch:", checked: App::Persistence['launch_on_start'])
+    @menu.addItem create_item(title: " Launch on system start", action: "toggle_autolaunch:", checked: App::Persistence['launch_on_start'])
     @menu.addItem create_refresh_option_menu
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: " Refresh", action:'refresh', image: 'refresh')
@@ -223,8 +223,7 @@ class AppDelegate
       sender.setOnStateImage i
       sender.onStateImage.setTemplate(true)
     else
-      sender.setOffStateImage nil
-      sender.setOnStateImage nil
+      sender.setImage nil
     end
   end
 
