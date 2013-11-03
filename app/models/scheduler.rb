@@ -13,7 +13,8 @@ class Scheduler
   end
 
   def start_polling
-  	ap "Starting to poll"
+    ap "Starting to poll"
+    NSLog "Starting to poll"
   	if @timer.nil? || !@timer.isValid
       interval = App::Persistence['check_interval'];
       ap "Wait #{interval} seconds"
@@ -22,7 +23,9 @@ class Scheduler
   end
 
   def stop_polling
-  	@timer.invalidate
+    ap "Stopping the polling"
+    NSLog "Stopping the polling"
+    @timer.invalidate
   end
 
   def restart_polling
@@ -31,7 +34,8 @@ class Scheduler
   end
 
   def go_go_gadget_scheduler
-  	App.delegate.refresh
+  	ap "Refreshing"
+    App.delegate.refresh
   end
 
   def failsafe
