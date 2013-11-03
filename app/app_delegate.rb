@@ -22,20 +22,18 @@ class AppDelegate
     update_menu
     fetch
 
-    # Start the timer
-    Scheduler.shared_scheduler.start_polling
+    # Scheduler.shared_scheduler.start_polling
+    NSWorkspace.sharedWorkspace.notificationCenter.addObserver(Scheduler.shared_scheduler, selector:"restart_polling", name:NSWorkspaceDidWakeNotification, object:nil)
+    NSWorkspace.sharedWorkspace.notificationCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_polling", name:NSWorkspaceWillSleepNotification, object:nil)
+
   end
 
   def applicationWillTerminate(notification)
     Scheduler.shared_scheduler.stop_polling
   end
 
-  def applicationWillResignActive(notification)
-    Scheduler.shared_scheduler.stop_polling
-    @animTimer.invalidate if @animTimer
-  end
-
   def applicationWillBecomeActive(notification)
+    # Start the timer
     Scheduler.shared_scheduler.start_polling
   end
 
