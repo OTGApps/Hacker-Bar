@@ -47,7 +47,7 @@ class AppDelegate
     @menu.removeAllItems
 
     @items.each do |news_item|
-      tag = news_item.hnitem.id || 9999999
+      tag = news_item.hnitem.id || 999999
       @menu.addItem create_item(object:news_item, tag:tag.to_i)
     end
 
@@ -64,40 +64,51 @@ class AppDelegate
   def create_refresh_option_menu
     refresh_options = NSMenuItem.alloc.init
     refresh_options.setTitle(" Refresh Options")
-    sub_options = NSMenu.alloc.init
+    @sub_options ||= NSMenu.alloc.init
+    @sub_options.removeAllItems
 
+    refresh_menu_options.each do |option|
+      @sub_options.addItem option
+    end
+
+    refresh_options.setSubmenu(@sub_options)
+    refresh_options
+  end
+
+  def refresh_menu_options
+    items = []
     [
-      ['2 minutes', 120],
-      ['5 minutes', 300],
-      ['10 Minutes', 600],
-      ['30 minutes', 1800],
-      ['1 hour', 3600],
-      ['2 hours', 7200]
+      [' 2 minutes', 120],
+      [' 5 minutes', 300],
+      [' 10 Minutes', 600],
+      [' 30 minutes', 1800],
+      [' 1 hour', 3600],
+      [' 2 hours', 7200]
     ].each do |value|
       option = NSMenuItem.alloc.initWithTitle(value[0], action:"update_fetch_time:" , keyEquivalent: '')
       option.tag = value[1]
 
       if option.tag == App::Persistence['check_interval']
-        option.setEnabled false
         i = 'check'.image
-        item.setOffStateImage i
-        item.setOnStateImage i
-        item.onStateImage.setTemplate(true)
-      else
-        option.setEnabled true
+        option.setOffStateImage i
+        option.setOnStateImage i
+        option.onStateImage.setTemplate(true)
       end
 
-      sub_options.addItem option
+      option.setEnabled true
+      items << option
     end
-
-    refresh_options.setSubmenu(sub_options)
-    refresh_options
+    items
   end
 
   def update_fetch_time sender
     NSLog "Updating fetch time to #{sender.tag}"
     App::Persistence['check_interval'] = sender.tag.to_i
     Scheduler.shared_scheduler.restart_polling
+    @sub_options.removeAllItems
+    refresh_menu_options.each do |option|
+      @sub_options.addItem option
+    end
   end
 
   def fetch
