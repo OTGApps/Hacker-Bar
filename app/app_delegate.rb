@@ -11,7 +11,7 @@ class AppDelegate
     @items = []
     App::Persistence['check_interval'] ||= 120 # In seconds
     App::Persistence['launch_on_start'] ||= false
-    App::Persistence['open_links_in_background'] ||= true
+    App::Persistence['asked_to_launch_on_start'] ||= false
 
     @status_item = NSStatusBar.systemStatusBar.statusItemWithLength(NSVariableStatusItemLength).init
     @status_item.menu = @menu
@@ -25,6 +25,11 @@ class AppDelegate
     # Scheduler.shared_scheduler.start_polling
     NSWorkspace.sharedWorkspace.notificationCenter.addObserver(Scheduler.shared_scheduler, selector:"restart_polling", name:NSWorkspaceDidWakeNotification, object:nil)
     NSWorkspace.sharedWorkspace.notificationCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_polling", name:NSWorkspaceWillSleepNotification, object:nil)
+
+    if App::Persistence['asked_to_launch_on_start'] == false
+      App::Persistence['asked_to_launch_on_start'] = true
+      # Ask the user to launch the app on start.
+    end
 
   end
 
@@ -42,18 +47,57 @@ class AppDelegate
     @menu.removeAllItems
 
     @items.each do |news_item|
-      tag = news_item.hnitem.id || rand(99999)
+      tag = news_item.hnitem.id || 9999999
       @menu.addItem create_item(object:news_item, tag:tag.to_i)
     end
 
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: "Preferences:", enabled: false)
     @menu.addItem create_item(title: " Launch on system start", action: "set_autolaunch:", checked: App::Persistence['launch_on_start'])
-    @menu.addItem create_item(title: " Open links in background", action: "toggle_background:", checked: App::Persistence['open_links_in_background'])
+    @menu.addItem create_refresh_option_menu
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: " Refresh", action:'refresh', image: 'refresh')
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: "Quit", action:'terminate:')
+  end
+
+  def create_refresh_option_menu
+    refresh_options = NSMenuItem.alloc.init
+    refresh_options.setTitle(" Refresh Options")
+    sub_options = NSMenu.alloc.init
+
+    [
+      ['2 minutes', 120],
+      ['5 minutes', 300],
+      ['10 Minutes', 600],
+      ['30 minutes', 1800],
+      ['1 hour', 3600],
+      ['2 hours', 7200]
+    ].each do |value|
+      option = NSMenuItem.alloc.initWithTitle(value[0], action:"update_fetch_time:" , keyEquivalent: '')
+      option.tag = value[1]
+
+      if option.tag == App::Persistence['check_interval']
+        option.setEnabled false
+        i = 'check'.image
+        item.setOffStateImage i
+        item.setOnStateImage i
+        item.onStateImage.setTemplate(true)
+      else
+        option.setEnabled true
+      end
+
+      sub_options.addItem option
+    end
+
+    refresh_options.setSubmenu(sub_options)
+    refresh_options
+  end
+
+  def update_fetch_time sender
+    NSLog "Updating fetch time to #{sender.tag}"
+    App::Persistence['check_interval'] = sender.tag.to_i
+    Scheduler.shared_scheduler.restart_polling
   end
 
   def fetch
@@ -112,7 +156,6 @@ class AppDelegate
 
     item
   end
-
 
   # Animated icon while the API is pulling new results
   def start_animating
