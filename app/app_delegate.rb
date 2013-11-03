@@ -89,10 +89,9 @@ class AppDelegate
       option.tag = value[1]
 
       if option.tag == App::Persistence['check_interval']
-        i = 'check'.image
-        option.setOffStateImage i
-        option.setOnStateImage i
-        option.onStateImage.setTemplate(true)
+        option.setState NSOnState
+      else
+        option.setState NSOffState
       end
 
       option.setEnabled true
@@ -159,10 +158,14 @@ class AppDelegate
 
     # Image
     if args[:image]
-      i = args[:image].image
-      item.setOffStateImage i
-      item.setOnStateImage i
-      item.onStateImage.setTemplate(true)
+      if args[:image] == 'check'
+        item.setState NSOnState
+      else
+        i = args[:image].image
+        item.setOffStateImage i
+        item.setOnStateImage i
+        item.onStateImage.setTemplate(true)
+      end
     end
 
     item
@@ -218,27 +221,9 @@ class AppDelegate
     start_at_login autolaunch
 
     if autolaunch == true
-      i = 'check'.image
-      sender.setOffStateImage i
-      sender.setOnStateImage i
-      sender.onStateImage.setTemplate(true)
+      sender.setState NSOnState
     else
-      sender.setImage nil
-    end
-  end
-
-  def toggle_background sender
-    background = !App::Persistence['open_links_in_background']
-    App::Persistence['open_links_in_background'] = background
-
-    if background == true
-      i = 'check'.image
-      sender.setOffStateImage i
-      sender.setOnStateImage i
-      sender.onStateImage.setTemplate(true)
-    else
-      sender.setOffStateImage nil
-      sender.setOnStateImage nil
+      sender.setState NSOffState
     end
   end
 
