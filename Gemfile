@@ -7,5 +7,5 @@ source 'https://rubygems.org'
 gem 'rake'
 
 gem 'ib'
-gem 'bubble-wrap', '1.4.0', :require => ['bubble-wrap/core', 'bubble-wrap/http']
+gem 'bubble-wrap', '1.4.0', :require => ['bubble-wrap/core', 'bubble-wrap/http', 'bubble-wrap/reactor']
 gem 'awesome_print_motion'
