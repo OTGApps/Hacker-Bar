@@ -88,22 +88,32 @@ class AppDelegate
       option = NSMenuItem.alloc.initWithTitle(value[0], action:"update_fetch_time:" , keyEquivalent: '')
       option.tag = value[1]
 
-      if option.tag == App::Persistence['check_interval']
-        option.setState NSOnState
-      else
-        option.setState NSOffState
-      end
-
+      option.setState (option.tag == App::Persistence['check_interval']) ? NSOnState : NSOffState
       option.setEnabled true
       items << option
     end
+
+    unless App::Persistence['last_check'].nil?
+      items << NSMenuItem.separatorItem
+      items << create_item(title: " Last Check: #{App::Persistence['last_check']}", enabled: false)
+    end
+
     items
   end
 
   def update_fetch_time sender
     NSLog "Updating fetch time to #{sender.tag}"
-    App::Persistence['check_interval'] = sender.tag.to_i
-    Scheduler.shared_scheduler.restart_polling
+    time = sender.tag.to_i
+
+    App::Persistence['check_interval'] = time
+
+    if time > 0
+      Scheduler.shared_scheduler.restart_polling
+    else
+      Scheduler.shared_scheduler.stop_polling
+    end
+
+    # Rebuild the interface
     @sub_options.removeAllItems
     refresh_menu_options.each do |option|
       @sub_options.addItem option
@@ -121,6 +131,7 @@ class AppDelegate
           news_item.hnitem = HNItem.new(news)
           @items << news_item
         end
+        App::Persistence['last_check'] = Time.now.to_i
         update_menu
       else
         # TODO Handle this.
@@ -219,12 +230,7 @@ class AppDelegate
     autolaunch = !App::Persistence['launch_on_start']
     App::Persistence['launch_on_start'] = autolaunch
     start_at_login autolaunch
-
-    if autolaunch == true
-      sender.setState NSOnState
-    else
-      sender.setState NSOffState
-    end
+    sender.setState (autolaunch == true) ? NSOnState : NSOffState
   end
 
   def start_at_login enabled
