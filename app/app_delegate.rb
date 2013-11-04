@@ -39,7 +39,7 @@ class AppDelegate
 
   def applicationWillBecomeActive(notification)
     # Start the timer
-    Scheduler.shared_scheduler.start_polling
+    Scheduler.shared_scheduler.refresh_and_start_polling
   end
 
   def update_menu
