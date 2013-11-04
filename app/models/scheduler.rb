@@ -47,14 +47,13 @@ class Scheduler
   end
 
   def failsafe
-  	interval = App::Persistence['check_interval']
     # Don't hammer our server please.
-  	if interval > 0 && interval < 60
-  		interval = 60
-	    alert = NSAlert.alloc.init
-	    alert.setMessageText "Please don't try and fetch data from our server more often than every 60 seconds.\n\nThanks!"
-	    alert.addButtonWithTitle "OK, I'm sorry"
-	    alert.runModal
+  	if App::Persistence['check_interval'] < 60
+  		App::Persistence['check_interval'] = 60
+	    # alert = NSAlert.alloc.init
+	    # alert.setMessageText "Please don't try and fetch data from our server more often than every 60 seconds.\n\nThanks!"
+	    # alert.addButtonWithTitle "OK, I'm sorry"
+	    # alert.runModal
   	end
   end
 
