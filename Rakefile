@@ -10,11 +10,15 @@ end
 
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
-  app.name = 'YCMenu'
+  app.name = 'Hacker Bar'
+  app.version = "1.0.0"
+  app.short_version = "1"
   app.icon = 'AppIcon.icns'
-  app.identifier = "com.mohawkapps.#{app.name}"
+  app.identifier = "com.mohawkapps.#{app.name.gsub(' ', '-').downcase}"
   app.info_plist['LSUIElement'] = true
   app.frameworks += [ 'ServiceManagement']
+  app.copyright = "Copyright © 2013 Mohawk Apps, LLC. All rights reserved."
+  app.deployment_target = "10.7"
 
   app.vendor_project('vendor/time_ago_in_words', :static, :cflags => '-fobjc-arc')
 
