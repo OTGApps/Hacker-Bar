@@ -94,10 +94,14 @@ class AppDelegate
       items << option
     end
 
-    unless App::Persistence['last_check'].nil?
-      items << NSMenuItem.separatorItem
-      items << create_item(title: " Last Check: #{App::Persistence['last_check']}", enabled: false)
-    end
+    # TODO: Get this to auto-update when the menu is open.
+    # unless App::Persistence['last_check'].nil?
+    #   last_check = Time.at(App::Persistence['last_check'].to_i)
+    #   last_check_words = last_check.distanceOfTimeInWords
+
+    #   items << NSMenuItem.separatorItem
+    #   items << create_item(title: " Last Check: #{last_check_words}", enabled: false)
+    # end
 
     items
   end
