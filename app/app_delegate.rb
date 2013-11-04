@@ -181,6 +181,7 @@ class AppDelegate
     @stopping = true
     if @animTimer && @stopping && @currentFrame == 0
       @animTimer.invalidate
+      @animTimer = nil
       reset_image
     end
   end
