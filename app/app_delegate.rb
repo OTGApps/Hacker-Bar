@@ -125,26 +125,8 @@ class AppDelegate
     end
   end
 
-  def fetch
-    start_animating
-    HNAPI.get_news do |json, error|
-      if error.nil? && json.count > 0
-        @items = [] # Clear out the item array
-
-        json['submissions'].each do |news|
-          news_item = HNItemViewController.alloc.initWithNibName("HNItemViewController", bundle:nil)
-          news_item.hnitem = HNItem.new(news)
-          @items << news_item
-        end
-        App::Persistence['last_check'] = Time.now.to_i
-        update_menu
-      else
-        # TODO Handle this.
-      end
-    end
-  end
-
   def refresh
+    ap "refreshing the menu"
     @menu.itemArray.each do |item|
       break if item.isSeparatorItem
       item.setEnabled(false)
@@ -246,5 +228,28 @@ class AppDelegate
       NSLog "SMLoginItemSetEnabled failed!"
     end
   end
+
+  private
+  # Don't ever call this method directly. Use the refresh method
+  def fetch
+    start_animating
+    ap "Fetching"
+    HNAPI.get_news do |json, error|
+      if error.nil? && json.count > 0
+        @items = [] # Clear out the item array
+
+        json['submissions'].each do |news|
+          news_item = HNItemViewController.alloc.initWithNibName("HNItemViewController", bundle:nil)
+          news_item.hnitem = HNItem.new(news)
+          @items << news_item
+        end
+        App::Persistence['last_check'] = Time.now.to_i
+        update_menu
+      else
+        # TODO Handle this.
+      end
+    end
+  end
+
 
 end
