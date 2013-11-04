@@ -16,6 +16,8 @@ Motion::Project::App.setup do |app|
   app.info_plist['LSUIElement'] = true
   app.frameworks += [ 'ServiceManagement']
 
+  app.vendor_project('vendor/time_ago_in_words', :static, :cflags => '-fobjc-arc')
+
 end
 
 class Motion::Project::App
