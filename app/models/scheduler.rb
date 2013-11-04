@@ -30,6 +30,10 @@ class Scheduler
       @timer = EM.add_periodic_timer interval do
         ap "Refreshing at #{Time.now}"
         App.delegate.refresh
+
+        if App::Persistence['check_interval'] == 0
+          stop_polling
+        end
       end
   	end
   end
