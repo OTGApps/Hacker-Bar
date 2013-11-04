@@ -234,10 +234,11 @@ class AppDelegate
     sender.setState (autolaunch == true) ? NSOnState : NSOffState
   end
 
+  # TODO: Get this working properly.
   def start_at_login enabled
-    url = NSBundle.mainBundle.bundleURL.URLByAppendingPathComponent("Contents/Library/LoginItems/ycmenu-app-launcher.app")
+    url = NSBundle.mainBundle.bundleURL.URLByAppendingPathComponent("Contents/Library/LoginItems/hackerbarlauncher.app")
     LSRegisterURL(url, true)
-    unless SMLoginItemSetEnabled("com.mohawkapps.ycmenu-app-launcher", enabled)
+    unless SMLoginItemSetEnabled("com.mohawkapps.hackerbarlauncher", enabled)
       NSLog "SMLoginItemSetEnabled failed!"
     end
   end

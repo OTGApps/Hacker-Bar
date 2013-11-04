@@ -1,0 +1,17 @@
+# -*- coding: utf-8 -*-
+$:.unshift("/Library/RubyMotion/lib")
+require 'motion/project/template/osx'
+begin
+  require 'bundler'
+  Bundler.require
+rescue LoadError
+end
+
+Motion::Project::App.setup do |app|
+  app.name = 'HackerBarLauncher'
+  app.version = "1.0.0"
+  app.short_version = "1"
+  app.identifier = "com.mohawkapps.#{app.name.gsub(' ', '-').downcase}"
+  app.copyright = "Copyright © 2013 Mohawk Apps, LLC. All rights reserved."
+  app.deployment_target = "10.7"
+end

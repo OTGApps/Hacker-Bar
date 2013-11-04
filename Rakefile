@@ -34,7 +34,7 @@ class Motion::Project::App
       destination = File.join(config.app_bundle(platform), 'Library/LoginItems')
       info 'Create', destination
       FileUtils.mkdir_p destination
-      helper_path = File.dirname(__FILE__)+'/ycmenu-app-launcher/build/MacOSX-10.8-Development/ycmenu-app-launcher.app'
+      helper_path = File.dirname(__FILE__)+'/HackerBarLauncher/build/MacOSX-10.7-Development/HackerBarLauncher.app'
       info 'Copy', helper_path
       FileUtils.cp_r helper_path, destination
     end

@@ -1,4 +1,4 @@
-# Project YCMenu (not final name)
+# Hacker Bar
 ### A [RubyMotion](http://www.rubymotion.com/) Mac application.
 
 This is a system bar application that fetches the top items from HackerNews every 2 minutes. Clicking on the link will take you to the linked URL.
