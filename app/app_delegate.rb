@@ -56,8 +56,6 @@ class AppDelegate
     @menu.addItem create_item(title: " Launch on system start", action: "toggle_autolaunch:", checked: App::Persistence['launch_on_start'])
     @menu.addItem create_refresh_option_menu
     @menu.addItem NSMenuItem.separatorItem
-    @menu.addItem create_item(title: " Refresh", action:'refresh', image: 'refresh')
-    @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: "Quit", action:'terminate:')
   end
 
@@ -77,7 +75,10 @@ class AppDelegate
 
   def refresh_menu_options
     items = []
+    items << create_item(title: " Refresh Now", action:'refresh', image: 'refresh')
+    items << NSMenuItem.separatorItem
     [
+      [' Never', 0],
       [' 2 minutes', 120],
       [' 5 minutes', 300],
       [' 10 Minutes', 600],
