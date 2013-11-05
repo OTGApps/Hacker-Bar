@@ -19,3 +19,5 @@ vendor/Pods
 vendor/Podfile.lock
 vendor/**/*.bridgesupport
 ib.xcodeproj
+
+/_release/

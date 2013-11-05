@@ -47,7 +47,7 @@ class AppDelegate
     @menu.removeAllItems
 
     @items.each do |news_item|
-      tag = news_item.hnitem.id || 999999
+      tag = news_item.hnitem.id || rand(-999)
       @menu.addItem create_item(object:news_item, tag:tag.to_i)
     end
 
