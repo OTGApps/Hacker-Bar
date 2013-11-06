@@ -16,11 +16,18 @@ Motion::Project::App.setup do |app|
   app.icon = 'AppIcon.icns'
   app.identifier = "com.mohawkapps.#{app.name.gsub(' ', '-').downcase}"
   app.info_plist['LSUIElement'] = true
-  app.frameworks += [ 'ServiceManagement']
+  app.frameworks += ['ServiceManagement']
   app.copyright = "Copyright © 2013 Mohawk Apps, LLC. All rights reserved."
   app.deployment_target = "10.7"
 
   app.vendor_project('vendor/time_ago_in_words', :static, :cflags => '-fobjc-arc')
+
+  app.entitlements['com.apple.security.app-sandbox'] = true
+  app.entitlements['com.apple.security.network.client'] = true
+
+  app.release do
+    app.codesign_certificate = "3rd Party Mac Developer Application: Mohawk Apps, LLC (DW9QQZR4ZL)"
+  end
 
 end
 
