@@ -124,7 +124,7 @@ class AppDelegate
   end
 
   def refresh
-    ap "refreshing the menu"
+    ap "Refreshing the menu"
     @menu.itemArray.each do |item|
       break if item.isSeparatorItem
       item.setEnabled(false)
@@ -143,6 +143,7 @@ class AppDelegate
 
     item = NSMenuItem.alloc.initWithTitle(args[:title], action: args[:action], keyEquivalent: args[:key])
     item.tag = args[:tag] if args[:tag]
+
     item.setEnabled(args[:enabled])
 
     if args[:object]
@@ -169,6 +170,7 @@ class AppDelegate
 
   # Animated icon while the API is pulling new results
   def start_animating
+    ap "Starting image animation"
     @currentFrame = 0
     @stopping = false
     @animTimer = NSTimer.scheduledTimerWithTimeInterval(1.0/8.0, target:self, selector:"update_image:", userInfo:nil, repeats:true)
@@ -178,6 +180,7 @@ class AppDelegate
     # This little trick will make sure that the spinner goes around at least once.
     @stopping = true
     if @animTimer && @stopping && @currentFrame == 0
+      ap "Stopping image animation"
       @animTimer.invalidate
       @animTimer = nil
       reset_image
@@ -215,7 +218,6 @@ class AppDelegate
   def toggle_autolaunch sender
     autolaunch = !App::Persistence['launch_on_start']
     App::Persistence['launch_on_start'] = autolaunch
-    ap "autolaunch: #{autolaunch}"
     start_at_login autolaunch
     sender.setState (autolaunch == true) ? NSOnState : NSOffState
   end
@@ -242,7 +244,7 @@ class AppDelegate
   # Don't ever call this method directly. Use the refresh method
   def fetch
     start_animating
-    ap "Fetching"
+    ap "Fetching new data"
     HNAPI.get_news do |json, error|
       if error.nil? && json.count > 0
         @items = [] # Clear out the item array
@@ -260,6 +262,5 @@ class AppDelegate
       end
     end
   end
-
 
 end
