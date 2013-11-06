@@ -50,8 +50,8 @@ class AppDelegate
     end
 
     @menu.addItem NSMenuItem.separatorItem
-    @menu.addItem create_item(title: "Preferences:", enabled: 0)
-    @menu.addItem create_item(title: " Launch on system start", action: "toggle_autolaunch:", checked: App::Persistence['launch_on_start'])
+    @menu.addItem create_item(title: "Preferences:", enabled: false)
+    @menu.addItem create_item(title: " Launch #{App.name} on login", action: "toggle_autolaunch:", checked: App::Persistence['launch_on_start'])
     @menu.addItem create_refresh_option_menu
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: "Quit", action:'terminate:')
