@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd HackerBarLauncher
+rake clean
+rake build:release
+killall Hacker\ Bar
+cd ..
+rake clean
+rake archive:distribution

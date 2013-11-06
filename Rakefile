@@ -54,16 +54,3 @@ class Motion::Project::App
     end
   end
 end
-
-# Rake tasks to compile it all together.
-task :rakeall do
-  `cd HackerBarLauncher && rake clean && rake && cd .. && rake clean && rake`
-end
-
-task :rakeallrelease do
-  `cd HackerBarLauncher && rake clean && rake build:release && cd .. && rake clean && rake build:release`
-end
-
-task :rakeallappstore do
-  `cd HackerBarLauncher && rake clean && rake build:release && cd .. && rake clean && rake archive:distribution`
-end

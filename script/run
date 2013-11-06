@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd HackerBarLauncher
+rake
+killall Hacker\ Bar
+cd ..
+rake
