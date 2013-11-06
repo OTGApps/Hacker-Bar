@@ -43,7 +43,6 @@ class AppDelegate
   end
 
   def update_menu
-    stop_animating
     @menu.removeAllItems
 
     @items.each do |news_item|
@@ -217,17 +216,27 @@ class AppDelegate
   def toggle_autolaunch sender
     autolaunch = !App::Persistence['launch_on_start']
     App::Persistence['launch_on_start'] = autolaunch
+    ap "autolaunch: #{autolaunch}"
     start_at_login autolaunch
     sender.setState (autolaunch == true) ? NSOnState : NSOffState
   end
 
   # TODO: Get this working properly.
   def start_at_login enabled
-    url = NSBundle.mainBundle.bundleURL.URLByAppendingPathComponent("Contents/Library/LoginItems/hackerbarlauncher.app")
-    LSRegisterURL(url, true)
-    unless SMLoginItemSetEnabled("com.mohawkapps.hackerbarlauncher", enabled)
-      NSLog "SMLoginItemSetEnabled failed!"
+    url = NSBundle.mainBundle.bundleURL.URLByAppendingPathComponent("Contents/Library/LoginItems/HackerBarLauncher.app", isDirectory:true)
+
+    status = LSRegisterURL(url, true)
+    unless status
+        NSLog("Failed to LSRegisterURL '%@': %jd", url, status)
+        return
     end
+
+    success = SMLoginItemSetEnabled("com.mohawkapps.hackerbarlauncher", enabled)
+    unless success
+        NSLog("Failed to start Helper")
+        return
+    end
+
   end
 
   private
@@ -245,6 +254,7 @@ class AppDelegate
           @items << news_item
         end
         App::Persistence['last_check'] = Time.now.to_i
+        stop_animating
         update_menu
       else
         # TODO Handle this.
