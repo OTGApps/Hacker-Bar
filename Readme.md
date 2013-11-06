@@ -18,19 +18,11 @@ The application will remember which links you've clicked before!
 
 ## Compiling:
 
-1. ```cd``` into the directory and run ```bundle update```
-2. Run ```rake``` and the application will build and launch in your system bar.
+```cd``` into the directory and run ```bundle update```
 
-## ToDo:
+From there, use the `make` command to build the app. There are a few `make` options:
 
-* Create a custom view to include:
-	* Number of comments
-	* Title
-	* Number of upvotes
-* Allow the user to go directly to comments **or** URL of the news item
-* Make it prettier
-* ~~Remember what URLS the user clicked and indicate it to them somehow~~
-* …
-* Design large (1024px) icon
-* Come up with marketing material
-* Submit to the Mac App Store
+1. `make run` - builds the app and runs it.
+2. `make runclean` - cleans all targets before running.
+3. `make build` - builds the app for distribution.
+4. `make release` - builds the app for app store release.
