@@ -20,7 +20,6 @@ class AppDelegate
     reset_image
 
     update_menu
-    refresh
 
     # Scheduler.shared_scheduler.start_polling
     NSWorkspace.sharedWorkspace.notificationCenter.addObserver(Scheduler.shared_scheduler, selector:"restart_polling", name:NSWorkspaceDidWakeNotification, object:nil)
