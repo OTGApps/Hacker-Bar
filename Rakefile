@@ -45,9 +45,25 @@ class Motion::Project::App
       destination = File.join(config.app_bundle(platform), 'Library/LoginItems')
       info 'Create', destination
       FileUtils.mkdir_p destination
-      helper_path = File.dirname(__FILE__)+'/HackerBarLauncher/build/MacOSX-10.7-Development/HackerBarLauncher.app'
+      helper_path = File.dirname(__FILE__)+'/HackerBarLauncher/build/MacOSX-10.7-Release/HackerBarLauncher.app'
+      unless File.directory? helper_path
+        helper_path = File.dirname(__FILE__)+'/HackerBarLauncher/build/MacOSX-10.7-Development/HackerBarLauncher.app'
+      end
       info 'Copy', helper_path
       FileUtils.cp_r helper_path, destination
     end
   end
+end
+
+# Rake tasks to compile it all together.
+task :rakeall do
+  `cd HackerBarLauncher && rake clean && rake && cd .. && rake clean && rake`
+end
+
+task :rakeallrelease do
+  `cd HackerBarLauncher && rake clean && rake build:release && cd .. && rake clean && rake build:release`
+end
+
+task :rakeallappstore do
+  `cd HackerBarLauncher && rake clean && rake build:release && cd .. && rake clean && rake archive:distribution`
 end
