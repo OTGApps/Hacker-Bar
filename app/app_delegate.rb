@@ -259,8 +259,9 @@ class AppDelegate
 
     success = SMLoginItemSetEnabled("com.mohawkapps.hackerbarlauncher", enabled)
     unless success
-        NSLog("Failed to start #{App.name} launch helper.")
-        return
+      GATracker.shared_tracker.track({event:"prefs", action:"autolaunch", label:"failed"})
+      NSLog("Failed to start #{App.name} launch helper.")
+      return
     end
 
   end
