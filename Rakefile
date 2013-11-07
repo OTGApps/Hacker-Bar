@@ -11,8 +11,8 @@ end
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'Hacker Bar'
-  app.version = "0.0.2"
-  app.short_version = "2"
+  app.version = "0.0.3"
+  app.short_version = "3"
   app.icon = 'AppIcon.icns'
   app.identifier = "com.mohawkapps.#{app.name.gsub(' ', '-').downcase}"
   app.info_plist['LSUIElement'] = true

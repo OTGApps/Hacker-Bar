@@ -198,30 +198,27 @@ class AppDelegate
   # Animated icon while the API is pulling new results
   def start_animating
     ap "Starting image animation" if BubbleWrap.debug?
-    @currentFrame = 0
-    @stopping = false
-    @animTimer = NSTimer.scheduledTimerWithTimeInterval(1.0/8.0, target:self, selector:"update_image:", userInfo:nil, repeats:true)
+    @current_frame = 0
+    @icon_animation_timer = NSTimer.scheduledTimerWithTimeInterval(1.0/8.0, target:self, selector:"update_image:", userInfo:nil, repeats:true)
   end
 
   def stop_animating
-    # This little trick will make sure that the spinner goes around at least once.
-    @stopping = true
-    if @animTimer && @stopping && @currentFrame == 0
+    unless @icon_animation_timer.nil?
       ap "Stopping image animation" if BubbleWrap.debug?
-      @animTimer.invalidate
-      @animTimer = nil
+      @icon_animation_timer.invalidate
+      @icon_animation_timer = nil
       reset_image
     end
   end
 
   def update_image(timer)
     # get the image for the current frame
-    image = "StatusAnimating_#{@currentFrame}".image
+    image = "StatusAnimating_#{@current_frame}".image
     @status_item.setImage(image)
-    if @currentFrame == 7
-      @currentFrame = 0
+    if @current_frame == 7
+      @current_frame = 0
     else
-      @currentFrame += 1
+      @current_frame += 1
     end
     stop_animating if @stopping
   end

@@ -10,7 +10,7 @@ class GATracker
   def initialize
     @t = GAJavaScriptTracker.trackerWithAccountID("UA-45525710-1")
     unless NSBundle.mainBundle.objectForInfoDictionaryKey('AppStoreRelease') == true
-      ap "Init Analytics in Debug Mode"
+      NSLog "Init Analytics in Debug Mode"
       @t.debug = true
       @t.dryRun = true
     else
