@@ -20,12 +20,17 @@ Motion::Project::App.setup do |app|
   app.copyright = "Copyright © 2013 Mohawk Apps, LLC. All rights reserved."
   app.deployment_target = "10.7"
 
+  app.pods do
+    pod 'DDGoogleAnalytics-OSX'
+  end
+
   app.vendor_project('vendor/time_ago_in_words', :static, :cflags => '-fobjc-arc')
 
   app.entitlements['com.apple.security.app-sandbox'] = true
   app.entitlements['com.apple.security.network.client'] = true
 
   app.release do
+    app.info_plist['AppStoreRelease'] = true
     app.codesign_certificate = "3rd Party Mac Developer Application: Mohawk Apps, LLC (DW9QQZR4ZL)"
   end
 

@@ -39,15 +39,19 @@ class AppDelegate
       start_at_login(true) if alert.runModal == NSAlertFirstButtonReturn
     end
 
+    GATracker.shared_tracker.track({event:"app", action:"launched"})
+
   end
 
   def applicationWillTerminate(notification)
     Scheduler.shared_scheduler.stop_polling
+    GATracker.shared_tracker.track({event:"app", action:"terminated"})
   end
 
   def applicationWillBecomeActive(notification)
     # Start the timer
     Scheduler.shared_scheduler.refresh_and_start_polling
+    GATracker.shared_tracker.track({event:"app", action:"becameActive"})
   end
 
   def update_menu
@@ -130,6 +134,7 @@ class AppDelegate
     refresh_menu_options.each do |option|
       @sub_options.addItem option
     end
+    GATracker.shared_tracker.track({event:"prefs", action:"updateFetchTime", value:time})
   end
 
   def refresh
@@ -229,6 +234,7 @@ class AppDelegate
     App::Persistence['launch_on_start'] = autolaunch
     start_at_login autolaunch
     sender.setState (autolaunch == true) ? NSOnState : NSOffState
+    GATracker.shared_tracker.track({event:"prefs", action:"autolaunch", value:autolaunch})
   end
 
   # TODO: Get this working properly.
@@ -256,6 +262,7 @@ class AppDelegate
     ap "Fetching new data"
     HNAPI.get_news do |json, error|
       if error.nil? && json.count > 0
+        GATracker.shared_tracker.track({event:"api", action:"hit"})
         @items = [] # Clear out the item array
 
         json['submissions'].each do |news|
@@ -268,6 +275,7 @@ class AppDelegate
         update_menu
       else
         # TODO Handle this.
+        GATracker.shared_tracker.track({event:"api", action:"hit"})
       end
     end
   end
