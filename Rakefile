@@ -20,6 +20,10 @@ Motion::Project::App.setup do |app|
   app.copyright = "Copyright © 2013 Mohawk Apps, LLC. All rights reserved."
   app.deployment_target = "10.7"
 
+  app.pods do
+    pod 'FXReachability'
+  end
+
   app.vendor_project('vendor/time_ago_in_words', :static, :cflags => '-fobjc-arc')
 
   app.entitlements['com.apple.security.app-sandbox'] = true

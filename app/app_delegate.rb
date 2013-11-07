@@ -22,8 +22,9 @@ class AppDelegate
     update_menu
 
     # Scheduler.shared_scheduler.start_polling
-    NSWorkspace.sharedWorkspace.notificationCenter.addObserver(Scheduler.shared_scheduler, selector:"restart_polling", name:NSWorkspaceDidWakeNotification, object:nil)
-    NSWorkspace.sharedWorkspace.notificationCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_polling", name:NSWorkspaceWillSleepNotification, object:nil)
+    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"restart_polling", name:NSWorkspaceDidWakeNotification, object:nil)
+    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_polling", name:NSWorkspaceWillSleepNotification, object:nil)
+    NSNotificationCenter.defaultCenter.addObserver(self, selector:"network_status_changed:", name:FXReachabilityStatusDidChangeNotification, object:nil)
 
     if App::Persistence['asked_to_launch_on_start'] == false
       App::Persistence['asked_to_launch_on_start'] = true
@@ -39,6 +40,7 @@ class AppDelegate
       start_at_login(true) if alert.runModal == NSAlertFirstButtonReturn
     end
 
+    # Scheduler.shared_scheduler.refresh_and_start_polling
   end
 
   def applicationWillTerminate(notification)
@@ -47,7 +49,7 @@ class AppDelegate
 
   def applicationWillBecomeActive(notification)
     # Start the timer
-    Scheduler.shared_scheduler.refresh_and_start_polling
+    Scheduler.shared_scheduler.refresh_and_start_polling unless Scheduler.shared_scheduler.active
   end
 
   def update_menu
@@ -57,7 +59,10 @@ class AppDelegate
       tag = news_item.hnitem.id || rand(-999)
       @menu.addItem create_item(object:news_item, tag:tag.to_i)
     end
+    add_bottom_menu_items
+  end
 
+  def add_bottom_menu_items
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: "Preferences:", enabled: false)
     @menu.addItem create_item(title: " Launch #{App.name} on login", action: "toggle_autolaunch:", checked: App::Persistence['launch_on_start'])
@@ -134,12 +139,20 @@ class AppDelegate
 
   def refresh
     ap "Refreshing the menu"
-    @menu.itemArray.each do |item|
-      break if item.isSeparatorItem
-      item.setEnabled(false)
-    end
 
-    fetch
+    if network_reachable
+      @menu.itemArray.each do |item|
+        break if item.isSeparatorItem
+        item.setEnabled(false)
+      end
+
+      fetch
+    else
+      Scheduler.shared_scheduler.stop_polling
+      @menu.removeAllItems
+      @menu.addItem create_item(title: "Network is offline.", enabled: false)
+      add_bottom_menu_items
+    end
   end
 
   def create_item(args={})
@@ -243,7 +256,7 @@ class AppDelegate
 
     success = SMLoginItemSetEnabled("com.mohawkapps.hackerbarlauncher", enabled)
     unless success
-        NSLog("Failed to start Helper")
+        NSLog("Failed to start #{App.name} launch helper.")
         return
     end
 
@@ -269,6 +282,19 @@ class AppDelegate
       else
         # TODO Handle this.
       end
+    end
+  end
+
+  def network_reachable
+    FXReachability.sharedInstance.status > 0
+  end
+
+  def network_status_changed(status)
+    ap "Network reachability status changed."
+    if FXReachability.isReachable
+      Scheduler.shared_scheduler.refresh_and_start_polling
+    else
+      Scheduler.shared_scheduler.stop_polling
     end
   end
 

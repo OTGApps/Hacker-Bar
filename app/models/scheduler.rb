@@ -45,6 +45,10 @@ class Scheduler
   	start_polling
   end
 
+  def active
+    !@timer.nil?
+  end
+
   def failsafe
     # Don't hammer our server please.
   	if App::Persistence['check_interval'] < 60

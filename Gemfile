@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
 # Cocoapods
-# gem "motion-cocoapods"
-# gem "cocoapods"
+gem "motion-cocoapods"
+gem "cocoapods"
 
 gem 'rake'
 
