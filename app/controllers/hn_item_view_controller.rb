@@ -40,11 +40,13 @@ class HNItemViewController < NSViewController
 
   def clicked_link(sender)
     ap "Clicked Item: #{@hnitem.title}" if BubbleWrap.debug?
+    GATracker.shared_tracker.track({event:"click", action:@hnitem.comments['url'], label:"link"})
     launch_link
   end
 
   def clicked_comments(sender)
     ap "Clicked Comments: #{@hnitem.title}" if BubbleWrap.debug?
+    GATracker.shared_tracker.track({event:"click", action:@hnitem.comments['url'], label:"comments"})
     launch_comments
   end
 
