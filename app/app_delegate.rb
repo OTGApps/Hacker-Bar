@@ -27,7 +27,16 @@ class AppDelegate
 
     if App::Persistence['asked_to_launch_on_start'] == false
       App::Persistence['asked_to_launch_on_start'] = true
+
       # Ask the user to launch the app on start.
+      alert = NSAlert.alloc.init
+      alert.addButtonWithTitle("Yes")
+      alert.addButtonWithTitle("No")
+      alert.setMessageText("Launch #{App.name} on login?")
+      alert.setInformativeText("Would you like #{App.name} to automatically launch on login?")
+      alert.setAlertStyle(NSWarningAlertStyle)
+
+      start_at_login(true) if alert.runModal == NSAlertFirstButtonReturn
     end
 
   end
@@ -155,7 +164,7 @@ class AppDelegate
 
     # Image
     if args[:image]
-      if args[:image] == 'check'
+      if args[:image] == "check"
         item.setState NSOnState
       else
         i = args[:image].image
