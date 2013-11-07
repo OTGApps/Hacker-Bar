@@ -22,6 +22,7 @@ Motion::Project::App.setup do |app|
 
   app.pods do
     pod 'DDGoogleAnalytics-OSX'
+    pod 'FXReachability'
   end
 
   app.vendor_project('vendor/time_ago_in_words', :static, :cflags => '-fobjc-arc')

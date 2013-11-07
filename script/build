@@ -1,10 +1,10 @@
 #!/bin/bash
 
-rake clean
 cd HackerBarLauncher
 rake clean
-rake
+rake build:release
 killall Hacker\ Bar
 cd ..
 rake pod:install
-rake
+rake clean
+rake build:release

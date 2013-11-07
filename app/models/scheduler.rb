@@ -29,9 +29,7 @@ class Scheduler
         ap "Refreshing at #{Time.now}"
         App.delegate.refresh
 
-        if App::Persistence['check_interval'] == 0
-          stop_polling
-        end
+        stop_polling if App::Persistence['check_interval'] == 0
       end
   	end
   end
@@ -45,6 +43,10 @@ class Scheduler
   def restart_polling
   	stop_polling
   	start_polling
+  end
+
+  def active
+    !@timer.nil?
   end
 
   def failsafe
