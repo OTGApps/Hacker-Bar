@@ -4,7 +4,6 @@ rake clean:all
 cd HackerBarLauncher
 rake clean:all
 rake build:release
-killall Hacker\ Bar
 cd ..
 rake pod:install
 rake build:release
