@@ -19,6 +19,7 @@ Motion::Project::App.setup do |app|
   app.frameworks += ['ServiceManagement']
   app.copyright = "Copyright © 2013 Mohawk Apps, LLC. All rights reserved."
   app.deployment_target = "10.7"
+  app.archs['MacOSX'] = ['x86_64']
 
   app.pods do
     pod 'DDGoogleAnalytics-OSX'
