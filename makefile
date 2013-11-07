@@ -1,3 +1,5 @@
+all: run
+
 run:
 	script/run
 
