@@ -39,12 +39,12 @@ class HNItemViewController < NSViewController
   end
 
   def clicked_link(sender)
-    ap "Clicked Item: #{@hnitem.title}"
+    ap "Clicked Item: #{@hnitem.title}" if BubbleWrap.debug?
     launch_link
   end
 
   def clicked_comments(sender)
-    ap "Clicked Comments: #{@hnitem.title}"
+    ap "Clicked Comments: #{@hnitem.title}" if BubbleWrap.debug?
     launch_comments
   end
 

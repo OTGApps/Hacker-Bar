@@ -2,6 +2,9 @@ class AppDelegate
   attr_accessor :menu, :items
 
   def applicationDidFinishLaunching(notification)
+
+    BubbleWrap.debug = true if NSBundle.mainBundle.objectForInfoDictionaryKey('AppStoreRelease') == true
+
     @menu = NSMenu.new
     @menu.setAutoenablesItems(false)
     @menu.delegate = self
@@ -140,7 +143,7 @@ class AppDelegate
   end
 
   def refresh
-    ap "Refreshing the menu"
+    ap "Refreshing the menu" if BubbleWrap.debug?
 
     if network_reachable
       @menu.itemArray.each do |item|
@@ -194,7 +197,7 @@ class AppDelegate
 
   # Animated icon while the API is pulling new results
   def start_animating
-    ap "Starting image animation"
+    ap "Starting image animation" if BubbleWrap.debug?
     @currentFrame = 0
     @stopping = false
     @animTimer = NSTimer.scheduledTimerWithTimeInterval(1.0/8.0, target:self, selector:"update_image:", userInfo:nil, repeats:true)
@@ -204,7 +207,7 @@ class AppDelegate
     # This little trick will make sure that the spinner goes around at least once.
     @stopping = true
     if @animTimer && @stopping && @currentFrame == 0
-      ap "Stopping image animation"
+      ap "Stopping image animation" if BubbleWrap.debug?
       @animTimer.invalidate
       @animTimer = nil
       reset_image
@@ -270,7 +273,7 @@ class AppDelegate
   # Don't ever call this method directly. Use the refresh method
   def fetch
     start_animating
-    ap "Fetching new data"
+    ap "Fetching new data" if BubbleWrap.debug?
     HNAPI.get_news do |json, error|
       if error.nil? && json.count > 0
         GATracker.shared_tracker.track({event:"api", action:"hit"})

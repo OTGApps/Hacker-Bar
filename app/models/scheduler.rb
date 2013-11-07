@@ -23,10 +23,10 @@ class Scheduler
 
     if @timer.nil?
       interval = App::Persistence['check_interval'];
-      ap "Wait #{interval} seconds"
+      ap "Wait #{interval} seconds" if BubbleWrap.debug?
 
       @timer = EM.add_periodic_timer interval do
-        ap "Refreshing at #{Time.now}"
+        ap "Refreshing at #{Time.now}" if BubbleWrap.debug?
         App.delegate.refresh
 
         stop_polling if App::Persistence['check_interval'] == 0
