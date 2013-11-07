@@ -8,7 +8,6 @@ class Scheduler
   end
 
   def initialize
-  	ap "Init scheduler"
 		failsafe
   end
 
@@ -18,7 +17,6 @@ class Scheduler
   end
 
   def start_polling
-    ap "Starting to poll"
     NSLog "Starting to poll"
 
     EM.cancel_timer(@timer) if @timer
@@ -39,8 +37,7 @@ class Scheduler
   end
 
   def stop_polling
-    ap "Stopping the polling"
-    NSLog "Stopping the polling"
+    NSLog "Stop the polling"
     EM.cancel_timer(@timer)
     @timer = nil
   end
@@ -54,10 +51,6 @@ class Scheduler
     # Don't hammer our server please.
   	if App::Persistence['check_interval'] < 60
   		App::Persistence['check_interval'] = 60
-	    # alert = NSAlert.alloc.init
-	    # alert.setMessageText "Please don't try and fetch data from our server more often than every 60 seconds.\n\nThanks!"
-	    # alert.addButtonWithTitle "OK, I'm sorry"
-	    # alert.runModal
   	end
   end
 
