@@ -46,6 +46,7 @@ class AppDelegate
   def applicationWillTerminate(notification)
     Scheduler.shared_scheduler.stop_polling
     GATracker.shared_tracker.track({event:"app", action:"terminated"})
+    GATracker.shared_tracker.stop
   end
 
   def applicationWillBecomeActive(notification)
