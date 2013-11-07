@@ -286,8 +286,8 @@ class AppDelegate
         stop_animating
         update_menu
       else
-        # TODO Handle this.
-        GATracker.shared_tracker.track({event:"api", action:"hit"})
+        NSLog("Error: Could not get data from API")
+        GATracker.shared_tracker.track({event:"api", action:"error"})
       end
     end
   end
