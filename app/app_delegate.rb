@@ -2,8 +2,6 @@ class AppDelegate
   attr_accessor :menu, :items
 
   def applicationDidFinishLaunching(notification)
-    @app_name = NSBundle.mainBundle.infoDictionary['CFBundleDisplayName']
-
     @menu = NSMenu.new
     @menu.setAutoenablesItems(false)
     @menu.delegate = self
@@ -16,7 +14,7 @@ class AppDelegate
     @status_item = NSStatusBar.systemStatusBar.statusItemWithLength(NSVariableStatusItemLength).init
     @status_item.menu = @menu
     @status_item.highlightMode = true
-    @status_item.toolTip = @app_name
+    @status_item.toolTip = App.name
     reset_image
 
     update_menu
@@ -290,7 +288,6 @@ class AppDelegate
   end
 
   def network_status_changed(status)
-    ap "Network reachability status changed."
     if FXReachability.isReachable
       Scheduler.shared_scheduler.refresh_and_start_polling
     else
