@@ -14,7 +14,7 @@ The application will remember which links you've clicked before!
 ### Prerequisites:
 
 1. XCode 5 with current Mac SDK.
-2. You must have a registered and licensed copy or RubyMotion on your computer. If you do not, you will need to [purchase a license here](http://www.rubymotion.com/). You should always be renning the most recent version of RubyMotion.
+2. You must have a registered and licensed copy or RubyMotion on your computer. If you do not, you will need to [purchase a license here](http://www.rubymotion.com/). You should always be running the most recent version of RubyMotion.
 
 ```cd``` into the directory and run ```bundle update```
 
