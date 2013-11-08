@@ -50,10 +50,10 @@
 - (NSString *)distanceOfTimeInWords:(NSDate *)date {
   NSString *Ago      = NSLocalizedString(@"ago", @"Denotes past dates");
   NSString *FromNow  = NSLocalizedString(@"from now", @"Denotes future dates");
-  NSString *LessThan = NSLocalizedString(@"Less than", @"Indicates a less-than number");
-  NSString *About    = NSLocalizedString(@"About", @"Indicates an approximate number");
-  NSString *Over     = NSLocalizedString(@"Over", @"Indicates an exceeding number");
-  NSString *Almost   = NSLocalizedString(@"Almost", @"Indicates an approaching number");
+  NSString *LessThan = NSLocalizedString(@"less than", @"Indicates a less-than number");
+  NSString *About    = NSLocalizedString(@"about", @"Indicates an approximate number");
+  NSString *Over     = NSLocalizedString(@"over", @"Indicates an exceeding number");
+  NSString *Almost   = NSLocalizedString(@"almost", @"Indicates an approaching number");
   //NSString *Second   = NSLocalizedString(@"second", @"One second in time");
   NSString *Seconds  = NSLocalizedString(@"seconds", @"More than one second in time");
   NSString *Minute   = NSLocalizedString(@"minute", @"One minute in time");

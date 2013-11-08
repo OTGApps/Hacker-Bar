@@ -49,6 +49,10 @@ class Scheduler
     !@timer.nil?
   end
 
+  def last_check
+    "Updated " << Time.at(App::Persistence['last_check'].to_i).distanceOfTimeInWords
+  end
+
   def failsafe
     # Don't hammer our server please.
   	if App::Persistence['check_interval'] < 60

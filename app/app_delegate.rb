@@ -41,6 +41,11 @@ class AppDelegate
       start_at_login(true) if alert.runModal == NSAlertFirstButtonReturn
     end
 
+    invocation = NSInvocation.invocationWithMethodSignature(self.methodSignatureForSelector("update_interface_last_updated:"))
+    invocation.setTarget(self)
+    invocation.setSelector("update_interface_last_updated:")
+    NSRunLoop.mainRunLoop.addTimer(NSTimer.timerWithTimeInterval(5, invocation:invocation, repeats:true), forMode:NSRunLoopCommonModes)
+
     GATracker.shared_tracker.track({event:"app", action:"launched"})
   end
 
@@ -71,6 +76,12 @@ class AppDelegate
     @menu.addItem create_item(title: "Preferences:", enabled: false)
     @menu.addItem create_item(title: " Launch #{App.name} on login", action: "toggle_autolaunch:", checked: App::Persistence['launch_on_start'])
     @menu.addItem create_refresh_option_menu
+
+    # Auto-updating last check menu item
+    @menu.addItem NSMenuItem.separatorItem
+    @last_check_item ||= create_item(title: " " << Scheduler.shared_scheduler.last_check, enabled: false)
+    @menu.addItem @last_check_item
+
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: "Quit", action:'terminate:')
   end
@@ -109,15 +120,6 @@ class AppDelegate
       option.setEnabled true
       items << option
     end
-
-    # TODO: Get this to auto-update when the menu is open.
-    # unless App::Persistence['last_check'].nil?
-    #   last_check = Time.at(App::Persistence['last_check'].to_i)
-    #   last_check_words = last_check.distanceOfTimeInWords
-
-    #   items << NSMenuItem.separatorItem
-    #   items << create_item(title: " Last Check: #{last_check_words}", enabled: false)
-    # end
 
     items
   end
@@ -220,7 +222,6 @@ class AppDelegate
     else
       @current_frame += 1
     end
-    stop_animating if @stopping
   end
 
   def reset_image
@@ -283,12 +284,20 @@ class AppDelegate
         end
         App::Persistence['last_check'] = Time.now.to_i
         stop_animating
+        update_interface_last_updated nil
         update_menu
       else
         NSLog("Error: Could not get data from API")
         GATracker.shared_tracker.track({event:"api", action:"error"})
       end
     end
+  end
+
+  def update_interface_last_updated sender
+    last_check = Scheduler.shared_scheduler.last_check
+
+    @status_item.toolTip = "#{App.name} - #{last_check}"
+    @last_check_item.setTitle(last_check << ".")
   end
 
   def network_reachable
