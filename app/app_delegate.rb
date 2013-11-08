@@ -203,12 +203,10 @@ class AppDelegate
   end
 
   def stop_animating
-    unless @icon_animation_timer.nil?
-      ap "Stopping image animation" if BubbleWrap.debug?
-      @icon_animation_timer.invalidate
-      @icon_animation_timer = nil
-      reset_image
-    end
+    ap "Stopping image animation" if BubbleWrap.debug?
+    @icon_animation_timer.invalidate unless @icon_animation_timer.nil?
+    @icon_animation_timer = nil
+    reset_image
   end
 
   def update_image(timer)
