@@ -49,7 +49,7 @@ class AppDelegate
   end
 
   def applicationWillTerminate(notification)
-    Scheduler.shared_scheduler.stop_polling
+    Scheduler.shared_scheduler.stop_waiting
     GATracker.shared_tracker.track({event:"app", action:"terminated"})
     GATracker.shared_tracker.stop
   end
@@ -152,7 +152,7 @@ class AppDelegate
 
       fetch
     else
-      Scheduler.shared_scheduler.stop_polling
+      Scheduler.shared_scheduler.stop_waiting
       @menu.removeAllItems
       @menu.addItem create_item(title: "Network is offline.", enabled: false)
       add_bottom_menu_items
@@ -282,12 +282,12 @@ class AppDelegate
         App::Persistence['last_check'] = Time.now.to_i
         update_interface_last_updated nil
         update_menu
-        Scheduler.shared_scheduler.trigger_wait
       else
         NSLog("Error: Could not get data from API")
         GATracker.shared_tracker.track({event:"api", action:"error"})
       end
       stop_animating
+      Scheduler.shared_scheduler.trigger_wait
     end
   end
 
