@@ -3,7 +3,7 @@ class AppDelegate
 
   def applicationDidFinishLaunching(notification)
 
-    BubbleWrap.debug = true if NSBundle.mainBundle.objectForInfoDictionaryKey('AppStoreRelease') == true
+    BubbleWrap.debug = true unless NSBundle.mainBundle.objectForInfoDictionaryKey('AppStoreRelease') == true
 
     @menu = NSMenu.new
     @menu.setAutoenablesItems(false)
@@ -196,27 +196,27 @@ class AppDelegate
   end
 
   # Animated icon while the API is pulling new results
-  def start_animating
+  # to stop animating, set the instance variable @animation_stopped to true
+  def animate_icon
     ap "Starting image animation" if BubbleWrap.debug?
     @current_frame = 0
-    @icon_animation_timer = NSTimer.scheduledTimerWithTimeInterval(1.0/8.0, target:self, selector:"update_image:", userInfo:nil, repeats:true)
-  end
 
-  def stop_animating
-    ap "Stopping image animation" if BubbleWrap.debug?
-    @icon_animation_timer.invalidate unless @icon_animation_timer.nil?
-    @icon_animation_timer = nil
-    reset_image
-  end
+    icon_animation_timer = EM.add_periodic_timer 1.0/8.0 do
+      # get the image for the current frame
+      image = "StatusAnimating_#{@current_frame}".image
+      @status_item.setImage(image)
+      if @current_frame == 7
+        @current_frame = 0
+      else
+        @current_frame = @current_frame + 1
+      end
 
-  def update_image(timer)
-    # get the image for the current frame
-    image = "StatusAnimating_#{@current_frame}".image
-    @status_item.setImage(image)
-    if @current_frame == 7
-      @current_frame = 0
-    else
-      @current_frame += 1
+      if @animation_stopped == true
+        ap "Stopping image animation" if BubbleWrap.debug?
+        EM.cancel_timer(icon_animation_timer)
+        @animation_stopped = nil
+        reset_image
+      end
     end
   end
 
@@ -266,7 +266,7 @@ class AppDelegate
   private
   # Don't ever call this method directly. Use the refresh method
   def fetch
-    start_animating
+    animate_icon
     ap "Fetching new data" if BubbleWrap.debug?
     HNAPI.get_news do |json, error|
       if error.nil? && json.count > 0
@@ -285,7 +285,7 @@ class AppDelegate
         NSLog("Error: Could not get data from API")
         GATracker.shared_tracker.track({event:"api", action:"error"})
       end
-      stop_animating
+      @animation_stopped = true
       Scheduler.shared_scheduler.trigger_wait
     end
   end

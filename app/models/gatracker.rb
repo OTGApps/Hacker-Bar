@@ -25,8 +25,8 @@ class GATracker
 
   def stop
     unless @t.isRunning
-        NSLog("Tracker already stopped")
-        return
+      NSLog("Tracker already stopped")
+      return
     end
 
     @t.stop
