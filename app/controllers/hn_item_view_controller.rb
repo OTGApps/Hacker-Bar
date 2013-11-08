@@ -41,6 +41,10 @@ class HNItemViewController < NSViewController
   def clicked_link(sender)
     ap "Clicked Item: #{@hnitem.title}" if BubbleWrap.debug?
     GATracker.shared_tracker.track({event:"click", action:@hnitem.comments['url'], label:"link"})
+
+    # Log that the user went to that site.
+    App::Persistence['clicked'] << @hnitem.id
+
     launch_link
   end
 
@@ -79,9 +83,6 @@ class HNItemViewController < NSViewController
     url = "https://news.ycombinator.com/" << url unless url.start_with? "http"
     url = NSURL.URLWithString(url)
     if NSWorkspace.sharedWorkspace.openURL(url)
-      # Log that the user went to that site.
-      App::Persistence[@hnitem.link] = true
-
       @headline.setStringValue @hnitem.title
 
       # mi = @menu.itemWithTag(sender.tag)

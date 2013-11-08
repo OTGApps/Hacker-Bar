@@ -13,6 +13,7 @@ class AppDelegate
     App::Persistence['check_interval'] ||= 300 # In seconds
     App::Persistence['launch_on_start'] ||= false
     App::Persistence['asked_to_launch_on_start'] ||= false
+    App::Persistence['clicked'] ||= []
 
     @status_item = NSStatusBar.systemStatusBar.statusItemWithLength(NSVariableStatusItemLength).init
     @status_item.menu = @menu

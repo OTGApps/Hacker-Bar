@@ -15,7 +15,7 @@ class HNItem
   end
 
   def title
-    if App::Persistence[@link]
+    if App::Persistence['clicked'].include? @id
       "✓ #{@title}"
     else
       @title
