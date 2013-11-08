@@ -10,7 +10,7 @@ class AppDelegate
     @menu.delegate = self
 
     @items = []
-    App::Persistence['check_interval'] ||= 120 # In seconds
+    App::Persistence['check_interval'] ||= 300 # In seconds
     App::Persistence['launch_on_start'] ||= false
     App::Persistence['asked_to_launch_on_start'] ||= false
 
@@ -22,9 +22,8 @@ class AppDelegate
 
     update_menu
 
-    # Scheduler.shared_scheduler.start_polling
-    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"restart_polling", name:NSWorkspaceDidWakeNotification, object:nil)
-    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_polling", name:NSWorkspaceWillSleepNotification, object:nil)
+    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"trigger_wait", name:NSWorkspaceDidWakeNotification, object:nil)
+    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_waiting", name:NSWorkspaceWillSleepNotification, object:nil)
     NSNotificationCenter.defaultCenter.addObserver(self, selector:"network_status_changed:", name:FXReachabilityStatusDidChangeNotification, object:nil)
 
     if App::Persistence['asked_to_launch_on_start'] == false
@@ -57,7 +56,7 @@ class AppDelegate
 
   def applicationWillBecomeActive(notification)
     # Start the timer
-    Scheduler.shared_scheduler.refresh_and_start_polling unless Scheduler.shared_scheduler.active
+    Scheduler.shared_scheduler.refresh_and_trigger
     GATracker.shared_tracker.track({event:"app", action:"becameActive"})
   end
 
@@ -131,9 +130,7 @@ class AppDelegate
     App::Persistence['check_interval'] = time
 
     if time > 0
-      Scheduler.shared_scheduler.refresh_and_start_polling
-    else
-      Scheduler.shared_scheduler.stop_polling
+      Scheduler.shared_scheduler.refresh_and_trigger
     end
 
     # Rebuild the interface
@@ -283,13 +280,14 @@ class AppDelegate
           @items << news_item
         end
         App::Persistence['last_check'] = Time.now.to_i
-        stop_animating
         update_interface_last_updated nil
         update_menu
+        Scheduler.shared_scheduler.trigger_wait
       else
         NSLog("Error: Could not get data from API")
         GATracker.shared_tracker.track({event:"api", action:"error"})
       end
+      stop_animating
     end
   end
 
@@ -306,9 +304,7 @@ class AppDelegate
 
   def network_status_changed(status)
     if FXReachability.isReachable
-      Scheduler.shared_scheduler.refresh_and_start_polling
-    else
-      Scheduler.shared_scheduler.stop_polling
+      Scheduler.shared_scheduler.refresh_and_trigger
     end
   end
 

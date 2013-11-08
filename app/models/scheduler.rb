@@ -11,42 +11,27 @@ class Scheduler
 		failsafe
   end
 
-  def refresh_and_start_polling
+  def refresh_and_trigger
     App.delegate.refresh
-    start_polling
+    trigger_wait
   end
 
-  def start_polling
-    NSLog "Starting to poll"
+  def trigger_wait
+    interval = App::Persistence['check_interval'].to_i;
+    return if interval == 0
 
-    EM.cancel_timer(@timer) if @timer
+    ap "Wait #{interval} seconds" if BubbleWrap.debug?
 
-    if @timer.nil?
-      interval = App::Persistence['check_interval'];
-      ap "Wait #{interval} seconds" if BubbleWrap.debug?
-
-      @timer = EM.add_periodic_timer interval do
-        ap "Refreshing at #{Time.now}" if BubbleWrap.debug?
-        App.delegate.refresh
-
-        stop_polling if App::Persistence['check_interval'] == 0
-      end
-  	end
+    @timer = EM.add_timer interval do
+      ap "Refreshing at #{Time.now}" if BubbleWrap.debug?
+      App.delegate.refresh
+    end
   end
 
-  def stop_polling
-    NSLog "Stop the polling"
+  def stop_waiting
+    NSLog "Stop the waiting"
     EM.cancel_timer(@timer)
     @timer = nil
-  end
-
-  def restart_polling
-  	stop_polling
-  	start_polling
-  end
-
-  def active
-    !@timer.nil?
   end
 
   def last_check
