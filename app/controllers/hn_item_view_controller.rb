@@ -49,7 +49,7 @@ class HNItemViewController < NSViewController
     GATracker.shared_tracker.track({event:"click", action:@hnitem.comments['url'], label:"link"})
 
     # Log that the user went to that site.
-    App::Persistence['clicked'] << @hnitem.id
+    App::Persistence['clicked'] =  App::Persistence['clicked'].mutableCopy << @hnitem.id
 
     launch_link
   end
