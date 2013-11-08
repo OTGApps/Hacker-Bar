@@ -40,8 +40,8 @@ class Scheduler
 
   def failsafe
     # Don't hammer our server please.
-  	if App::Persistence['check_interval'].to_i < 60
-  		App::Persistence['check_interval'].to_i = 60
+    if App::Persistence['check_interval'].to_i < 60
+      App::Persistence['check_interval'].to_i = 60
 
       EM.schedule do
         alert = NSAlert.alloc.init
@@ -50,7 +50,7 @@ class Scheduler
         alert.runModal
       end
 
-  	end
+    end
   end
 
 end
