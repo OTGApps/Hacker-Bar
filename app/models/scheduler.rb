@@ -12,8 +12,8 @@ class Scheduler
   end
 
   def refresh_and_trigger
+    stop_waiting
     App.delegate.refresh
-    trigger_wait
   end
 
   def trigger_wait
@@ -22,6 +22,7 @@ class Scheduler
 
     ap "Wait #{interval} seconds" if BubbleWrap.debug?
 
+    stop_waiting
     @timer = EM.add_timer interval do
       ap "Refreshing at #{Time.now}" if BubbleWrap.debug?
       App.delegate.refresh
@@ -29,7 +30,6 @@ class Scheduler
   end
 
   def stop_waiting
-    NSLog "Stop the waiting"
     EM.cancel_timer(@timer)
     @timer = nil
   end

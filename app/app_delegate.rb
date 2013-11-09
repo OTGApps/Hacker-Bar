@@ -57,7 +57,7 @@ class AppDelegate
 
   def applicationWillBecomeActive(notification)
     # Start the timer
-    Scheduler.shared_scheduler.refresh_and_trigger
+    # Scheduler.shared_scheduler.refresh_and_trigger
     GATracker.shared_tracker.track({event:"app", action:"becameActive"})
   end
 
@@ -146,11 +146,6 @@ class AppDelegate
     ap "Refreshing the menu" if BubbleWrap.debug?
 
     if network_reachable
-      @menu.itemArray.each do |item|
-        break if item.isSeparatorItem
-        item.setEnabled(false)
-      end
-
       fetch
     else
       Scheduler.shared_scheduler.stop_waiting
@@ -302,6 +297,7 @@ class AppDelegate
 
   def network_status_changed(status)
     if FXReachability.isReachable
+      ap "Network came online." if BubbleWrap.debug?
       Scheduler.shared_scheduler.refresh_and_trigger
     end
   end
