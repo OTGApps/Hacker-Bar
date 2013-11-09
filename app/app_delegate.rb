@@ -38,7 +38,7 @@ class AppDelegate
       alert.setInformativeText("Would you like #{App.name} to automatically launch on login?")
       alert.setAlertStyle(NSWarningAlertStyle)
 
-      start_at_login(true) if alert.runModal == NSAlertFirstButtonReturn
+      toggle_autolaunch(nil) if alert.runModal == NSAlertFirstButtonReturn
     end
 
     invocation = NSInvocation.invocationWithMethodSignature(self.methodSignatureForSelector("update_interface_last_updated:"))
@@ -235,7 +235,7 @@ class AppDelegate
     autolaunch = !App::Persistence['launch_on_start']
     App::Persistence['launch_on_start'] = autolaunch
     start_at_login autolaunch
-    sender.setState (autolaunch == true) ? NSOnState : NSOffState
+    sender.setState (autolaunch == true) ? NSOnState : NSOffState unless sender.nil?
     GATracker.shared_tracker.track({event:"prefs", action:"autolaunch", value:autolaunch})
   end
 
