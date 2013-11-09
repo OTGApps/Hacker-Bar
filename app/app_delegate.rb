@@ -260,7 +260,6 @@ class AppDelegate
       NSLog("Failed to start #{App.name} launch helper.")
       return
     end
-
   end
 
   private

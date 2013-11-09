@@ -15,7 +15,6 @@ class GATracker
       @t.dryRun = true
     else
     end
-    # @t.anonymizeIp = true
     @t.batchSize = 10
   end
 
