@@ -100,4 +100,8 @@ class HNItemViewController < NSViewController
     end
   end
 
+  def viewDidUnload
+   self.releaseAllViews
+ end
+
 end
