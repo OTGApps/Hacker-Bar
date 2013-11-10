@@ -11,8 +11,7 @@ class AppDelegate
 
     @items = []
     App::Persistence['check_interval'] ||= 300 # In seconds
-    App::Persistence['launch_on_start'] ||= false
-    App::Persistence['asked_to_launch_on_start'] ||= false
+    App::Persistence['launch_on_login'] ||= false
     App::Persistence['clicked'] ||= []
 
     @status_item = NSStatusBar.systemStatusBar.statusItemWithLength(NSVariableStatusItemLength).init
@@ -27,8 +26,8 @@ class AppDelegate
     NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_waiting", name:NSWorkspaceWillSleepNotification, object:nil)
     NSNotificationCenter.defaultCenter.addObserver(self, selector:"network_status_changed:", name:FXReachabilityStatusDidChangeNotification, object:nil)
 
-    if App::Persistence['asked_to_launch_on_start'] == false
-      App::Persistence['asked_to_launch_on_start'] = true
+    if App::Persistence['asked_to_launch_on_login'] != true
+      App::Persistence['asked_to_launch_on_login'] = true
 
       # Ask the user to launch the app on start.
       alert = NSAlert.alloc.init
@@ -74,7 +73,7 @@ class AppDelegate
   def add_bottom_menu_items
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: "Preferences:", enabled: false)
-    @menu.addItem create_item(title: " Launch #{App.name} on login", action: "toggle_autolaunch:", checked: App::Persistence['launch_on_start'])
+    @menu.addItem create_item(title: " Launch #{App.name} on login", action: "toggle_autolaunch:", checked: App::Persistence['launch_on_login'])
     @menu.addItem create_refresh_option_menu
 
     # Auto-updating last check menu item
@@ -232,8 +231,8 @@ class AppDelegate
   end
 
   def toggle_autolaunch sender
-    autolaunch = !App::Persistence['launch_on_start']
-    App::Persistence['launch_on_start'] = autolaunch
+    autolaunch = !App::Persistence['launch_on_login']
+    App::Persistence['launch_on_login'] = autolaunch
     start_at_login autolaunch
     sender.setState (autolaunch == true) ? NSOnState : NSOffState unless sender.nil?
     GATracker.shared_tracker.track({event:"prefs", action:"autolaunch", value:autolaunch})
