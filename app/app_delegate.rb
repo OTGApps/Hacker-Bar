@@ -218,13 +218,6 @@ class AppDelegate
     @status_item.alternateImage = "StatusHighlighted".image
   end
 
-  # NSMenu Delegate
-  def menu(menu, willHighlightItem:item)
-    @items.each{|i| i.unhighlight}
-    return if item.nil? || item.tag < 10
-    @items.select{|i| i.tag == item.tag}.first.highlight
-  end
-
   def blank_action(sender)
     # Whatever
   end
@@ -306,6 +299,17 @@ class AppDelegate
       ap "Network came online." if BubbleWrap.debug?
       Scheduler.shared_scheduler.refresh_and_trigger
     end
+  end
+
+  # NSMenu Delegate
+  def menu(menu, willHighlightItem:item)
+    @items.each{|i| i.unhighlight}
+    return if item.nil? || item.tag < 10
+    @items.select{|i| i.tag == item.tag}.first.highlight
+  end
+
+  def menuWillOpen(menu)
+    @items.each{|i| i.unhighlight if i.is_a? HNItemViewController}
   end
 
 end
