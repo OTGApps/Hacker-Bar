@@ -5,6 +5,8 @@ class AppDelegate
 
     BubbleWrap.debug = true unless NSBundle.mainBundle.objectForInfoDictionaryKey('AppStoreRelease') == true
 
+    Parse.setApplicationId("vGfOqWmPEWqRIyLEhcTdLjrDXbx0gj3TzfQIBDLj", clientKey:"dGKX9ISYjZZXthxZGjDiRqbLs5b6uSO8F1CrjWBT")
+
     @menu = NSMenu.new
     @menu.setAutoenablesItems(false)
     @menu.delegate = self
@@ -48,18 +50,12 @@ class AppDelegate
     NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_waiting", name:NSWorkspaceWillSleepNotification, object:nil)
     NSNotificationCenter.defaultCenter.addObserver(self, selector:"network_status_changed:", name:FXReachabilityStatusDidChangeNotification, object:nil)
 
-    GATracker.shared_tracker.track({event:"app", action:"launched"})
+    PFAnalytics.trackAppOpenedWithLaunchOptions(nil)
   end
 
   def applicationWillTerminate(notification)
     Scheduler.shared_scheduler.stop_waiting
-    GATracker.shared_tracker.track({event:"app", action:"terminated"})
-  end
-
-  def applicationWillBecomeActive(notification)
-    # Start the timer
-    # Scheduler.shared_scheduler.refresh_and_trigger
-    GATracker.shared_tracker.track({event:"app", action:"becameActive"})
+    PFAnalytics.trackEvent("app_terminated", dimensions:Machine.tracking_data)
   end
 
   def update_menu
@@ -138,7 +134,7 @@ class AppDelegate
     refresh_menu_options.each do |option|
       @sub_options.addItem option
     end
-    GATracker.shared_tracker.track({event:"prefs", action:"updateFetchTime", value:time})
+    PFAnalytics.trackEvent("prefs_updated_fetch_time", dimensions:Machine.tracking_data.merge(:time => time))
   end
 
   def refresh
@@ -228,7 +224,7 @@ class AppDelegate
     App::Persistence['launch_on_login'] = autolaunch
     start_at_login autolaunch
     sender.setState (autolaunch == true) ? NSOnState : NSOffState unless sender.nil?
-    GATracker.shared_tracker.track({event:"prefs", action:"autolaunch", value:autolaunch})
+    PFAnalytics.trackEvent("prefs_updated_autolaunch", dimensions:Machine.tracking_data.merge(:autolaunch => autolaunch))
   end
 
   # TODO: Get this working properly.
@@ -243,7 +239,7 @@ class AppDelegate
 
     success = SMLoginItemSetEnabled("com.mohawkapps.hackerbarlauncher", enabled)
     unless success
-      GATracker.shared_tracker.track({event:"prefs", action:"autolaunch", label:"failed"})
+      PFAnalytics.trackEvent("prefs_update_autolaunch_failed", dimensions:Machine.tracking_data)
       NSLog("Failed to start #{App.name} launch helper.")
       return
     end
@@ -256,7 +252,7 @@ class AppDelegate
     ap "Fetching new data" if BubbleWrap.debug?
     HNAPI.get_news do |json, error|
       if error.nil? && json.count > 0
-        GATracker.shared_tracker.track({event:"api", action:"hit"})
+        PFAnalytics.trackEvent("api_hit", dimensions:Machine.tracking_data)
 
         json['submissions'].each_with_index do |news, i|
           if @items[i].nil?
@@ -273,7 +269,8 @@ class AppDelegate
         update_menu
       else
         NSLog("Error: Could not get data from API")
-        GATracker.shared_tracker.track({event:"api", action:"error"})
+        error_string = "Error: #{error.localizedDescription} (#{error.localizedFailureReason})"
+        PFAnalytics.trackEvent("api_error", dimensions:Machine.tracking_data.merge(:error => error_string))
       end
       @animation_stopped = true
       Scheduler.shared_scheduler.trigger_wait

@@ -16,17 +16,18 @@ Motion::Project::App.setup do |app|
   app.icon = 'AppIcon.icns'
   app.identifier = "com.mohawkapps.#{app.name.gsub(' ', '-').downcase}"
   app.info_plist['LSUIElement'] = true
-  app.frameworks += ['ServiceManagement', 'WebKit', 'IOKit']
+  app.frameworks += ['ServiceManagement', 'IOKit']
   app.copyright = "Copyright © 2013 Mohawk Apps, LLC. All rights reserved."
-  app.deployment_target = "10.7"
+  app.deployment_target = "10.8"
   app.archs['MacOSX'] = ['x86_64']
 
   app.pods do
     pod 'FXReachability'
+    pod 'Parse-OSX-SDK'
   end
 
   app.vendor_project('vendor/time_ago_in_words', :static, :cflags => '-fobjc-arc')
-  app.vendor_project('vendor/BSWebTracker', :static, :cflags => '-fobjc-arc')
+  app.vendor_project('vendor/UniqueIdentifier', :static, :cflags => '-fobjc-arc')
 
   app.entitlements['com.apple.security.app-sandbox'] = true
   app.entitlements['com.apple.security.network.client'] = true
@@ -52,9 +53,9 @@ class Motion::Project::App
       destination = File.join(config.app_bundle(platform), 'Library/LoginItems')
       info 'Create', destination
       FileUtils.mkdir_p destination
-      helper_path = File.dirname(__FILE__)+'/HackerBarLauncher/build/MacOSX-10.7-Development/HackerBarLauncher.app'
+      helper_path = File.dirname(__FILE__)+'/HackerBarLauncher/build/MacOSX-10.8-Development/HackerBarLauncher.app'
       unless File.directory? helper_path
-        helper_path = File.dirname(__FILE__)+'/HackerBarLauncher/build/MacOSX-10.7-Release/HackerBarLauncher.app'
+        helper_path = File.dirname(__FILE__)+'/HackerBarLauncher/build/MacOSX-10.8-Release/HackerBarLauncher.app'
       end
       info 'Copy', helper_path
       FileUtils.cp_r helper_path, destination
