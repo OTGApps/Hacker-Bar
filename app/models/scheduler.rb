@@ -40,12 +40,12 @@ class Scheduler
 
   def failsafe
     # Don't hammer our server please.
-    if App::Persistence['check_interval'].to_i < 60
-      App::Persistence['check_interval'].to_i = 60
+    if App::Persistence['check_interval'].to_i < 120
+      App::Persistence['check_interval'].to_i = 120
 
       EM.schedule do
         alert = NSAlert.alloc.init
-        alert.setMessageText "Please don't try and fetch data from our server more often than every 60 seconds.\n\nThanks!"
+        alert.setMessageText "Please don't try and fetch data from our server more often than every 2 minutes.\n\nThanks!"
         alert.addButtonWithTitle "OK, I'm sorry"
         alert.runModal
       end
