@@ -8,39 +8,18 @@ class GATracker
   end
 
   def initialize
-    @t = GAJavaScriptTracker.trackerWithAccountID("UA-45561012-1")
-    unless NSBundle.mainBundle.objectForInfoDictionaryKey('AppStoreRelease') == true
-      NSLog "Init Analytics in Debug Mode"
-      @t.debug = true
-      @t.dryRun = true
-    else
-    end
-    @t.batchSize = 10
-  end
-
-  def start
-    @t.start
-  end
-
-  def stop
-    unless @t.isRunning
-      NSLog("Tracker already stopped")
-      return
-    end
-
-    @t.stop
+    @t = BSWebTracker.new
+    @t.trackerURLString = "http://hackerbartracker.mohawkapps.com/"
   end
 
   def track(args)
     args = {
-      label: "tackEvent",
       value: -1
       }.merge(args)
 
     raise "You must specify an event and action for a tracking event." unless args[:event] && args[:action]
 
-    @t.trackEvent(args[:event], action:args[:action], label:args[:label], value:args[:value], withError:nil)
+    @t.trackName(args[:event].to_s, content:args[:action].to_s, term:args[:value].to_s)
   end
-
 
 end

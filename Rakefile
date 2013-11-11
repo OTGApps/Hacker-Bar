@@ -16,17 +16,17 @@ Motion::Project::App.setup do |app|
   app.icon = 'AppIcon.icns'
   app.identifier = "com.mohawkapps.#{app.name.gsub(' ', '-').downcase}"
   app.info_plist['LSUIElement'] = true
-  app.frameworks += ['ServiceManagement']
+  app.frameworks += ['ServiceManagement', 'WebKit', 'IOKit']
   app.copyright = "Copyright © 2013 Mohawk Apps, LLC. All rights reserved."
   app.deployment_target = "10.7"
   app.archs['MacOSX'] = ['x86_64']
 
   app.pods do
-    pod 'DDGoogleAnalytics-OSX'
     pod 'FXReachability'
   end
 
   app.vendor_project('vendor/time_ago_in_words', :static, :cflags => '-fobjc-arc')
+  app.vendor_project('vendor/BSWebTracker', :static, :cflags => '-fobjc-arc')
 
   app.entitlements['com.apple.security.app-sandbox'] = true
   app.entitlements['com.apple.security.network.client'] = true
