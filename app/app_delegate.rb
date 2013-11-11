@@ -22,10 +22,6 @@ class AppDelegate
 
     update_menu
 
-    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"trigger_wait", name:NSWorkspaceDidWakeNotification, object:nil)
-    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_waiting", name:NSWorkspaceWillSleepNotification, object:nil)
-    NSNotificationCenter.defaultCenter.addObserver(self, selector:"network_status_changed:", name:FXReachabilityStatusDidChangeNotification, object:nil)
-
     if App::Persistence['asked_to_launch_on_login'] != true
       App::Persistence['asked_to_launch_on_login'] = true
 
@@ -44,6 +40,10 @@ class AppDelegate
     invocation.setTarget(self)
     invocation.setSelector("update_interface_last_updated:")
     NSRunLoop.mainRunLoop.addTimer(NSTimer.timerWithTimeInterval(5, invocation:invocation, repeats:true), forMode:NSRunLoopCommonModes)
+
+    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"trigger_wait", name:NSWorkspaceDidWakeNotification, object:nil)
+    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_waiting", name:NSWorkspaceWillSleepNotification, object:nil)
+    NSNotificationCenter.defaultCenter.addObserver(self, selector:"network_status_changed:", name:FXReachabilityStatusDidChangeNotification, object:nil)
 
     GATracker.shared_tracker.track({event:"app", action:"launched"})
   end
