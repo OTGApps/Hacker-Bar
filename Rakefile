@@ -33,7 +33,7 @@ Motion::Project::App.setup do |app|
 
   app.release do
     app.info_plist['AppStoreRelease'] = true
-    app.codesign_certificate = "3rd Party Mac Developer Application: Mohawk Apps, LLC (DW9QQZR4ZL)"
+    app.codesign_certificate = "Developer ID Application: Mohawk Apps, LLC (DW9QQZR4ZL)"
   end
 
 end
