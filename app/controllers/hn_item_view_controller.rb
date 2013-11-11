@@ -46,10 +46,10 @@ class HNItemViewController < NSViewController
 
   def clicked_link(sender)
     ap "Clicked Item: #{@hnitem.title}" if BubbleWrap.debug?
-    GATracker.shared_tracker.track({event:"click", action:@hnitem.comments['url'], label:"link"})
+    GATracker.shared_tracker.track({event:"click", action:(@hnitem.comments['url'] || @hnitem.link), label:"link"})
 
     # Log that the user went to that site.
-    App::Persistence['clicked'] =  App::Persistence['clicked'].mutableCopy << @hnitem.id
+    App::Persistence['clicked'] =  App::Persistence['clicked'].mutableCopy << @hnitem.id if @hnitem.id
 
     launch_link
   end
@@ -81,10 +81,8 @@ class HNItemViewController < NSViewController
   end
 
   def launch_browser(url)
-    if App::Persistence['open_links_in_background'] == true
-      unhighlight
-      # App.delegate.menu.cancelTracking
-    end
+    unhighlight
+    # App.delegate.menu.cancelTracking # This will auto-close the menu (v2 feature)
 
     url = "https://news.ycombinator.com/" << url unless url.start_with? "http"
     url = NSURL.URLWithString(url)
