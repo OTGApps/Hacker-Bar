@@ -1,5 +1,5 @@
 class AppDelegate
-  attr_accessor :menu, :items
+  attr_accessor :menu, :items, :server_data_age
 
   def applicationDidFinishLaunching(notification)
 
@@ -271,6 +271,7 @@ class AppDelegate
           news_item.hnitem = HNItem.new(news)
           @items << news_item
         end
+        @server_data_age = json['updated_words'] || nil
         App::Persistence['last_check'] = Time.now.to_i
         update_interface_last_updated nil
         update_menu
@@ -284,10 +285,14 @@ class AppDelegate
   end
 
   def update_interface_last_updated sender
-    last_check = Scheduler.shared_scheduler.last_check
-
-    @status_item.toolTip = "#{App.name} - #{last_check}"
-    @last_check_item.setTitle(last_check << ".")
+    if @server_data_age.nil?
+      last_check = Scheduler.shared_scheduler.last_check
+      @status_item.toolTip = "#{App.name} - #{last_check}"
+      @last_check_item.setTitle(last_check << ".")
+    else
+      @status_item.toolTip = "#{App.name} - Updated: #{@server_data_age}"
+      @last_check_item.setTitle("Data Cache Age: " << @server_data_age << ".")
+    end
   end
 
   def network_reachable

@@ -1,5 +1,6 @@
 class HNAPI
 
+  # APIURL = "http://localhost:3000/hn/?version=v1"
   APIURL = "http://gertig.com/hn?version=v1"
 
   def self.get_news(&block)

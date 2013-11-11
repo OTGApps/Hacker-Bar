@@ -35,7 +35,7 @@ class Scheduler
   end
 
   def last_check
-    "Updated " << Time.at(App::Persistence['last_check'].to_i).distanceOfTimeInWords
+    "Server checked " << Time.at(App::Persistence['last_check'].to_i).distanceOfTimeInWords
   end
 
   def failsafe
