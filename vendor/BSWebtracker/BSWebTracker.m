@@ -98,11 +98,12 @@ NSString* const BSWebTrackerFlushQueueNotification = @"com.basilsalad.BSWebTrack
 
 -(void) cleanupWebView
 {
-    if (_webView) {
-        _webView.frameLoadDelegate = nil;
-        [_webView stopLoading:nil];
-        _webView = nil;
-    }
+    // Comment this out since it prevents calls from actually working after the first time.
+    // if (_webView) {
+    //     _webView.frameLoadDelegate = nil;
+    //     [_webView stopLoading:nil];
+    //     _webView = nil;
+    // }
 }
 
 
@@ -123,7 +124,7 @@ NSString* const BSWebTrackerFlushQueueNotification = @"com.basilsalad.BSWebTrack
     if (campaignTerm.length > 0) {
         [urlString appendFormat:@"&utm_term=%@",[campaignTerm stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
-    
+
     NSURL* url = [NSURL URLWithString:urlString];
     [self queueURL:url];
 }
@@ -177,13 +178,13 @@ NSString* const BSWebTrackerFlushQueueNotification = @"com.basilsalad.BSWebTrack
                                                                      kCFAllocatorDefault, 0);
             IOObjectRelease(platformExpert);
         }
-        
+
         NSString *serialNumberAsNSString = nil;
         if (serialNumberAsCFString) {
             serialNumberAsNSString = [NSString stringWithString:(__bridge NSString *)serialNumberAsCFString];
             CFRelease(serialNumberAsCFString);
         }
-        
+
         if (!serialNumberAsNSString) {
             NSHost* host = [NSHost currentHost];
             serialNumberAsNSString = [[host name] copy];
@@ -238,7 +239,7 @@ NSString* const BSWebTrackerFlushQueueNotification = @"com.basilsalad.BSWebTrack
 
 - (void)webView:(WebView *)webView didStartProvisionalLoadForFrame:(WebFrame *)webFrame
 {
-    
+
 }
 
 
