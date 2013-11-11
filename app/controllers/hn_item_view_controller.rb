@@ -8,7 +8,7 @@ class HNItemViewController < NSViewController
   outlet :comment_image, NSImageView
   outlet :background_image, NSImageView
 
-	attr_accessor :hnitem, :tag
+	attr_accessor :hnitem, :tag, :view_loaded
 
   def loadView
     viewWillLoad
@@ -21,6 +21,12 @@ class HNItemViewController < NSViewController
 
   def viewDidLoad
     set_interface
+    @view_loaded = true
+  end
+
+  def hnitem=(hn)
+    @hnitem = hn
+    set_interface if @view_loaded
   end
 
   def set_interface
@@ -32,6 +38,11 @@ class HNItemViewController < NSViewController
       @comment_image.hidden = true
       @votes_image.setImage "ad".image
     else
+      @comment_count.hidden = false
+      @votes_count.hidden = false
+      @comment_image.hidden = false
+      @votes_image.setImage "UpvotesBadge".image
+
       comment_count = @hnitem.comments['count'].to_i || 0
       votes_count =   @hnitem.points.to_i || 0
 

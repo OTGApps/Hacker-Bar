@@ -265,12 +265,15 @@ class AppDelegate
     HNAPI.get_news do |json, error|
       if error.nil? && json.count > 0
         GATracker.shared_tracker.track({event:"api", action:"hit"})
-        @items = [] # Clear out the item array
 
-        json['submissions'].each do |news|
-          news_item = HNItemViewController.alloc.initWithNibName("HNItemViewController", bundle:nil)
-          news_item.hnitem = HNItem.new(news)
-          @items << news_item
+        json['submissions'].each_with_index do |news, i|
+          if @items[i].nil?
+            news_item = HNItemViewController.alloc.initWithNibName("HNItemViewController", bundle:nil)
+            news_item.hnitem = HNItem.new(news)
+            @items[i] = news_item
+          else
+            @items[i].hnitem = HNItem.new(news)
+          end
         end
         @server_data_age = json['updated_words'] || nil
         App::Persistence['last_check'] = Time.now.to_i
