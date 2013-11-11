@@ -102,11 +102,9 @@ class AppDelegate
 
   def refresh_menu_options
     items = []
-    items << create_item(title: " Refresh Now", action:'refresh', image: 'refresh')
-    items << NSMenuItem.separatorItem
+    # items << create_item(title: " Refresh Now", action:'refresh', image: 'refresh')
+    # items << NSMenuItem.separatorItem
     [
-      [' Never', 0],
-      [' 2 minutes', 120],
       [' 5 minutes', 300],
       [' 10 Minutes', 600],
       [' 30 minutes', 1800],
