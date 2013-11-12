@@ -26,6 +26,8 @@ Motion::Project::App.setup do |app|
     pod 'Parse-OSX-SDK'
   end
 
+  app.embedded_frameworks << 'vendor/Pods/Parse-OSX-SDK/ParseOSX.framework'
+
   app.vendor_project('vendor/time_ago_in_words', :static, :cflags => '-fobjc-arc')
   app.vendor_project('vendor/UniqueIdentifier', :static, :cflags => '-fobjc-arc')
 
