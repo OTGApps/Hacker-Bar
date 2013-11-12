@@ -109,7 +109,7 @@ class AppDelegate
       option = NSMenuItem.alloc.initWithTitle(value[0], action:"update_fetch_time:" , keyEquivalent: '')
       option.tag = value[1]
 
-      option.setState (option.tag == App::Persistence['check_interval']) ? NSOnState : NSOffState
+      option.checked = (option.tag == App::Persistence['check_interval'])
       option.setEnabled true
       items << option
     end
@@ -172,7 +172,7 @@ class AppDelegate
     # Image
     if args[:image]
       if args[:image] == "check"
-        item.setState NSOnState
+        item.checked = true
       else
         i = args[:image].image
         item.setOffStateImage i
