@@ -47,7 +47,7 @@ class AppDelegate
     NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_waiting", name:NSWorkspaceWillSleepNotification, object:nil)
     NSNotificationCenter.defaultCenter.addObserver(self, selector:"network_status_changed:", name:FXReachabilityStatusDidChangeNotification, object:nil)
 
-    PFAnalytics.trackAppOpenedWithLaunchOptions(nil)
+    PFAnalytics.trackAppOpenedWithLaunchOptions(notification)
   end
 
   def applicationWillTerminate(notification)
@@ -120,6 +120,7 @@ class AppDelegate
     NSLog "Updating fetch time to #{sender.tag}"
     time = sender.tag.to_i
 
+    previous_time = App::Persistence['check_interval']
     App::Persistence['check_interval'] = time
 
     if time > 0
@@ -131,7 +132,7 @@ class AppDelegate
     refresh_menu_options.each do |option|
       @sub_options.addItem option
     end
-    PFAnalytics.trackEvent("prefs_updated_fetch_time", dimensions:Machine.tracking_data.merge(:time => time))
+    PFAnalytics.trackEvent("fetch_time_from_#{previous_time}_to_#{time}", dimensions:Machine.tracking_data)
   end
 
   def refresh
@@ -221,11 +222,11 @@ class AppDelegate
     App::Persistence['launch_on_login'] = autolaunch
     start_at_login autolaunch
     sender.setState (autolaunch == true) ? NSOnState : NSOffState unless sender.nil?
-    PFAnalytics.trackEvent("prefs_updated_autolaunch", dimensions:Machine.tracking_data.merge(:autolaunch => autolaunch))
   end
 
   # TODO: Get this working properly.
   def start_at_login enabled
+    PFAnalytics.trackEvent("autolaunch_#{enabled}", dimensions:Machine.tracking_data)
     url = NSBundle.mainBundle.bundleURL.URLByAppendingPathComponent("Contents/Library/LoginItems/HackerBarLauncher.app", isDirectory:true)
 
     status = LSRegisterURL(url, true)
@@ -236,7 +237,7 @@ class AppDelegate
 
     success = SMLoginItemSetEnabled("com.mohawkapps.hackerbarlauncher", enabled)
     unless success
-      PFAnalytics.trackEvent("prefs_update_autolaunch_failed", dimensions:Machine.tracking_data)
+      PFAnalytics.trackEvent("autolaunch_failed", dimensions:Machine.tracking_data)
       NSLog("Failed to start #{App.name} launch helper.")
       return
     end
