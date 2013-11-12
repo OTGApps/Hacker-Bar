@@ -16,7 +16,8 @@ class AppDelegate
     App::Persistence['launch_on_login'] ||= false
     App::Persistence['clicked'] ||= []
 
-    @status_item = NSStatusBar.systemStatusBar.statusItemWithLength(NSSquareStatusItemLength).retain
+    @status_bar ||= NSStatusBar.systemStatusBar
+    @status_item ||= @status_bar.statusItemWithLength(NSSquareStatusItemLength).retain
     @status_item.menu = @menu
     @status_item.highlightMode = true
     @status_item.toolTip = App.name
