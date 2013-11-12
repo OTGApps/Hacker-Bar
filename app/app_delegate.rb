@@ -1,5 +1,5 @@
 class AppDelegate
-  attr_accessor :menu, :items, :server_data_age
+  attr_accessor :status_item, :menu, :items, :server_data_age
 
   def applicationDidFinishLaunching(notification)
 
@@ -14,8 +14,7 @@ class AppDelegate
     App::Persistence['launch_on_login'] ||= false
     App::Persistence['clicked'] ||= []
 
-    statusBar = NSStatusBar.systemStatusBar
-    @status_item = statusBar.statusItemWithLength(NSSquareStatusItemLength)
+    @status_item = NSStatusBar.systemStatusBar.statusItemWithLength(NSSquareStatusItemLength)
     @status_item.menu = @menu
     @status_item.highlightMode = true
     @status_item.toolTip = App.name
