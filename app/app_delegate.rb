@@ -22,20 +22,18 @@ class AppDelegate
 
     update_menu
 
-    EM.schedule do
-      if App::Persistence['asked_to_launch_on_login'] != true
-        App::Persistence['asked_to_launch_on_login'] = true
+    if App::Persistence['asked_to_launch_on_login'] != true
+      App::Persistence['asked_to_launch_on_login'] = true
 
-        # Ask the user to launch the app on start.
-        alert = NSAlert.alloc.init
-        alert.addButtonWithTitle("Yes")
-        alert.addButtonWithTitle("No")
-        alert.setMessageText("Launch #{App.name} on login?")
-        alert.setInformativeText("Would you like #{App.name} to automatically launch on login?")
-        alert.setAlertStyle(NSWarningAlertStyle)
+      # Ask the user to launch the app on start.
+      alert = NSAlert.alloc.init
+      alert.addButtonWithTitle("Yes")
+      alert.addButtonWithTitle("No")
+      alert.setMessageText("Launch #{App.name} on login?")
+      alert.setInformativeText("Would you like #{App.name} to automatically launch on login?")
+      alert.setAlertStyle(NSWarningAlertStyle)
 
-        toggle_autolaunch(nil) if alert.runModal == NSAlertFirstButtonReturn
-      end
+      toggle_autolaunch(nil) if alert.runModal == NSAlertFirstButtonReturn
     end
 
     invocation = NSInvocation.invocationWithMethodSignature(self.methodSignatureForSelector("update_interface_last_updated:"))
