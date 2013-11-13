@@ -57,7 +57,7 @@ class HNItemViewController < NSViewController
 
   def clicked_link(sender)
     ap "Clicked Item: #{@hnitem.title}" if BubbleWrap.debug?
-    PFAnalytics.trackEvent("link_click", dimensions:Machine.tracking_data.merge({url: (@hnitem.comments['url'] || @hnitem.link)}))
+    # PFAnalytics.trackEvent("link_click", dimensions:Machine.tracking_data.merge({url: (@hnitem.comments['url'] || @hnitem.link)}))
 
     # Log that the user went to that site.
     App::Persistence['clicked'] =  App::Persistence['clicked'].mutableCopy << @hnitem.id if @hnitem.id
@@ -67,7 +67,7 @@ class HNItemViewController < NSViewController
 
   def clicked_comments(sender)
     ap "Clicked Comments: #{@hnitem.title}" if BubbleWrap.debug?
-    PFAnalytics.trackEvent("comment_click", dimensions:Machine.tracking_data.merge({url: @hnitem.comments['url']}))
+    # PFAnalytics.trackEvent("comment_click", dimensions:Machine.tracking_data.merge({url: @hnitem.comments['url']}))
     launch_comments
   end
 

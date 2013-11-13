@@ -11,8 +11,8 @@ end
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'Hacker Bar'
-  app.version = "0.0.11"
-  app.short_version = "11"
+  app.version = "0.0.12"
+  app.short_version = "12"
   app.icon = 'AppIcon.icns'
   app.identifier = "com.mohawkapps.#{app.name.gsub(' ', '-').downcase}"
   app.info_plist['LSUIElement'] = true
@@ -23,11 +23,11 @@ Motion::Project::App.setup do |app|
 
   app.pods do
     pod 'FXReachability'
-    pod 'Parse-OSX-SDK'
+    # pod 'Parse-OSX-SDK'
   end
 
-  parse = 'vendor/Pods/Parse-OSX-SDK/ParseOSX.framework'
-  app.embedded_frameworks << parse if File.directory? parse
+  # parse = 'vendor/Pods/Parse-OSX-SDK/ParseOSX.framework'
+  # app.embedded_frameworks << parse if File.directory? parse
 
   app.vendor_project('vendor/time_ago_in_words', :static, :cflags => '-fobjc-arc')
   app.vendor_project('vendor/UniqueIdentifier', :static, :cflags => '-fobjc-arc')

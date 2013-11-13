@@ -1,7 +1,6 @@
 GIT
-  remote: git@github.com:markrickert/BubbleWrap.git
-  revision: 4eb47ffe6f90459576f273a57b0fe71bcba3545c
-  branch: remove-uikit
+  remote: http://github.com/rubymotion/BubbleWrap.git
+  revision: f734794220f050e8fbe5652319877ccbf91aa604
   specs:
     bubble-wrap (1.4.0)
 
