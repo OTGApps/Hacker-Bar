@@ -143,7 +143,7 @@ class AppDelegate
       NSLog "Network is reachable. Fetching data." if BW.debug?
       fetch
     else
-      NSLog "Network is NOW reachable. Displaying message." if BW.debug?
+      NSLog "Network is NOT reachable. Displaying message." if BW.debug?
       Scheduler.shared_scheduler.stop_waiting
       @menu.removeAllItems
       @menu.addItem create_item(title: "Network is offline.", enabled: false)
