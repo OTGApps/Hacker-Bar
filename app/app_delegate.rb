@@ -271,7 +271,7 @@ class AppDelegate
         update_menu
       else
         NSLog("Error: Could not get data from API")
-        error_string = "Error: #{error.localizedDescription} (#{error.localizedFailureReason})"
+        error_string = "Error: #{error.description}"
         PFAnalytics.trackEvent("api_error", dimensions:Machine.tracking_data.merge(:error => error_string))
       end
       @animation_stopped = true
