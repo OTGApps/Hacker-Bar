@@ -308,7 +308,8 @@ class AppDelegate
   def menu(menu, willHighlightItem:item)
     @items.each{|i| i.unhighlight}
     return if item.nil?# || item.tag < 10
-    @items.find{|i| i.tag == item.tag}.highlight
+    highlighting = @items.find{|i| i.tag == item.tag}
+    highlighting.highlight if highlighting.is_a? HNItemViewController
   end
 
   def menuWillOpen(menu)
