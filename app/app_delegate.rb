@@ -298,6 +298,9 @@ class AppDelegate
     if FXReachability.isReachable
       NSLog("Network came online - #{Time.now}") if BW.debug?
       Scheduler.shared_scheduler.refresh_and_trigger
+    else
+      NSLog("Network is no longer reachable - #{Time.now}") if BW.debug?
+      refresh
     end
   end
 
