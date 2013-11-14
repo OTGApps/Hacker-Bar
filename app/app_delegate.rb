@@ -48,7 +48,7 @@ class AppDelegate
     NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_waiting", name:NSWorkspaceWillSleepNotification, object:nil)
     NSNotificationCenter.defaultCenter.addObserver(self, selector:"network_status_changed:", name:FXReachabilityStatusDidChangeNotification, object:nil)
 
-    PFAnalytics.trackAppOpenedWithLaunchOptions(notification)
+    PFAnalytics.trackAppOpenedWithLaunchOptions(nil)
   end
 
   def applicationWillTerminate(notification)
