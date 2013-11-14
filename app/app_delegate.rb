@@ -301,8 +301,8 @@ class AppDelegate
   # NSMenu Delegate
   def menu(menu, willHighlightItem:item)
     @items.each{|i| i.unhighlight}
-    return if item.nil? || item.tag < 10
-    @items.select{|i| i.tag == item.tag}.first.highlight
+    return if item.nil?# || item.tag < 10
+    @items.find{|i| i.tag == item.tag}.highlight
   end
 
   def menuWillOpen(menu)
