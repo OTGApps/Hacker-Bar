@@ -56,7 +56,7 @@ class HNItemViewController < NSViewController
   end
 
   def clicked_link(sender)
-    ap "Clicked Item: #{@hnitem.title}" if BubbleWrap.debug?
+    NSLog "Clicked Item: #{@hnitem.title}" if BubbleWrap.debug?
     PFAnalytics.trackEvent("link_click", dimensions:Machine.tracking_data.merge({url: (@hnitem.comments['url'] || @hnitem.link)}))
 
     # Log that the user went to that site.
@@ -66,7 +66,7 @@ class HNItemViewController < NSViewController
   end
 
   def clicked_comments(sender)
-    ap "Clicked Comments: #{@hnitem.title}" if BubbleWrap.debug?
+    NSLog "Clicked Comments: #{@hnitem.title}" if BubbleWrap.debug?
     PFAnalytics.trackEvent("comment_click", dimensions:Machine.tracking_data.merge({url: @hnitem.comments['url']}))
     launch_comments
   end

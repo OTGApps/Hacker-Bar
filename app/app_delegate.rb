@@ -3,7 +3,7 @@ class AppDelegate
 
   def applicationDidFinishLaunching(notification)
 
-    BubbleWrap.debug = true unless NSBundle.mainBundle.objectForInfoDictionaryKey('AppStoreRelease') == true
+    BW.debug = true unless NSBundle.mainBundle.objectForInfoDictionaryKey('AppStoreRelease') == true
 
     Parse.setApplicationId("vGfOqWmPEWqRIyLEhcTdLjrDXbx0gj3TzfQIBDLj", clientKey:"dGKX9ISYjZZXthxZGjDiRqbLs5b6uSO8F1CrjWBT")
 
@@ -137,11 +137,13 @@ class AppDelegate
   end
 
   def refresh
-    ap "Refreshing the menu" if BubbleWrap.debug?
+    NSLog "Refreshing the menu" if BW.debug?
 
     if network_reachable
+      NSLog "Network is reachable. Fetching data." if BW.debug?
       fetch
     else
+      NSLog "Network is NOW reachable. Displaying message." if BW.debug?
       Scheduler.shared_scheduler.stop_waiting
       @menu.removeAllItems
       @menu.addItem create_item(title: "Network is offline.", enabled: false)
@@ -187,7 +189,7 @@ class AppDelegate
   # Animated icon while the API is pulling new results
   # to stop animating, set the instance variable @animation_stopped to true
   def animate_icon
-    ap "Starting image animation" if BubbleWrap.debug?
+    NSLog "Starting image animation" if BW.debug?
     @current_frame = 0
 
     icon_animation_timer = EM.add_periodic_timer 1.0/8.0 do
@@ -201,7 +203,7 @@ class AppDelegate
       end
 
       if @animation_stopped == true
-        ap "Stopping image animation" if BubbleWrap.debug?
+        NSLog "Stopping image animation" if BW.debug?
         EM.cancel_timer(icon_animation_timer)
         @animation_stopped = nil
         reset_image
@@ -210,6 +212,7 @@ class AppDelegate
   end
 
   def reset_image
+    NSLog "Resetting the icon." if BW.debug?
     @status_item.image = "Status".image
     @status_item.alternateImage = "StatusHighlighted".image
   end
@@ -247,8 +250,8 @@ class AppDelegate
   private
   # Don't ever call this method directly. Use the refresh method
   def fetch
+    NSLog "Fetching new data" if BW.debug?
     animate_icon
-    ap "Fetching new data" if BubbleWrap.debug?
     HNAPI.get_news do |json, error|
       if error.nil? && json.count > 0
         # PFAnalytics.trackEvent("api_hit", dimensions:Machine.tracking_data)
@@ -293,7 +296,7 @@ class AppDelegate
 
   def network_status_changed(status)
     if FXReachability.isReachable
-      ap "Network came online." if BubbleWrap.debug?
+      NSLog("Network came online - #{Time.now}") if BW.debug?
       Scheduler.shared_scheduler.refresh_and_trigger
     end
   end
@@ -306,6 +309,7 @@ class AppDelegate
   end
 
   def menuWillOpen(menu)
+    NSLog("Opening the menu.") if BW.debug?
     @items.each{|i| i.unhighlight if i.is_a? HNItemViewController}
   end
 

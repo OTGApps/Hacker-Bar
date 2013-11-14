@@ -17,19 +17,20 @@ class Scheduler
   end
 
   def trigger_wait
+    stop_waiting
     interval = App::Persistence['check_interval'].to_i;
     return if interval == 0
 
-    ap "Wait #{interval} seconds" if BubbleWrap.debug?
+    NSLog "Wait #{interval} seconds" if BW.debug?
 
-    stop_waiting
     @timer = EM.add_timer interval do
-      ap "Refreshing at #{Time.now}" if BubbleWrap.debug?
+      NSLog "Refreshing at #{Time.now}" if BW.debug?
       App.delegate.refresh
     end
   end
 
   def stop_waiting
+    NSLog "Stopping the timer" if BW.debug?
     EM.cancel_timer(@timer)
     @timer = nil
   end
