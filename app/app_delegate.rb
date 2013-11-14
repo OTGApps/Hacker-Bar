@@ -78,6 +78,7 @@ class AppDelegate
     @menu.addItem @last_check_item
 
     @menu.addItem NSMenuItem.separatorItem
+    @menu.addItem create_item(title: "About #{App.name}", action:'show_about:')
     @menu.addItem create_item(title: "Quit", action:'terminate:')
   end
 
@@ -320,6 +321,13 @@ class AppDelegate
   def menuWillOpen(menu)
     NSLog("Opening the menu.") if BW.debug?
     @items.each{|i| i.unhighlight if i.is_a? HNItemViewController}
+  end
+
+
+  def show_about(sender)
+    app = NSApplication.sharedApplication
+    app.activateIgnoringOtherApps(true)
+    NSApp.orderFrontStandardAboutPanel(sender)
   end
 
 end

@@ -17,7 +17,7 @@ Motion::Project::App.setup do |app|
   app.identifier = "com.mohawkapps.#{app.name.gsub(' ', '-').downcase}"
   app.info_plist['LSUIElement'] = true
   app.frameworks += ['ServiceManagement', 'IOKit']
-  app.copyright = "Copyright © 2013 Mohawk Apps, LLC. All rights reserved."
+  app.copyright = "Copyright © 2013 Mohawk Apps, LLC.\nAll rights reserved."
   app.deployment_target = "10.8"
   app.archs['MacOSX'] = ['x86_64']
 
