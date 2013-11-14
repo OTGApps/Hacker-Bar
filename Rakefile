@@ -23,11 +23,11 @@ Motion::Project::App.setup do |app|
 
   app.pods do
     pod 'FXReachability'
-    # pod 'Parse-OSX-SDK'
+    pod 'Parse-OSX-SDK'
   end
 
-  # parse = 'vendor/Pods/Parse-OSX-SDK/ParseOSX.framework'
-  # app.embedded_frameworks << parse if File.directory? parse
+  parse = 'vendor/Pods/Parse-OSX-SDK/ParseOSX.framework'
+  app.embedded_frameworks << parse if File.directory? parse
 
   app.vendor_project('vendor/time_ago_in_words', :static, :cflags => '-fobjc-arc')
   app.vendor_project('vendor/UniqueIdentifier', :static, :cflags => '-fobjc-arc')
