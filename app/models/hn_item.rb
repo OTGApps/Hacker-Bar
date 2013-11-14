@@ -22,4 +22,9 @@ class HNItem
     end
   end
 
+  def ==(other_object)
+    return true if other_object.id == @id
+    false
+  end
+
 end

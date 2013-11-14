@@ -263,12 +263,13 @@ class AppDelegate
         # PFAnalytics.trackEvent("api_hit", dimensions:Machine.tracking_data)
 
         json['submissions'].each_with_index do |news, i|
-          if @items[i].nil?
+          this_hn_item = HNItem.new(news)
+          if @items[i].nil? || (!@highlighted_item.nil? && @highlighted_item.hnitem == this_hn_item)
             news_item = HNItemViewController.alloc.initWithNibName("HNItemViewController", bundle:nil)
-            news_item.hnitem = HNItem.new(news)
+            news_item.hnitem = this_hn_item
             @items[i] = news_item
           else
-            @items[i].hnitem = HNItem.new(news)
+            @items[i].hnitem = this_hn_item
           end
         end
         @server_data_age = json['updated_words'] || nil
@@ -313,9 +314,8 @@ class AppDelegate
   # NSMenu Delegate
   def menu(menu, willHighlightItem:item)
     @highlighted_item.unhighlight unless @highlighted_item.nil? || !@highlighted_item.is_a?(HNItemViewController)
-    # @items.each{|i| i.unhighlight}
     if item.nil?# || item.tag < 10
-      @highlighted_item
+      @highlighted_item = nil
       return
     end
 
@@ -325,9 +325,7 @@ class AppDelegate
 
   def menuWillOpen(menu)
     NSLog("Opening the menu.") if BW.debug?
-    @items.each{|i| i.unhighlight if i.is_a?(HNItemViewController)}
   end
-
 
   def show_about(sender)
     app = NSApplication.sharedApplication

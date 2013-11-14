@@ -56,7 +56,7 @@ class HNItemViewController < NSViewController
   end
 
   def clicked_link(sender)
-    NSLog "Clicked Item: #{@hnitem.title}" if BubbleWrap.debug?
+    NSLog "Clicked Item: #{@hnitem.title}" if BW.debug?
     PFAnalytics.trackEvent("link_click", dimensions:Machine.tracking_data.merge({url: (@hnitem.comments['url'] || @hnitem.link)}))
 
     # Log that the user went to that site.
@@ -66,18 +66,20 @@ class HNItemViewController < NSViewController
   end
 
   def clicked_comments(sender)
-    NSLog "Clicked Comments: #{@hnitem.title}" if BubbleWrap.debug?
+    NSLog "Clicked Comments: #{@hnitem.title}" if BW.debug?
     PFAnalytics.trackEvent("comment_click", dimensions:Machine.tracking_data.merge({url: @hnitem.comments['url']}))
     launch_comments
   end
 
   def highlight
+    NSLog "Highlighting: #{@hnitem.title}" if BW.debug?
     @headline.setTextColor NSColor.highlightColor
     @background_image.setImage "background".image
     view.setNeedsDisplay true
   end
 
   def unhighlight
+    NSLog "Unhighlighting: #{@hnitem.title}" if BW.debug?
     return if @background_image.image.nil?
     @headline.setTextColor NSColor.controlTextColor
     @background_image.setImage nil
@@ -93,7 +95,7 @@ class HNItemViewController < NSViewController
   end
 
   def launch_browser(url)
-    unhighlight
+    # unhighlight
     # App.delegate.menu.cancelTracking # This will auto-close the menu (v2 feature)
 
     url = "https://news.ycombinator.com/" << url unless url.start_with? "http"
