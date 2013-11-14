@@ -8,7 +8,7 @@ class AppDelegate
     Parse.setApplicationId("vGfOqWmPEWqRIyLEhcTdLjrDXbx0gj3TzfQIBDLj", clientKey:"dGKX9ISYjZZXthxZGjDiRqbLs5b6uSO8F1CrjWBT")
 
     @menu = NSMenu.new
-    @menu.setAutoenablesItems(false)
+    @menu.setAutoenablesItems true
     @menu.delegate = self
 
     @items = []
@@ -61,7 +61,7 @@ class AppDelegate
 
     @items.each do |news_item|
       tag = news_item.hnitem.id || rand(-999)
-      @menu.addItem create_item(object:news_item, tag:tag.to_i)
+      @menu.addItem create_item(object:news_item, tag:tag.to_i, enabled:true, action:"blank_action:")
     end
     add_bottom_menu_items
   end
@@ -86,6 +86,7 @@ class AppDelegate
     refresh_options.setTitle(" Refresh Options")
     @sub_options ||= NSMenu.alloc.init
     @sub_options.removeAllItems
+    @sub_options.setAutoenablesItems true
 
     refresh_menu_options.each do |option|
       @sub_options.addItem option
@@ -106,11 +107,15 @@ class AppDelegate
       [' 1 hour', 3600],
       [' 2 hours', 7200]
     ].each do |value|
-      option = NSMenuItem.alloc.initWithTitle(value[0], action:"update_fetch_time:" , keyEquivalent: '')
+
+      current_interval = (value[1] == App::Persistence['check_interval'])
+      action = (current_interval) ? nil : "update_fetch_time:"
+
+      option = NSMenuItem.alloc.initWithTitle(value[0], action:action , keyEquivalent: '')
       option.tag = value[1]
 
-      option.checked = (option.tag == App::Persistence['check_interval'])
-      option.setEnabled true
+      option.checked = current_interval
+      option.setEnabled !current_interval
       items << option
     end
 
@@ -154,7 +159,7 @@ class AppDelegate
   def create_item(args={})
     args = {
       key:'',
-      action: 'blank_action:',
+      action: nil,
       enabled: true
       }.merge(args)
     args[:title] = args[:object].hnitem.title if args[:object]
