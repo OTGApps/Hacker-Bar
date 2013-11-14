@@ -74,13 +74,14 @@ class HNItemViewController < NSViewController
   def highlight
     @headline.setTextColor NSColor.highlightColor
     @background_image.setImage "background".image
-    view.setNeedsDisplay(true)
+    view.setNeedsDisplay true
   end
 
   def unhighlight
+    return if @background_image.image.nil?
     @headline.setTextColor NSColor.controlTextColor
     @background_image.setImage nil
-    view.setNeedsDisplay(true)
+    view.setNeedsDisplay true
   end
 
   def launch_link

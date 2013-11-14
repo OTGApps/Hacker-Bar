@@ -1,5 +1,5 @@
 class AppDelegate
-  attr_accessor :status_item, :menu, :items, :server_data_age
+  attr_accessor :status_item, :menu, :items, :server_data_age, :highlighted_item
 
   def applicationDidFinishLaunching(notification)
 
@@ -312,15 +312,20 @@ class AppDelegate
 
   # NSMenu Delegate
   def menu(menu, willHighlightItem:item)
-    @items.each{|i| i.unhighlight}
-    return if item.nil?# || item.tag < 10
-    highlighting = @items.find{|i| i.tag == item.tag}
-    highlighting.highlight if highlighting.is_a? HNItemViewController
+    @highlighted_item.unhighlight unless @highlighted_item.nil? || !@highlighted_item.is_a?(HNItemViewController)
+    # @items.each{|i| i.unhighlight}
+    if item.nil?# || item.tag < 10
+      @highlighted_item
+      return
+    end
+
+    @highlighted_item = @items.find{|i| i.tag == item.tag}
+    @highlighted_item.highlight if @highlighted_item.is_a? HNItemViewController
   end
 
   def menuWillOpen(menu)
     NSLog("Opening the menu.") if BW.debug?
-    @items.each{|i| i.unhighlight if i.is_a? HNItemViewController}
+    @items.each{|i| i.unhighlight if i.is_a?(HNItemViewController)}
   end
 
 
