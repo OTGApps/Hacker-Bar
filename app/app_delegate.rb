@@ -124,7 +124,7 @@ class AppDelegate
     previous_time = App::Persistence['check_interval']
     App::Persistence['check_interval'] = time
 
-    if time > 0
+    if time > 0 && network_reachable
       Scheduler.shared_scheduler.refresh_and_trigger
     end
 
