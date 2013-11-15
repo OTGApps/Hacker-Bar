@@ -5,8 +5,6 @@ class AppDelegate
 
     BW.debug = true unless NSBundle.mainBundle.objectForInfoDictionaryKey('AppStoreRelease') == true
 
-    Parse.setApplicationId("vGfOqWmPEWqRIyLEhcTdLjrDXbx0gj3TzfQIBDLj", clientKey:"dGKX9ISYjZZXthxZGjDiRqbLs5b6uSO8F1CrjWBT")
-
     @menu = NSMenu.new
     @menu.setAutoenablesItems true
     @menu.delegate = self
@@ -48,12 +46,10 @@ class AppDelegate
     NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_waiting", name:NSWorkspaceWillSleepNotification, object:nil)
     NSNotificationCenter.defaultCenter.addObserver(self, selector:"network_status_changed:", name:FXReachabilityStatusDidChangeNotification, object:nil)
 
-    PFAnalytics.trackAppOpenedWithLaunchOptions(nil)
   end
 
   def applicationWillTerminate(notification)
     Scheduler.shared_scheduler.stop_waiting
-    PFAnalytics.trackEvent("app_terminated", dimensions:Machine.tracking_data)
   end
 
   def update_menu
@@ -139,7 +135,6 @@ class AppDelegate
     refresh_menu_options.each do |option|
       @sub_options.addItem option
     end
-    PFAnalytics.trackEvent("fetch_time_from_#{previous_time}_to_#{time}", dimensions:Machine.tracking_data)
   end
 
   def refresh
@@ -236,7 +231,6 @@ class AppDelegate
 
   # TODO: Get this working properly.
   def start_at_login enabled
-    PFAnalytics.trackEvent("autolaunch_#{enabled}", dimensions:Machine.tracking_data)
     url = NSBundle.mainBundle.bundleURL.URLByAppendingPathComponent("Contents/Library/LoginItems/HackerBarLauncher.app", isDirectory:true)
 
     status = LSRegisterURL(url, true)
@@ -247,7 +241,6 @@ class AppDelegate
 
     success = SMLoginItemSetEnabled("com.mohawkapps.hackerbarlauncher", enabled)
     unless success
-      PFAnalytics.trackEvent("autolaunch_failed", dimensions:Machine.tracking_data)
       NSLog("Failed to start #{App.name} launch helper.")
       return
     end
@@ -260,7 +253,6 @@ class AppDelegate
     animate_icon
     HNAPI.get_news do |json, error|
       if error.nil? && json.count > 0
-        # PFAnalytics.trackEvent("api_hit", dimensions:Machine.tracking_data)
 
         json['submissions'].each_with_index do |news, i|
           this_hn_item = HNItem.new(news)
@@ -279,7 +271,6 @@ class AppDelegate
       else
         NSLog("Error: Could not get data from API")
         error_string = "Error: #{error.description}"
-        PFAnalytics.trackEvent("api_error", dimensions:Machine.tracking_data.merge(:error => error_string))
       end
       @animation_stopped = true
       Scheduler.shared_scheduler.trigger_wait

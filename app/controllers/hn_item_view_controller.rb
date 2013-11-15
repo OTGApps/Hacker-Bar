@@ -57,7 +57,6 @@ class HNItemViewController < NSViewController
 
   def clicked_link(sender)
     NSLog "Clicked Item: #{@hnitem.title}" if BW.debug?
-    PFAnalytics.trackEvent("link_click", dimensions:Machine.tracking_data.merge({url: (@hnitem.comments['url'] || @hnitem.link)}))
 
     # Log that the user went to that site.
     App::Persistence['clicked'] =  App::Persistence['clicked'].mutableCopy << @hnitem.id if @hnitem.id
@@ -67,7 +66,6 @@ class HNItemViewController < NSViewController
 
   def clicked_comments(sender)
     NSLog "Clicked Comments: #{@hnitem.title}" if BW.debug?
-    PFAnalytics.trackEvent("comment_click", dimensions:Machine.tracking_data.merge({url: @hnitem.comments['url']}))
     launch_comments
   end
 
