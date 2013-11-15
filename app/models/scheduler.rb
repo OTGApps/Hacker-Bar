@@ -35,8 +35,14 @@ class Scheduler
     @timer = nil
   end
 
+  def last_check_words
+    "Server checked " << last_check
+  end
+
   def last_check
-    "Server checked " << Time.at(App::Persistence['last_check'].to_i).distanceOfTimeInWords
+    check = App::Persistence['last_check'].to_i
+    return "- Unknown" if check == 0
+    Time.at(check).distanceOfTimeInWords
   end
 
   def failsafe

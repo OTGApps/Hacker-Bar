@@ -70,7 +70,7 @@ class AppDelegate
 
     # Auto-updating last check menu item
     @menu.addItem NSMenuItem.separatorItem
-    @last_check_item ||= create_item(title: " " << Scheduler.shared_scheduler.last_check, enabled: false)
+    @last_check_item ||= create_item(title: " " << Scheduler.shared_scheduler.last_check_words, enabled: false)
     @menu.addItem @last_check_item
 
     @menu.addItem NSMenuItem.separatorItem
@@ -279,7 +279,7 @@ class AppDelegate
 
   def update_interface_last_updated sender
     if @server_data_age.nil?
-      last_check = Scheduler.shared_scheduler.last_check
+      last_check = Scheduler.shared_scheduler.last_check_words
       @status_item.toolTip = "#{App.name} - #{last_check}"
       @last_check_item.setTitle(last_check << ".")
     else
