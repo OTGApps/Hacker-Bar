@@ -1,5 +1,5 @@
 class AppDelegate
-  attr_accessor :status_item, :menu, :items, :server_data_age, :highlighted_item
+  attr_accessor :status_item, :menu, :items, :server_data_age, :highlighted_item, :menu_open
 
   def applicationDidFinishLaunching(notification)
 
@@ -8,6 +8,8 @@ class AppDelegate
     @menu = NSMenu.new
     @menu.setAutoenablesItems true
     @menu.delegate = self
+
+    @menu_open = false
 
     @items = []
     App::Persistence['check_interval'] ||= 300 # In seconds
@@ -250,6 +252,13 @@ class AppDelegate
   # Don't ever call this method directly. Use the refresh method
   def fetch
     NSLog "Fetching new data" if BW.debug?
+
+    if @menu_open
+      NSLog "Menu is open. Not refreshing, just resetting the timer." if BW.debug?
+      Scheduler.shared_scheduler.trigger_wait
+      return
+    end
+
     animate_icon
     HNAPI.get_news do |json, error|
       if error.nil? && json.count > 0
@@ -305,7 +314,7 @@ class AppDelegate
   # NSMenu Delegate
   def menu(menu, willHighlightItem:item)
     @highlighted_item.unhighlight unless @highlighted_item.nil? || !@highlighted_item.is_a?(HNItemViewController)
-    if item.nil?# || item.tag < 10
+    if item.nil?
       @highlighted_item = nil
       return
     end
@@ -316,6 +325,12 @@ class AppDelegate
 
   def menuWillOpen(menu)
     NSLog("Opening the menu.") if BW.debug?
+    @menu_open = true
+  end
+
+  def menuDidClose(menu)
+    NSLog("Menu did close.") if BW.debug?
+    @menu_open = false
   end
 
   def show_about(sender)
