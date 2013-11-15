@@ -9,7 +9,7 @@ def main
   check_deps
 
   sizes = [512, 256, 128, 32, 16]
-  original_file = ARGV[0]
+  original_file = ARGV[0].chomp
   folder = File.dirname(__FILE__) << "/AppIcon.iconset"
   FileUtils.mkdir_p(folder)
 
@@ -40,12 +40,6 @@ def check_deps
     end
     require dep
   end
-end
-
-begin
-  require 'fastimage_resize'
-rescue
-  raise "Please install the fastimage_resize gem with: gem install fastimage_resize"
 end
 
 main
