@@ -30,10 +30,12 @@ Motion::Project::App.setup do |app|
 
   app.entitlements['com.apple.security.app-sandbox'] = true
   app.entitlements['com.apple.security.network.client'] = true
+  app.category = "news"
 
   app.release do
     app.info_plist['AppStoreRelease'] = true
     app.codesign_certificate = "Developer ID Application: Mohawk Apps, LLC (DW9QQZR4ZL)"
+    # app.codesign_certificate = "3rd Party Mac Developer Application: Mohawk Apps, LLC (DW9QQZR4ZL)"
   end
 
 end
