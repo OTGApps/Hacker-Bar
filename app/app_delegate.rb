@@ -25,6 +25,15 @@ class AppDelegate
 
     update_menu
 
+    invocation = NSInvocation.invocationWithMethodSignature(self.methodSignatureForSelector("update_interface_last_updated:"))
+    invocation.setTarget(self)
+    invocation.setSelector("update_interface_last_updated:")
+    NSRunLoop.mainRunLoop.addTimer(NSTimer.timerWithTimeInterval(5, invocation:invocation, repeats:true), forMode:NSRunLoopCommonModes)
+
+    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"trigger_wait", name:NSWorkspaceDidWakeNotification, object:nil)
+    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_waiting", name:NSWorkspaceWillSleepNotification, object:nil)
+    NSNotificationCenter.defaultCenter.addObserver(self, selector:"network_status_changed:", name:FXReachabilityStatusDidChangeNotification, object:nil)
+
     if App::Persistence['asked_to_launch_on_login'] != true
       App::Persistence['asked_to_launch_on_login'] = true
 
@@ -38,15 +47,6 @@ class AppDelegate
 
       toggle_autolaunch(nil) if alert.runModal == NSAlertFirstButtonReturn
     end
-
-    invocation = NSInvocation.invocationWithMethodSignature(self.methodSignatureForSelector("update_interface_last_updated:"))
-    invocation.setTarget(self)
-    invocation.setSelector("update_interface_last_updated:")
-    NSRunLoop.mainRunLoop.addTimer(NSTimer.timerWithTimeInterval(5, invocation:invocation, repeats:true), forMode:NSRunLoopCommonModes)
-
-    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"trigger_wait", name:NSWorkspaceDidWakeNotification, object:nil)
-    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_waiting", name:NSWorkspaceWillSleepNotification, object:nil)
-    NSNotificationCenter.defaultCenter.addObserver(self, selector:"network_status_changed:", name:FXReachabilityStatusDidChangeNotification, object:nil)
 
   end
 
@@ -262,7 +262,6 @@ class AppDelegate
     animate_icon
     HNAPI.get_news do |json, error|
       if error.nil? && json.count > 0
-
         json['submissions'].each_with_index do |news, i|
           this_hn_item = HNItem.new(news)
           if @items[i].nil? || (!@highlighted_item.nil? && @highlighted_item.hnitem == this_hn_item)
