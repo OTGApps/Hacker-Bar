@@ -279,10 +279,18 @@ class AppDelegate
       else
         NSLog("Error: Could not get data from API")
         error_string = "Error: #{error.description}"
+        unless error['error'].nil?
+          api_error error['error']
+          NSLog("API Error: #{error['error']['message']}")
+        end
       end
       @animation_stopped = true
       Scheduler.shared_scheduler.trigger_wait
     end
+  end
+
+  def api_error error
+    @status_item.toolTip = "#{App.name} - API Error: #{error['message']}"
   end
 
   def update_interface_last_updated sender
