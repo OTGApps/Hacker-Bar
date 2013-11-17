@@ -23,6 +23,7 @@ Motion::Project::App.setup do |app|
 
   app.pods do
     pod 'FXReachability'
+    pod "Mixpanel-OSX-Community", :git => "https://github.com/orta/mixpanel-osx-unofficial.git"
   end
 
   app.vendor_project('vendor/time_ago_in_words', :static, :cflags => '-fobjc-arc')

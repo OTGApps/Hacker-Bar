@@ -5,6 +5,10 @@ class AppDelegate
 
     BW.debug = true unless NSBundle.mainBundle.objectForInfoDictionaryKey('AppStoreRelease') == true
 
+    Mixpanel.sharedInstanceWithToken("69f9ad8b0b4679373d3a790ff5393b20")
+    mixpanel = Mixpanel.sharedInstance
+    mixpanel.identify(Machine.unique_id)
+
     @menu = NSMenu.new
     @menu.setAutoenablesItems true
     @menu.delegate = self
@@ -51,6 +55,7 @@ class AppDelegate
   end
 
   def applicationWillTerminate(notification)
+    Mixpanel.sharedInstance.track("App Quit")
     Scheduler.shared_scheduler.stop_waiting
   end
 
@@ -131,6 +136,8 @@ class AppDelegate
     if time > 0 && network_reachable
       Scheduler.shared_scheduler.refresh_and_trigger
     end
+
+    Mixpanel.sharedInstance.track("Update Fetch Interval", properties:{from:previous_time, to:time})
 
     # Rebuild the interface
     @sub_options.removeAllItems
@@ -233,6 +240,7 @@ class AppDelegate
 
   # TODO: Get this working properly.
   def start_at_login enabled
+    Mixpanel.sharedInstance.track("Setting Autolaunch", properties:{autolaunch:enabled})
     url = NSBundle.mainBundle.bundleURL.URLByAppendingPathComponent("Contents/Library/LoginItems/HackerBarLauncher.app", isDirectory:true)
 
     status = LSRegisterURL(url, true)
@@ -273,6 +281,7 @@ class AppDelegate
           end
         end
         @server_data_age = json['updated_words'] || nil
+        Mixpanel.sharedInstance.track("API Hit")
         App::Persistence['last_check'] = Time.now.to_i
         update_interface_last_updated nil
         update_menu
@@ -282,6 +291,7 @@ class AppDelegate
         unless error['error'].nil?
           api_error error['error']
           NSLog("API Error: #{error['error']['message']}")
+          Mixpanel.sharedInstance.track("API Error", properties:error['error'])
         end
       end
       @animation_stopped = true
@@ -341,6 +351,7 @@ class AppDelegate
   end
 
   def show_about(sender)
+    Mixpanel.sharedInstance.track("Show About")
     app = NSApplication.sharedApplication
     app.activateIgnoringOtherApps(true)
     NSApp.orderFrontStandardAboutPanel(sender)

@@ -60,12 +60,14 @@ class HNItemViewController < NSViewController
 
     # Log that the user went to that site.
     App::Persistence['clicked'] =  App::Persistence['clicked'].mutableCopy << @hnitem.id if @hnitem.id
+    Mixpanel.sharedInstance.track("Link Click", properties:{link:@hnitem.link})
 
     launch_link
   end
 
   def clicked_comments(sender)
     NSLog "Clicked Comments: #{@hnitem.title}" if BW.debug?
+    Mixpanel.sharedInstance.track("Link Click", properties:{link:@hnitem.link})
     launch_comments
   end
 

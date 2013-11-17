@@ -31,6 +31,7 @@ class Scheduler
 
   def stop_waiting
     NSLog "Stopping the timer" if BW.debug?
+    App.delegate.reset_image
     EM.cancel_timer(@timer)
     @timer = nil
   end
