@@ -6,7 +6,7 @@ This is a system bar application that fetches the top items from HackerNews ever
 The application will remember which links you've clicked before!
 
 ---
-[![Code Climate](https://codeclimate.com/github/MohawkApps/Hacker-Bar.png)](https://codeclimate.com/github/MohawkApps/Hacker-Bar) [![Stories in Ready](https://badge.waffle.io/MohawkApps/Hacker-Bar.png)](http://waffle.io/MohawkApps/Hacker-Bar)
+[![Code Climate](https://codeclimate.com/github/MohawkApps/Hacker-Bar.png)](https://codeclimate.com/github/MohawkApps/Hacker-Bar) [![Stories in Ready](https://badge.waffle.io/MohawkApps/Hacker-Bar.png)](http://waffle.io/MohawkApps/Hacker-Bar) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/MohawkApps/hacker-bar/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 ---
 
 ## Compiling:
