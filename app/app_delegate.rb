@@ -73,11 +73,6 @@ class AppDelegate
     @menu.addItem create_item(title: " Launch #{App.name} on login", action: "toggle_autolaunch:", checked: App::Persistence['launch_on_login'])
     @menu.addItem create_refresh_option_menu
 
-    # Auto-updating last check menu item
-    @menu.addItem NSMenuItem.separatorItem
-    @last_check_item ||= create_item(title: " " << Scheduler.shared_scheduler.last_check_words, enabled: false)
-    @menu.addItem @last_check_item
-
     @menu.addItem NSMenuItem.separatorItem
     @menu.addItem create_item(title: "About #{App.name}", action:'show_about:')
     @menu.addItem create_item(title: "Quit", action:'terminate:')
@@ -89,6 +84,11 @@ class AppDelegate
     @sub_options ||= NSMenu.alloc.init
     @sub_options.removeAllItems
     @sub_options.setAutoenablesItems true
+
+    # Auto-updating last check menu item
+    @last_check_item ||= create_item(title: Scheduler.shared_scheduler.last_check_words, enabled: false)
+    @sub_options.addItem @last_check_item
+    @sub_options.addItem NSMenuItem.separatorItem
 
     refresh_menu_options.each do |option|
       @sub_options.addItem option
