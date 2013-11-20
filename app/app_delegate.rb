@@ -1,5 +1,5 @@
 class AppDelegate
-  attr_accessor :status_item, :menu, :items, :server_data_age, :highlighted_item, :menu_open
+  attr_accessor :status_item, :menu, :items, :highlighted_item, :menu_open
 
   def applicationDidFinishLaunching(notification)
 
@@ -271,7 +271,6 @@ class AppDelegate
             @items[i].hnitem = this_hn_item
           end
         end
-        @server_data_age = json['updated_words'] || nil
         Mixpanel.sharedInstance.track("API Hit")
         App::Persistence['last_check'] = Time.now.to_i
         update_interface_last_updated nil
@@ -295,14 +294,9 @@ class AppDelegate
   end
 
   def update_interface_last_updated sender
-    if @server_data_age.nil?
-      last_check = Scheduler.shared_scheduler.last_check_words
-      @status_item.toolTip = "#{App.name} - #{last_check}"
-      @last_check_item.setTitle(last_check << ".")
-    else
-      @status_item.toolTip = "#{App.name} - Updated: #{@server_data_age}"
-      @last_check_item.setTitle("Data Cache Age: " << @server_data_age << ".")
-    end
+    last_check = Scheduler.shared_scheduler.last_check_words
+    @status_item.toolTip = "#{App.name} - #{last_check}"
+    @last_check_item.setTitle(last_check << ".")
   end
 
   def network_reachable
