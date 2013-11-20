@@ -34,8 +34,6 @@ class AppDelegate
     invocation.setSelector("update_interface_last_updated:")
     NSRunLoop.mainRunLoop.addTimer(NSTimer.timerWithTimeInterval(5, invocation:invocation, repeats:true), forMode:NSRunLoopCommonModes)
 
-    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"trigger_wait", name:NSWorkspaceDidWakeNotification, object:nil)
-    NSNotificationCenter.defaultCenter.addObserver(Scheduler.shared_scheduler, selector:"stop_waiting", name:NSWorkspaceWillSleepNotification, object:nil)
     NSNotificationCenter.defaultCenter.addObserver(self, selector:"network_status_changed:", name:FXReachabilityStatusDidChangeNotification, object:nil)
 
     if App::Persistence['asked_to_launch_on_login'] != true
@@ -197,12 +195,11 @@ class AppDelegate
   end
 
   # Animated icon while the API is pulling new results
-  # to stop animating, set the instance variable @animation_stopped to true
   def animate_icon
     NSLog "Starting image animation" if BW.debug?
     @current_frame = 0
 
-    icon_animation_timer = EM.add_periodic_timer 1.0/8.0 do
+    @icon_animation_timer = EM.add_periodic_timer 1.0/8.0 do
       # get the image for the current frame
       image = "StatusAnimating_#{@current_frame}".image
       @status_item.setImage(image)
@@ -211,18 +208,12 @@ class AppDelegate
       else
         @current_frame = @current_frame + 1
       end
-
-      if @animation_stopped == true
-        NSLog "Stopping image animation" if BW.debug?
-        EM.cancel_timer(icon_animation_timer)
-        @animation_stopped = nil
-        reset_image
-      end
     end
   end
 
   def reset_image
     NSLog "Resetting the icon." if BW.debug?
+    EM.cancel_timer(@icon_animation_timer) if @icon_animation_timer
     @status_item.image = "Status".image
     @status_item.alternateImage = "StatusHighlighted".image
   end
@@ -294,7 +285,7 @@ class AppDelegate
           Mixpanel.sharedInstance.track("API Error", properties:error['error'])
         end
       end
-      @animation_stopped = true
+      reset_image
       Scheduler.shared_scheduler.trigger_wait
     end
   end
