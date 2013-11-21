@@ -271,7 +271,7 @@ class AppDelegate
             @items[i].hnitem = this_hn_item
           end
         end
-        Mixpanel.sharedInstance.track("API Hit")
+        # Mixpanel.sharedInstance.track("API Hit")
         App::Persistence['last_check'] = Time.now.to_i
         update_interface_last_updated nil
         update_menu
