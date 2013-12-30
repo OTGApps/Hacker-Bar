@@ -11,8 +11,8 @@ end
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'Hacker Bar'
-  app.version = "1.0.1"
-  app.short_version = "16"
+  app.version = "1.0.2"
+  app.short_version = "18"
   app.icon = 'AppIcon.icns'
   app.identifier = "com.mohawkapps.#{app.name.gsub(' ', '-').downcase}"
   app.info_plist['LSUIElement'] = true
@@ -23,7 +23,7 @@ Motion::Project::App.setup do |app|
 
   app.pods do
     pod 'FXReachability'
-    pod "Mixpanel-OSX-Community", :git => "https://github.com/orta/mixpanel-osx-unofficial.git"
+    pod 'Mixpanel-OSX-Community', :git => "https://github.com/orta/mixpanel-osx-unofficial.git"
   end
 
   app.vendor_project('vendor/time_ago_in_words', :static, :cflags => '-fobjc-arc')
@@ -49,16 +49,18 @@ class Motion::Project::App
     #
     alias_method :build_before_copy_helper, :build
     def build platform, options = {}
+
+      helper_name = "HackerBarLauncher"
+
       # First let the normal `build' method perform its work.
       build_before_copy_helper(platform, options)
       # Now the app is built, but not codesigned yet.
+
       destination = File.join(config.app_bundle(platform), 'Library/LoginItems')
       info 'Create', destination
       FileUtils.mkdir_p destination
-      helper_path = File.dirname(__FILE__)+'/HackerBarLauncher/build/MacOSX-10.8-Development/HackerBarLauncher.app'
-      unless File.directory? helper_path
-        helper_path = File.dirname(__FILE__)+'/HackerBarLauncher/build/MacOSX-10.8-Release/HackerBarLauncher.app'
-      end
+
+      helper_path = File.join("./#{helper_name}", config.versionized_build_dir(platform)[1..-1], "#{helper_name}.app")
       info 'Copy', helper_path
       FileUtils.cp_r helper_path, destination
     end
