@@ -21,7 +21,7 @@ class AppDelegate
     App::Persistence['clicked'] ||= []
 
     @status_bar ||= NSStatusBar.systemStatusBar
-    @status_item ||= @status_bar.statusItemWithLength(NSSquareStatusItemLength).retain
+    @status_item ||= @status_bar.statusItemWithLength(NSSquareStatusItemLength)
     @status_item.menu = @menu
     @status_item.highlightMode = true
     @status_item.toolTip = App.name
