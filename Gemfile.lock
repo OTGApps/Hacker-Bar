@@ -1,6 +1,6 @@
 GIT
-  remote: http://github.com/rubymotion/BubbleWrap.git
-  revision: 035e39d54c4352da6ee9ea2516c53b24dda97a65
+  remote: git://github.com/rubymotion/BubbleWrap.git
+  revision: 117bdbf3894e95d77a6e86f98fd52be5ee0e0c38
   specs:
     bubble-wrap (1.4.0)
 
