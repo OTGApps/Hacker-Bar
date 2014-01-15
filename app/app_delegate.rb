@@ -3,7 +3,7 @@ class AppDelegate
 
   def applicationDidFinishLaunching(notification)
 
-    BW.debug = true unless NSBundle.mainBundle.objectForInfoDictionaryKey('AppStoreRelease') == true
+    BW.debug = true unless App.info_plist['AppStoreRelease'] == true
 
     Mixpanel.sharedInstanceWithToken("69f9ad8b0b4679373d3a790ff5393b20")
     mixpanel = Mixpanel.sharedInstance
