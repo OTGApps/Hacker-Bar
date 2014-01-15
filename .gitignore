@@ -21,3 +21,5 @@ vendor/**/*.bridgesupport
 ib.xcodeproj
 
 /_release/
+
+/vendor/bundle/
