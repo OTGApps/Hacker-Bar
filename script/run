@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd HackerBarLauncher
-rake
+bundle exec rake
 killall Hacker\ Bar
 cd ..
-rake
+bundle exec rake

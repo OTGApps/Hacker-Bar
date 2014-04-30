@@ -1,10 +1,10 @@
 #!/bin/bash
 
 bundle
-rake clean:all
+bundle exec rake clean:all
 cd HackerBarLauncher
-rake clean:all
-rake build:release
+bundle exec rake clean:all
+bundle exec rake build:release
 cd ..
-rake pod:install
-rake build:release
+bundle exec rake pod:install
+bundle exec rake build:release
