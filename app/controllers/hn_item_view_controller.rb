@@ -32,7 +32,7 @@ class HNItemViewController < NSViewController
   def set_interface
     @headline.setStringValue @hnitem.title
 
-    if @hnitem.submitter == "yc_advertisement"
+    if @hnitem.comments == "yc_advertisement"
       @comment_count.hidden = true
       @votes_count.hidden = true
       @comment_image.hidden = true
@@ -43,7 +43,7 @@ class HNItemViewController < NSViewController
       @comment_image.hidden = false
       @votes_image.setImage "UpvotesBadge".image
 
-      comment_count = @hnitem.comments['count'].to_i || 0
+      comment_count = @hnitem.comments[:count].to_i || 0
       votes_count =   @hnitem.points.to_i || 0
 
       comment_count = SI.convert(comment_count) if comment_count > 1000
@@ -66,8 +66,8 @@ class HNItemViewController < NSViewController
   end
 
   def clicked_comments(sender)
-    NSLog "Clicked Comments: #{@hnitem.comments['url']}" if BW.debug?
-    Mixpanel.sharedInstance.track("Comment Click", properties:{link:@hnitem.comments['url']})
+    NSLog "Clicked Comments: #{@hnitem.comments[:url]}" if BW.debug?
+    Mixpanel.sharedInstance.track("Comment Click", properties:{link:@hnitem.comments[:url]})
     launch_comments
   end
 
@@ -91,14 +91,13 @@ class HNItemViewController < NSViewController
   end
 
   def launch_comments
-    launch_browser @hnitem.comments['url']
+    launch_browser @hnitem.comments[:url]
   end
 
   def launch_browser(url)
     # unhighlight
     # App.delegate.menu.cancelTracking # This will auto-close the menu (v2 feature)
 
-    url = "https://news.ycombinator.com/" << url unless url.start_with? "http"
     url = NSURL.URLWithString(url)
     if NSWorkspace.sharedWorkspace.openURL(url)
       @headline.setStringValue @hnitem.title

@@ -27,4 +27,12 @@ class HNItem
     false
   end
 
+  def to_s
+    s = ""
+    PROPERTIES.each { |prop|
+      s << "#{prop}: #{self.send(prop)}\n"
+    }
+    s
+  end
+
 end

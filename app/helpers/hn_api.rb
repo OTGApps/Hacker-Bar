@@ -34,7 +34,7 @@ class HNAPI
       score = element.firstChildWithTag("span")
 
       if !score.nil? && score.stringValue.include?('points')
-        news[id][:score] = score.stringValue.split(' ').first
+        news[id][:points] = score.stringValue.split(' ').first
 
         # Submitter
         submitter = element.firstChildWithTag('a')
