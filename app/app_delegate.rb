@@ -259,9 +259,10 @@ class AppDelegate
     end
 
     animate_icon
-    HNAPI.get_news do |json, error|
-      if error.nil? && json.count > 0
-        json['submissions'].each_with_index do |news, i|
+    HNAPI.sharedAPI.get_news do |parsed, error|
+      ap parsed
+      if error.nil? && parsed.count > 0
+        parsed.each do |i, news|
           this_hn_item = HNItem.new(news)
           if @items[i].nil? || (!@highlighted_item.nil? && @highlighted_item.hnitem == this_hn_item)
             news_item = HNItemViewController.alloc.initWithNibName("HNItemViewController", bundle:nil)
