@@ -1,60 +1,74 @@
 GIT
   remote: git://github.com/rubymotion/BubbleWrap.git
-  revision: 3c8ccc7e73736f570b4ea535284b502c34d92f06
+  revision: 84516993177c56672c50cfa339d8a03841c48905
   specs:
-    bubble-wrap (1.6.0)
-      bubble-wrap-http (= 1.6.0)
+    bubble-wrap (1.7.0)
+      bubble-wrap-http (= 1.7.0)
+
+PATH
+  remote: ../menu-motion
+  specs:
+    menu-motion (0.1.5)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (3.2.17)
+    activesupport (3.2.19)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
-    afmotion (2.0.0)
-      motion-cocoapods (~> 1.4.0)
-      motion-require (~> 0.0.7)
-    awesome_print_motion (0.1.0)
-    bubble-wrap-http (1.6.0)
-    claide (0.5.0)
-    cocoapods (0.32.1)
+    afmotion (2.3.1)
+      motion-cocoapods (>= 1.4.1)
+      motion-require (>= 0.1)
+    bubble-wrap-http (1.7.0)
+    claide (0.6.1)
+    cocoapods (0.33.1)
       activesupport (>= 3.2.15, < 4)
-      claide (~> 0.5.0)
-      cocoapods-core (= 0.32.1)
-      cocoapods-downloader (~> 0.5.0)
-      cocoapods-try (~> 0.2.0)
+      claide (~> 0.6.1)
+      cocoapods-core (= 0.33.1)
+      cocoapods-downloader (~> 0.6.1)
+      cocoapods-plugins (~> 0.2.0)
+      cocoapods-trunk (~> 0.1.1)
+      cocoapods-try (~> 0.3.0)
       colored (~> 1.2)
       escape (~> 0.0.4)
       json_pure (~> 1.8)
       nap (~> 0.7)
       open4 (~> 1.3)
-      xcodeproj (~> 0.16.1)
-    cocoapods-core (0.32.1)
-      activesupport (>= 3.2.15, < 4)
+      xcodeproj (~> 0.17.0)
+    cocoapods-core (0.33.1)
+      activesupport (>= 3.2.15)
       fuzzy_match (~> 2.0.4)
       json_pure (~> 1.8)
       nap (~> 0.5)
-    cocoapods-downloader (0.5.0)
-    cocoapods-try (0.2.0)
+    cocoapods-downloader (0.6.1)
+    cocoapods-plugins (0.2.0)
+      nap
+    cocoapods-trunk (0.1.4)
+      json_pure (~> 1.8)
+      nap (>= 0.6)
+      netrc
+    cocoapods-try (0.3.0)
     colored (1.2)
     escape (0.0.4)
     fuzzy_match (2.0.4)
-    i18n (0.6.9)
-    ib (0.4.7)
-      thor (~> 0.15.4)
-      tilt (~> 1.4.1)
-      xcodeproj (~> 0.16.0)
+    i18n (0.6.11)
+    ib (0.4.4)
+      thor (>= 0.15.4)
+      tilt (>= 1.4.1)
+      xcodeproj (>= 0.11.1)
     json_pure (1.8.1)
-    motion-cocoapods (1.4.1)
+    motion-cocoapods (1.5.0)
       cocoapods (>= 0.32.1)
-    motion-require (0.0.7)
-    multi_json (1.9.3)
-    nap (0.7.0)
-    open4 (1.3.3)
-    rake (10.3.1)
-    thor (0.15.4)
-    tilt (1.4.1)
-    xcodeproj (0.16.1)
+    motion-require (0.2.0)
+    motion_print (0.0.1)
+    multi_json (1.10.1)
+    nap (0.8.0)
+    netrc (0.7.7)
+    open4 (1.3.4)
+    rake (10.3.2)
+    thor (0.19.1)
+    tilt (2.0.1)
+    xcodeproj (0.17.0)
       activesupport (~> 3.0)
       colored (~> 1.2)
 
@@ -62,10 +76,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  afmotion (~> 2.0.0)
-  awesome_print_motion
+  afmotion
   bubble-wrap!
   cocoapods
   ib
+  menu-motion!
   motion-cocoapods
+  motion_print
   rake

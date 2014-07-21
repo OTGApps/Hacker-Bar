@@ -1,12 +1,14 @@
 source 'https://rubygems.org'
 
 # Cocoapods
-gem "motion-cocoapods"
-gem "cocoapods"
+gem 'motion-cocoapods'
+gem 'cocoapods'
 
 gem 'rake'
 
+gem 'menu-motion', path: '../menu-motion'
 gem 'ib'
-gem 'bubble-wrap', github: 'rubymotion/BubbleWrap', require: ['bubble-wrap/core', 'bubble-wrap/reactor']
-gem "afmotion", "~> 2.0.0"
-gem 'awesome_print_motion'
+gem 'bubble-wrap', github: 'rubymotion/BubbleWrap', require: ['bubble-wrap/core']
+gem 'afmotion'
+
+gem 'motion_print'

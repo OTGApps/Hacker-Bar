@@ -9,10 +9,9 @@ rescue LoadError
 end
 
 Motion::Project::App.setup do |app|
-  # Use `rake config' to see complete project settings.
   app.name = 'Hacker Bar'
-  app.version = "1.0.2"
-  app.short_version = "18"
+  app.version = "1.1.0"
+  app.short_version = "19"
   app.icon = 'AppIcon.icns'
   app.identifier = "com.mohawkapps.#{app.name.gsub(' ', '-').downcase}"
   app.info_plist['LSUIElement'] = true
@@ -22,7 +21,6 @@ Motion::Project::App.setup do |app|
   app.archs['MacOSX'] = ['x86_64']
 
   app.pods do
-    pod 'FXReachability'
     pod 'Mixpanel-OSX-Community', :git => "https://github.com/orta/mixpanel-osx-unofficial.git"
     pod 'Ono'
   end
