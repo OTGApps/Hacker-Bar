@@ -33,6 +33,7 @@ class MainMenu < MenuMotion::Menu
 
   def build_menu
     # Make the API Call
+    NSApplication.sharedApplication.delegate.update_status_item('StatusLoading')
     HNAPI.sharedAPI.get_news do |parsed, error|
       App::Persistence['last_check'] = Time.now.to_i
 
