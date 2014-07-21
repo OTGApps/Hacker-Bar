@@ -78,18 +78,22 @@ class HNItemViewController < NSViewController
   end
 
   def highlight
-    NSLog "Highlighting: #{@hnitem.title}" if BW.debug?
+    # NSLog "Highlighting: #{@hnitem.title}" if BW.debug?
     @headline.setTextColor NSColor.highlightColor
-    @background_image.setImage(NSImage.imageNamed("background"))
+    @background_image.setImage(cached_background_image)
     view.setNeedsDisplay true
   end
 
   def unhighlight
-    NSLog "Unhighlighting: #{@hnitem.title}" if BW.debug?
+    # NSLog "Unhighlighting: #{@hnitem.title}" if BW.debug?
     return if @background_image.image.nil?
     @headline.setTextColor NSColor.controlTextColor
     @background_image.setImage nil
     view.setNeedsDisplay true
+  end
+
+  def cached_background_image
+    @cached_background_image ||= NSImage.imageNamed("background")
   end
 
   def launch_link
