@@ -8,7 +8,7 @@ class HNAPI
   end
 
   def get_news(&block)
-    ap 'Getting news' if BW.debug?
+    NSLog "Getting news from ycombinator - #{Time.now}" if BW.debug?
     AFMotion::HTTP.get(HACKER_NEWS) do |result|
       error = nil
       parsed = parse_hn(result.body)
@@ -67,7 +67,7 @@ class HNAPI
     # Get title and link
     id = 0
     document.enumerateElementsWithXPath("//td[@class='title']/a", block:-> element {
-      next if id > 29
+      next if id > 29 || element.stringValue.strip == 'scribd'
 
       news[id][:title] = element.stringValue.strip
       news[id][:link] = element.valueForAttribute('href')

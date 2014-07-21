@@ -47,7 +47,7 @@ class SI
       denom = base ** exp
       if nump >= denom || exp == min_exp
         val = nump / denom
-        val = SI.round val, [length - val.to_i.to_s.length, 0].max
+        val = val.round([length - val.to_i.to_s.length, 0].max)
         val = val.to_i if exp == 0 && num.is_a?(Fixnum)
         val = val.to_s.ljust(length + 1, '0') if val.is_a?(Float)
 
@@ -58,7 +58,7 @@ class SI
     nil
   end
 
-  def revert str, options = {}
+  def self.revert str, options = {}
     options = Hash[ DEFAULT.select { |k, v| k == :base } ].merge(options)
     pair    = PREFIXES.to_a.find { |k, v| !v.empty? && str =~ /[0-9]#{v}$/ }
 
@@ -67,10 +67,6 @@ class SI
     else
       str.to_f
     end
-  end
-
-  def self.round val, ndigits
-    val.round ndigits
   end
 
 end

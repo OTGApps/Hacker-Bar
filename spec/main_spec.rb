@@ -1,4 +1,4 @@
-describe "Application 'QuickHackerNews'" do
+describe "Application 'HackerBar'" do
   before do
     @app = NSApplication.sharedApplication
   end
