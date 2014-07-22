@@ -6,6 +6,7 @@ class MainMenu < MenuMotion::Menu
 
   def init
     start_update_timer
+    start_last_loaded_timer
     self.delegate = self
     self
   end
@@ -65,6 +66,12 @@ class MainMenu < MenuMotion::Menu
     @update_timer = NSTimer.scheduledTimerWithTimeInterval(App::Persistence['check_interval'], target: self, selector: "build_menu", userInfo: nil, repeats: true)
     @update_timer.setTolerance(10)
     @update_timer.fire
+  end
+
+  def start_last_loaded_timer
+    @last_update_timer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "update_last_loaded", userInfo: nil, repeats: true)
+    @last_update_timer.setTolerance(10)
+    @last_update_timer.fire
   end
 
   def menu(menu, willHighlightItem:item)

@@ -1,7 +1,10 @@
 module RefreshRows
 
   def refresh_sections
-    refresh_rows << {title: last_check_words}
+    refresh_rows << {
+      title: last_check_words,
+      tag: :last_check_words
+    }
   end
 
   def refresh_rows
@@ -26,6 +29,12 @@ module RefreshRows
         }
       end
     end
+  end
+
+  def update_last_loaded
+    update_item_with_tag(:last_check_words, {
+      title: last_check_words
+    }) unless item_with_tag(:last_check_words).nil?
   end
 
   def last_check_words
