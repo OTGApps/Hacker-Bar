@@ -30,12 +30,13 @@ class AppDelegate
       App::Persistence['asked_to_launch_on_login'] = true
 
       # Ask the user to launch the app on start.
-      alert = NSAlert.alloc.init
-      alert.addButtonWithTitle('Yes')
-      alert.addButtonWithTitle('No')
-      alert.setMessageText("Launch #{App.name} on login?")
-      alert.setInformativeText("Would you like #{App.name} to automatically launch on login?")
-      alert.setAlertStyle(NSWarningAlertStyle)
+      alert = NSAlert.alloc.init.tap do |a|
+        a.addButtonWithTitle('Yes')
+        a.addButtonWithTitle('No')
+        a.setMessageText("Launch #{App.name} on login?")
+        a.setInformativeText("Would you like #{App.name} to automatically launch on login?")
+        a.setAlertStyle(NSWarningAlertStyle)
+      end
 
       main_menu.toggle_autolaunch(nil) if alert.runModal == NSAlertFirstButtonReturn
     end

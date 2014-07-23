@@ -39,7 +39,7 @@ class MainMenu < MenuMotion::Menu
       App::Persistence['last_check'] = Time.now.to_i
 
       @news = []
-      if error.nil? && parsed.count > 0
+      if error.nil?
         parsed.each do |i, news|
           @news << HNItem.new(news)
         end
@@ -47,8 +47,12 @@ class MainMenu < MenuMotion::Menu
         build_data_menu
       else
         NSLog("Error: Could not get data from API")
-        NSLog("API Error: #{error['error']['message']}") unless error['error'].nil?
-        error_string = "Error: #{error.description}"
+        error_string = "Error: #{error.localizedDescription}"
+
+        # Start checking more often til the internet connection comes back online.
+        if !@update_timer.nil? && @update_timer.timeInterval > 100
+          start_update_timer(30)
+        end
 
         build_error_menu(error_string)
       end
@@ -62,8 +66,12 @@ class MainMenu < MenuMotion::Menu
     super
   end
 
-  def start_update_timer
-    @update_timer = NSTimer.scheduledTimerWithTimeInterval(App::Persistence['check_interval'], target: self, selector: "build_menu", userInfo: nil, repeats: true)
+  def start_update_timer(seconds = nil)
+    @update_timer.invalidate unless @update_timer.nil? # Invalidate the current timer.
+
+    seconds = App::Persistence['check_interval'] if seconds.nil?
+
+    @update_timer = NSTimer.scheduledTimerWithTimeInterval(seconds, target: self, selector: "build_menu", userInfo: nil, repeats: true)
     @update_timer.setTolerance(10)
     @update_timer.fire
   end

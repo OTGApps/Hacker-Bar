@@ -10,11 +10,15 @@ class HNAPI
   def get_news(&block)
     NSLog "Getting news from ycombinator - #{Time.now}" if BW.debug?
     AFMotion::HTTP.get(HACKER_NEWS) do |result|
-      error = nil
-      parsed = parse_hn(result.body)
+      parsed, error = nil, nil
+      if result.success?
+        parsed = parse_hn(result.body)
 
-      unless parsed.count == 30
-       error = result
+        unless parsed.count == 30
+         error = result
+        end
+      else
+        error = result.error
       end
       block.call parsed, error
     end

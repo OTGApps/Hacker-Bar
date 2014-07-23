@@ -48,8 +48,6 @@ module RefreshRows
   end
 
   def update_refresh_interval(sender)
-    @update_timer.invalidate unless @update_timer.nil? # Invalidate the current timer.
-
     # Update the defaults setting for the check interval
     previous_time = App::Persistence['check_interval']
     App::Persistence['check_interval'] = sender.object
