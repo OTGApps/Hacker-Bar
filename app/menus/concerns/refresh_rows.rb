@@ -51,7 +51,6 @@ module RefreshRows
     # Update the defaults setting for the check interval
     previous_time = App::Persistence['check_interval']
     App::Persistence['check_interval'] = sender.object
-    App.delegate.main_menu.build_menu
 
     Mixpanel.sharedInstance.track('Update Fetch Interval', properties: {
       from: previous_time,
