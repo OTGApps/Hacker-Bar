@@ -12,8 +12,9 @@ module ActionRows
         action: "toggle_autolaunch:",
         checked: App::Persistence['launch_on_login']
       }, {
-        title: 'Refresh Interval:',
-        rows: refresh_sections
+        title: "Refresh Interval: (#{last_check_words})",
+        sections: refresh_sections,
+        tag: :last_check_words
       }]
     }, {
       rows: [{

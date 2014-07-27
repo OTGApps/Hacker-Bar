@@ -1,10 +1,15 @@
 module RefreshRows
 
   def refresh_sections
-    refresh_rows << {
-      title: last_check_words,
-      tag: :last_check_words
-    }
+    [{rows: refresh_now_rows}, {rows: refresh_rows}]
+  end
+
+  def refresh_now_rows
+    [{
+      title: 'Refresh Now',
+      target: self,
+      action: :refresh_now
+    }]
   end
 
   def refresh_rows
@@ -33,18 +38,22 @@ module RefreshRows
 
   def update_last_loaded
     update_item_with_tag(:last_check_words, {
-      title: last_check_words
+      title: "Refresh Interval: (#{last_check_words})"
     }) unless item_with_tag(:last_check_words).nil?
   end
 
   def last_check_words
-    'Server checked ' << last_check
+    'Checked ' << last_check
   end
 
   def last_check
     check = App::Persistence['last_check'].to_i
     return '- Unknown' if check == 0
     Time.at(check).distanceOfTimeInWords
+  end
+
+  def refresh_now
+    start_update_timer
   end
 
   def update_refresh_interval(sender)
