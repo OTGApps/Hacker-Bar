@@ -1,14 +1,9 @@
 GIT
   remote: git://github.com/rubymotion/BubbleWrap.git
-  revision: 84516993177c56672c50cfa339d8a03841c48905
+  revision: be4682c6109bb5ca4cb2a223f50483f3184d0058
   specs:
     bubble-wrap (1.7.0)
       bubble-wrap-http (= 1.7.0)
-
-PATH
-  remote: ../menu-motion
-  specs:
-    menu-motion (0.1.5)
 
 GEM
   remote: https://rubygems.org/
@@ -57,6 +52,7 @@ GEM
       tilt (>= 1.4.1)
       xcodeproj (>= 0.11.1)
     json_pure (1.8.1)
+    menu-motion (0.1.6)
     motion-cocoapods (1.5.0)
       cocoapods (>= 0.32.1)
     motion-require (0.2.0)
@@ -80,7 +76,7 @@ DEPENDENCIES
   bubble-wrap!
   cocoapods
   ib
-  menu-motion!
+  menu-motion
   motion-cocoapods
   motion_print
   rake
