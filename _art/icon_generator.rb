@@ -2,7 +2,7 @@
 
 # Easily create AppIcon.icns files from a single 1024x1024 image.
 
-raise "You must pass a folder name to this utility" unless ARGV[0]
+raise "You must pass an image name to this utility" unless ARGV[0]
 require 'rubygems'
 
 def main
@@ -27,6 +27,8 @@ def main
 
   puts "Generating iconset file. \n"
   %x(iconutil -c icns -o AppIcon.icns AppIcon.iconset)
+
+  puts "Your file is called: AppIcon.icns\nDone!"
 
 end
 
