@@ -5,6 +5,7 @@ class MainMenu < MenuMotion::Menu
   attr_accessor :news, :controllers, :highlighted_item
 
   def init
+    add_observers
     start_update_timer
     start_last_loaded_timer
     self.delegate = self
@@ -53,6 +54,8 @@ class MainMenu < MenuMotion::Menu
 
         # Start checking more often til the internet connection comes back online.
         if !@update_timer.nil? && @update_timer.timeInterval > 100
+          @update_timer.invalidate
+          @update_timer = nil
           start_update_timer(30)
         end
 
@@ -63,22 +66,38 @@ class MainMenu < MenuMotion::Menu
     end
   end
 
+  def build_menu_and_reset
+    build_menu
+    start_update_timer
+  end
+
   def build_menu_from_params(root_menu, params)
     self.removeAllItems
     super
   end
 
   def start_update_timer(seconds = nil)
-    @update_timer.invalidate unless @update_timer.nil? # Invalidate the current timer.
+    unless @update_timer.nil? # Invalidate the current timer.
+      @update_timer.invalidate
+      @update_timer = nil
+    end
 
-    seconds = App::Persistence['check_interval'] if seconds.nil?
-
-    @update_timer = NSTimer.scheduledTimerWithTimeInterval(seconds, target: self, selector: "build_menu", userInfo: nil, repeats: true)
-    @update_timer.setTolerance(10)
-    @update_timer.fire
+    if seconds.nil?
+      @update_timer = NSTimer.scheduledTimerWithTimeInterval(App::Persistence['check_interval'], target: self, selector: "build_menu", userInfo: nil, repeats: true)
+      @update_timer.setTolerance(10)
+      @update_timer.fire
+    else
+      @update_timer = NSTimer.scheduledTimerWithTimeInterval(seconds, target: self, selector: "build_menu_and_reset", userInfo: nil, repeats: false)
+      @update_timer.setTolerance(10)
+    end
   end
 
   def start_last_loaded_timer
+    unless @last_update_timer.nil? # Invalidate the current timer.
+      @last_update_timer.invalidate
+      @last_update_timer = nil
+    end
+
     @last_update_timer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "update_last_loaded", userInfo: nil, repeats: true)
     @last_update_timer.setTolerance(10)
     @last_update_timer.fire
@@ -96,4 +115,30 @@ class MainMenu < MenuMotion::Menu
     @highlighted_item = @controllers.find{|i| i.tag == item.tag}
     @highlighted_item.highlight if @highlighted_item.is_a? HNItemViewController
   end
+
+  def add_observers
+    @sleep_observer ||= NSWorkspace.sharedWorkspace.notificationCenter.addObserver(self, selector:'going_to_sleep:', name:NSWorkspaceWillSleepNotification, object:nil)
+    @wake_observer ||= NSWorkspace.sharedWorkspace.notificationCenter.addObserver(self, selector:'waking_up:', name:NSWorkspaceDidWakeNotification, object:nil)
+  end
+
+  def remove_observers
+    NSWorkspace.sharedWorkspace.notificationCenter.removeObserver(@sleep_observer)
+    NSWorkspace.sharedWorkspace.notificationCenter.removeObserver(@wake_observer)
+    @sleep_observer = nil
+    @wake_observer = nil
+  end
+
+  def going_to_sleep(notification)
+    @update_timer.invalidate unless @update_timer.nil?
+    @update_timer = nil
+
+    @last_update_timer.invalidate unless @last_update_timer.nil?
+    @last_update_timer = nil
+  end
+
+  def waking_up(notification)
+    start_update_timer
+    start_last_loaded_timer
+  end
+
 end

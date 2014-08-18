@@ -49,6 +49,9 @@ module RefreshRows
   def last_check
     check = App::Persistence['last_check'].to_i
     return '- Unknown' if check == 0
+    # mp check
+    # mp Time.at(check)
+    # mp Time.at(check).distanceOfTimeInWords
     Time.at(check).distanceOfTimeInWords
   end
 
@@ -69,4 +72,5 @@ module RefreshRows
     # Restart the timer
     start_update_timer
   end
+
 end
