@@ -10,8 +10,8 @@ end
 
 Motion::Project::App.setup do |app|
   app.name = 'Hacker Bar'
-  app.version = "1.1.0"
-  app.short_version = "19"
+  app.version = "1.1.1"
+  app.short_version = "20"
   app.icon = 'AppIcon.icns'
   app.identifier = "com.mohawkapps.#{app.name.gsub(' ', '-').downcase}"
   app.info_plist['LSUIElement'] = true
