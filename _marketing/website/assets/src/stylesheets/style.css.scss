@@ -1,0 +1,330 @@
+/*
+ image-url("avatar2.jpeg"); //image-url("image.png") is a sprockets helper,
+ could also use asset-url("", image)
+ */
+
+/* Write your CSS! */
+* {
+  box-sizing: border-box; }
+
+html {
+  margin: 0;
+  background: #CAC9C9;
+  min-height: 100%; }
+  html:after {
+    content: "";
+    display: table;
+    clear: both; }
+
+body {
+  background: image-url("noise.png"), radial-gradient(#fafaf9, #cdcccd);
+  border-top: 0px solid #555;
+  max-width: 1600px;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-family: 'Open Sans', sans-serif;
+  min-height: 750px; }
+
+.air {
+  background: image-url("air.png") no-repeat;
+  background-position: right 0;
+  background-size: 900px;
+  margin-right: 45%;
+  position: absolute;
+  display: block;
+  z-index: 899;
+  top: 40px;
+  bottom: 20px;
+  right: 0;
+  left: 0; }
+
+.wrapper {
+  margin: 0 auto;
+  padding: 65px 20px;
+  padding-left: 49%;
+  min-height: 750px; }
+
+.title {
+  padding-left: 110px;
+  padding-top: 2px;
+  height: 90px;
+  background: image-url("logo.png") top left no-repeat;
+  background-size: 90px;
+  margin-bottom: 40px; }
+
+.interface {
+  display: none; }
+
+h1 {
+  display: block;
+  font-size: 52px;
+  font-weight: 400;
+  color: #777777;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75), 0 -1px 1px rgba(0, 0, 0, 0.25);
+  margin-bottom: -15px; }
+
+p {
+  margin: 10px 0 50px 10px;
+  padding-right: 40px;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #777777;
+  max-width: 600px; }
+
+p.subtitle {
+  margin: 10px 0 30px 2px;
+  font-size: 18px;
+  line-height: 1;
+  color: #777777; }
+
+p.first {
+  margin: 10px 0 20px 10px;
+}
+
+a.store {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  display: inline-block;
+  font-family: 'Open Sans', sans-serif;
+  color: #777777;
+  font-weight: 400;
+  font-size: 18px;
+  text-decoration: none;
+  line-height: 1.1;
+  background: image-url("apple.png") 15px 8px no-repeat, linear-gradient(white, #f4f4f4);
+  background-size: 38px, 100%;
+  border-radius: 6px;
+  padding: 10px 15px 10px 70px;
+  margin-left: 10px; }
+  a.store span {
+    font-size: 21px; }
+  a.store:hover {
+    background: image-url("apple.png") 15px 8px no-repeat, linear-gradient(white, white);
+    background-size: 38px, 100%;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); }
+
+.social {
+  margin: 40px 0 0 10px;
+  padding: 0;
+  list-style-type: none; }
+  .social li {
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 400; }
+    .social li a {
+      display: inline-block;
+      border: 1px solid #C4C4C4;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #777777; }
+      .social li a:hover {
+        border: 1px solid #AAA;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15); }
+
+.facebook a {
+  padding: 8px 14px 8px 36px;
+  background: image-url("facebook.png") 14px 9px no-repeat;
+  background-size: 10px; }
+
+.twitter a {
+  padding: 8px 14px 8px 44px;
+  background: image-url("twitter.png") 12px 11px no-repeat;
+  background-size: 22px; }
+
+footer {
+  background: image-url("noise.png"), linear-gradient(#555555, #555555);
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  color: #CDCCCD;
+  z-index:900;
+  font-weight: 400;
+  text-align: center;
+  font-size: 13px;
+  font-family: 'Open Sans', sans-serif; }
+  footer .footer-links {
+    margin-top:10px;}
+  footer .footer-links a {
+    font-size: 14px; }
+  footer .footer-credits {
+    padding:20px 0px 10px 0px; }
+  footer a {
+    font-size: 21px;
+    color: #CDCCCD;
+    font-weight: 300;
+    text-decoration: none; }
+    footer a:hover {
+      color: white; }
+
+@media only screen and (max-width: 870px) {
+  body {
+    position: relative;
+    min-height: 0px; }
+
+  .wrapper {
+    padding: 20px;
+    height: auto;
+    min-height: 0px;
+    overflow: hidden; }
+
+  .air {
+    display: none; }
+
+  .interface {
+    display: block;
+    width: 50%;
+    float: left;
+    clear: both;
+    margin-right: 5%;
+    margin-top: 5px; }
+
+  p.marketing {
+    max-width: 100%;
+    width: 100%; }
+
+  a.store {
+    margin: 0; } }
+@media only screen and (max-width: 740px) {
+  p, p.subtitle {
+    font-size: 16px; }
+
+  .title {
+    padding-left: 85px;
+    padding-top: 0px;
+    height: 70px;
+    background-size: 70px; }
+
+  h1 {
+    font-size: 42px; }
+
+  p.marketing {
+    margin-bottom: 40px; }
+
+  a.store {
+    font-size: 16px;
+    background-size: 32px, 100%;
+    padding: 10px 15px 10px 60px; }
+    a.store span {
+      font-size: 19px; }
+    a.store:hover {
+      background-size: 32px, 100%; }
+
+  .social {
+    margin-top: 40px; }
+
+  .social li {
+    font-size: 14px; }
+
+  footer a {
+    font-size: 19px; } }
+@media only screen and (max-width: 600px) {
+  body {
+    padding-top: 14px; }
+
+  .wrapper {
+    padding-top: 5px; }
+
+  .interface {
+    width: 116%;
+    margin-left: -8%;
+    float: none;
+    margin-top: 45px; }
+
+  a.store {
+    margin: 10px;
+    display: block; }
+
+  .social li {
+    width: 47%;
+    margin-right: 0; }
+    .social li:first-child {
+      margin-right: 2%; }
+    .social li a {
+      width: 100%; } }
+@media only screen and (max-width: 440px) {
+  .social li {
+    width: 98%;
+    margin-right: 0; }
+    .social li a {
+      width: 100%; } }
+@media only screen and (max-width: 360px) {
+  .wrapper {
+    padding: 5px; }
+
+  p, p.subtitle {
+    font-size: 14px; }
+
+  .title {
+    margin-top: 0px;
+    margin-left: 5px;
+    padding-left: 75px;
+    height: 65px;
+    background-size: 65px;
+    margin-bottom: 0; }
+
+  h1 {
+    font-size: 32px; }
+
+  .interface {
+    margin-top: 30px;
+    margin-bottom: -10px; }
+
+  p.marketing {
+    margin-bottom: 30px; }
+
+  a.store {
+    margin-bottom: 20px; } }
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5) {
+  body {
+    background-image: image-url("noise@2x.png");
+  }
+  .air {
+    background-image: image-url("air@2x.png");
+  }
+  .title {
+    background: image-url("logo@2x.png") top left no-repeat;
+    background-size: 90px;
+  }
+  a.store {
+    background: image-url("apple@2x.png") 15px 8px no-repeat, linear-gradient(white, #f4f4f4);
+    background-size: 32px, 100%;
+  }
+  a.store:hover {
+    background: image-url("apple@2x.png") 15px 8px no-repeat, linear-gradient(white, white);
+    background-size: 32px, 100%;
+  }
+  .facebook a {
+    background: image-url("facebook@2x.png") 14px 9px no-repeat;
+    background-size: 10px;
+  }
+  .twitter a {
+    background: image-url("twitter@2x.png") 12px 11px no-repeat;
+    background-size: 22px;
+  }
+  footer {
+    background: image-url("noise@2x.png"), linear-gradient(#555555, #555555);
+  }
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5) and (max-width: 740px) {
+  .title {
+    background-size: 70px;
+  }
+  a.store, a.store:hover {
+    background-size: 32px, 100%;
+  }
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5) and (max-width: 360px) {
+  .title {
+    background-size: 65px;
+  }
+}
+
