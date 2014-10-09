@@ -24,7 +24,7 @@ class HNItem
     PROPERTIES.each { |prop|
       self.send("#{prop}=", data.value[prop]) if data.value[prop]
     }
-    @version = @version + 1
+    self.version = self.version + 1
   end
 
   def comments

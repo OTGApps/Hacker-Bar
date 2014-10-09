@@ -35,6 +35,8 @@ class MainMenu < MenuMotion::Menu
     sections += news_sections
     sections += action_sections
 
+    @menu_built = true
+
     build_menu_from_params(self, { sections: sections })
   end
 
@@ -63,29 +65,13 @@ class MainMenu < MenuMotion::Menu
       }
 
       #Build the menu
-      build_data_menu
+      build_data_menu unless @menu_built
     end
   end
 
   def build_menu_from_params(root_menu, params)
     self.removeAllItems
     super
-  end
-
-  def start_update_timer(seconds = nil)
-    unless @update_timer.nil? # Invalidate the current timer.
-      @update_timer.invalidate
-      @update_timer = nil
-    end
-
-    if seconds.nil?
-      @update_timer = NSTimer.scheduledTimerWithTimeInterval(App::Persistence['check_interval'], target: self, selector: "build_menu", userInfo: nil, repeats: true)
-      @update_timer.setTolerance(10)
-      @update_timer.fire
-    else
-      @update_timer = NSTimer.scheduledTimerWithTimeInterval(seconds, target: self, selector: "build_menu_and_reset", userInfo: nil, repeats: false)
-      @update_timer.setTolerance(10)
-    end
   end
 
   def start_last_loaded_timer
@@ -127,15 +113,11 @@ class MainMenu < MenuMotion::Menu
   end
 
   def going_to_sleep(notification)
-    @update_timer.invalidate unless @update_timer.nil?
-    @update_timer = nil
-
     @last_update_timer.invalidate unless @last_update_timer.nil?
     @last_update_timer = nil
   end
 
   def waking_up(notification)
-    start_update_timer
     start_last_loaded_timer
   end
 

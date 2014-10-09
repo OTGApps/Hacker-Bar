@@ -2,8 +2,6 @@ module NewsRows
 
   def news_rows
     @controllers = []
-    mp 'news rows'
-    mp @news
     @news.map do |item|
       news_item = HNItemViewController.alloc.initWithNibName("HNItemViewController", bundle:nil)
       news_item.hnitem = item
