@@ -2,6 +2,8 @@ module NewsRows
 
   def news_rows
     @controllers = []
+    mp 'news rows'
+    mp @news
     @news.map do |item|
       news_item = HNItemViewController.alloc.initWithNibName("HNItemViewController", bundle:nil)
       news_item.hnitem = item
@@ -10,7 +12,7 @@ module NewsRows
       {
         title: item.title,
         view: news_item.view,
-        tag: item.rank.to_s,
+        tag: item.id.to_s,
         target: self,
         action: :blank_action,
       }

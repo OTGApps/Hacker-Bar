@@ -1,5 +1,6 @@
 class HNItemViewController < NSViewController
   extend IB
+  include BW::KVO
 
   outlet :votes_count, NSTextField
   outlet :votes_image, NSImageView
@@ -27,10 +28,15 @@ class HNItemViewController < NSViewController
   def hnitem=(hn)
     @hnitem = hn
     set_interface if @view_loaded
+
+    observe(@hnitem, :version) do |old_value, new_value|
+      mp "Updating item's interface: #{@hnitem.id}"
+      set_interface
+    end
   end
 
   def tag
-    @tag ||= @hnitem.rank.to_s.to_sym
+    @tag ||= @hnitem.id.to_s.to_sym
   end
 
   def hide(should_i)
@@ -49,8 +55,8 @@ class HNItemViewController < NSViewController
       hide(false)
       @votes_image.setImage(NSImage.imageNamed('UpvotesBadge'))
 
-      comment_count = @hnitem.comments[:count].to_i || 0
-      votes_count =   @hnitem.points.to_i || 0
+      comment_count = @hnitem.comments || 0
+      votes_count =   @hnitem.score.to_i || 0
 
       comment_count = SI.convert(comment_count) if comment_count > 1000
       votes_count =   SI.convert(votes_count) if   votes_count > 1000
@@ -72,15 +78,15 @@ class HNItemViewController < NSViewController
   end
 
   def clicked_comments(sender)
-    NSLog "Clicked Comments: #{@hnitem.comments[:url]}" if BW.debug?
-    Mixpanel.sharedInstance.track("Comment Click", properties:{link:@hnitem.comments[:url]}) unless BW.debug?
+    NSLog "Clicked Comments: #{@hnitem.comments_url}" if BW.debug?
+    Mixpanel.sharedInstance.track("Comment Click", properties:{link:@hnitem.comments_url}) unless BW.debug?
     launch_comments
   end
 
   def highlight
     # NSLog "Highlighting: #{@hnitem.title}" if BW.debug?
     @headline.setTextColor NSColor.highlightColor
-    @background_image.setImage(cached_background_image)
+    @background_image.setImage(background_image)
     view.setNeedsDisplay true
   end
 
@@ -92,7 +98,7 @@ class HNItemViewController < NSViewController
     view.setNeedsDisplay true
   end
 
-  def cached_background_image
+  def background_image
     @cached_background_image ||= NSImage.imageNamed("background")
   end
 
@@ -101,7 +107,7 @@ class HNItemViewController < NSViewController
   end
 
   def launch_comments
-    launch_browser @hnitem.comments[:url]
+    launch_browser @hnitem.comments_url
   end
 
   def launch_browser(url)

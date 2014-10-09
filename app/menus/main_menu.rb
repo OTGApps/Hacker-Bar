@@ -6,8 +6,11 @@ class MainMenu < MenuMotion::Menu
 
   def init
     add_observers
-    start_update_timer
+    build_menu
     start_last_loaded_timer
+
+    @hn_items ||= {}
+
     self.delegate = self
     self
   end
@@ -35,40 +38,33 @@ class MainMenu < MenuMotion::Menu
     build_menu_from_params(self, { sections: sections })
   end
 
-  def build_menu
-    # Make the API Call
-    NSApplication.sharedApplication.delegate.update_status_item('StatusLoading')
-    HNAPI.sharedAPI.get_news do |parsed, error|
-      App::Persistence['last_check'] = Time.now.to_i
-
-      @news = []
-      if error.nil?
-        parsed.each do |i, news|
-          @news << HNItem.new(news)
-        end
-
-        build_data_menu
-      else
-        NSLog("Error: Could not get data from API")
-        error_string = "Error: #{error.localizedDescription}"
-
-        # Start checking more often til the internet connection comes back online.
-        if !@update_timer.nil? && @update_timer.timeInterval > 100
-          @update_timer.invalidate
-          @update_timer = nil
-          start_update_timer(30)
-        end
-
-        build_error_menu(error_string)
-      end
-
-      NSApplication.sharedApplication.delegate.update_status_item
-    end
+  def item_exists?(id)
+    @hn_items.keys.include?(id)
   end
 
-  def build_menu_and_reset
-    build_menu
-    start_update_timer
+  def build_menu
+    HackerBase.shared.firebase['topstories'].on(:value) do |top_items|
+      App::Persistence['last_update'] = Time.now.to_i
+
+      # Get the forst 30 top ids
+      @hn_ids = top_items.value.first(30)
+
+      # Add an HNItem to the items array
+      @hn_ids.each do |id|
+        @hn_items[id] = HNItem.new(id) unless item_exists?(id)
+      end
+
+      # Remove items that no longer exist in the top 30
+      @hn_items.reject!{ |k,v| !@hn_ids.include?(k) }
+
+      # Populate the news array
+      @news = @hn_ids.map{ |id|
+        @hn_items.values.find{ |v| v.id == id }
+      }
+
+      #Build the menu
+      build_data_menu
+    end
   end
 
   def build_menu_from_params(root_menu, params)
@@ -115,6 +111,8 @@ class MainMenu < MenuMotion::Menu
     @highlighted_item = @controllers.find{|i| i.tag == item.tag}
     @highlighted_item.highlight if @highlighted_item.is_a? HNItemViewController
   end
+
+  # Sleep / Wake Ovservers
 
   def add_observers
     @sleep_observer ||= NSWorkspace.sharedWorkspace.notificationCenter.addObserver(self, selector:'going_to_sleep:', name:NSWorkspaceWillSleepNotification, object:nil)

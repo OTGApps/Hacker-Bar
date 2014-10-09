@@ -1,13 +1,38 @@
 class HNItem
-  PROPERTIES = [:id, :rank, :title, :link, :points, :submitter, :comments]
+  PROPERTIES = [:version, :id, :type, :score, :title, :url, :points, :by, :kids]
   PROPERTIES.each { |prop|
     attr_accessor prop
   }
 
-  def initialize(attributes = {})
-    attributes.each { |key, value|
-      self.send("#{key}=", value) if PROPERTIES.member? key
+  def initialize(id)
+    @id = id
+    @type = nil
+    @score = 0
+    @points = 0
+    @version = 0
+    @title = 'Loading...'
+    @url = ''
+    @by = ''
+    @kids = []
+
+    HackerBase.shared.firebase['item'][id.to_s].on(:value) do |item|
+      update(item)
+    end
+  end
+
+  def update(data)
+    PROPERTIES.each { |prop|
+      self.send("#{prop}=", data.value[prop]) if data.value[prop]
     }
+    @version = @version + 1
+  end
+
+  def comments
+    kids.count
+  end
+
+  def comments_url
+    "https://news.ycombinator.com/item?id=#{id}"
   end
 
   def original_title

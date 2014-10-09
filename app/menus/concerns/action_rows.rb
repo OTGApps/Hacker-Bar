@@ -1,8 +1,13 @@
 module ActionRows
-  include RefreshRows
 
   def action_sections
     [{
+      rows: [{
+        title: last_update_words,
+        tag: :last_update_words,
+        enabled: false
+      }]
+    },{
       rows: [{
         title: 'Preferences:',
         enabled: false
@@ -11,10 +16,6 @@ module ActionRows
         target: self,
         action: "toggle_autolaunch:",
         checked: App::Persistence['launch_on_login']
-      }, {
-        title: "Refresh Interval: (#{last_check_words})",
-        sections: refresh_sections,
-        tag: :last_check_words
       }]
     }, {
       rows: [{
@@ -30,6 +31,22 @@ module ActionRows
         action: "terminate:"
       }]
     }]
+  end
+
+  def update_last_loaded
+    update_item_with_tag(:last_update_words, {
+      title: last_update_words
+    }) unless item_with_tag(:last_update_words).nil?
+  end
+
+  def last_update_words
+    'Updated ' << last_update
+  end
+
+  def last_update
+    check = App::Persistence['last_update'].to_i
+    return '- Unknown' if check == 0
+    Time.at(check).distanceOfTimeInWords
   end
 
   def show_about_window(sender)
