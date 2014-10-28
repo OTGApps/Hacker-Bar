@@ -14,3 +14,4 @@ gem 'motion-firebase', github: 'colinta/motion-firebase'
 
 
 gem 'motion_print'
+gem 'rake-hooks'
