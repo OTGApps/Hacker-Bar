@@ -13,7 +13,7 @@ Motion::Project::App.setup do |app|
   app.short_version = "1"
   app.icon = 'AppIcon.icns'
   app.identifier = "com.mohawkapps.#{app.name.gsub(' ', '-').downcase}"
-  app.copyright = "Copyright © 2014 Mohawk Apps, LLC. All rights reserved."
+  app.copyright = "Copyright © 2014 Off the Grid Apps, LLC. All rights reserved."
   app.deployment_target = "10.8"
   app.archs['MacOSX'] = ['x86_64']
 

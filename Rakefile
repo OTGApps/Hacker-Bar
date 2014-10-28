@@ -11,12 +11,12 @@ end
 Motion::Project::App.setup do |app|
   app.name = 'Hacker Bar'
   app.version = "1.1.1"
-  app.short_version = "20"
+  app.short_version = (`git rev-list HEAD --count`.strip.to_i).to_s
   app.icon = 'AppIcon.icns'
   app.identifier = "com.mohawkapps.#{app.name.gsub(' ', '-').downcase}"
   app.info_plist['LSUIElement'] = true
-  app.frameworks += ['ServiceManagement', 'IOKit']
-  app.copyright = "Copyright © 2014 Mohawk Apps, LLC.\nAll rights reserved."
+  app.frameworks += ['ServiceManagement', 'IOKit', 'CoreFoundation']
+  app.copyright = "Copyright © 2014 Off the Grid Apps, LLC.\nAll rights reserved."
   app.deployment_target = "10.8"
   app.archs['MacOSX'] = ['x86_64']
 
