@@ -5,12 +5,38 @@ class MainMenu < MenuMotion::Menu
   attr_accessor :news, :controllers, :highlighted_item
 
   def init
-    build_menu
+    observe_connectivity
 
     @hn_items ||= {}
 
     self.delegate = self
     self
+  end
+
+  def observe_connectivity
+    HackerBase.shared.firebase.connected? do |connected|
+      if connected
+        mp "Connected"
+        App.delegate.update_status_item
+        build_menu
+      else
+        mp "Disconnected"
+        App.delegate.update_status_item('StatusError', 'StatusError')
+        build_error_menu("No Internet Connection")
+      end
+    end
+  end
+
+  def build_error_menu(message = 'Unknown Error')
+    sections = []
+    sections += [{
+      rows: [{
+        title: message
+      }]
+    }]
+    sections += action_sections
+
+    build_menu_from_params(self, { sections: sections })
   end
 
   def build_data_menu
