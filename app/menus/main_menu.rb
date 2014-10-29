@@ -5,9 +5,7 @@ class MainMenu < MenuMotion::Menu
   attr_accessor :news, :controllers, :highlighted_item
 
   def init
-    add_observers
     build_menu
-    start_last_loaded_timer
 
     @hn_items ||= {}
 
@@ -55,6 +53,11 @@ class MainMenu < MenuMotion::Menu
     super
   end
 
+  def item_exists?(id)
+    @hn_items.keys.include?(id)
+  end
+
+  # NSMenuDelegate methods
   def menu(menu, willHighlightItem:item)
     @highlighted_item.unhighlight unless @highlighted_item.nil?
 
@@ -68,31 +71,8 @@ class MainMenu < MenuMotion::Menu
     @highlighted_item.highlight if @highlighted_item.is_a? HNItemViewController
   end
 
-  # Sleep / Wake Ovservers
-
-  def add_observers
-    @sleep_observer ||= NSWorkspace.sharedWorkspace.notificationCenter.addObserver(self, selector:'going_to_sleep:', name:NSWorkspaceWillSleepNotification, object:nil)
-    @wake_observer ||= NSWorkspace.sharedWorkspace.notificationCenter.addObserver(self, selector:'waking_up:', name:NSWorkspaceDidWakeNotification, object:nil)
-  end
-
-  def remove_observers
-    NSWorkspace.sharedWorkspace.notificationCenter.removeObserver(@sleep_observer)
-    NSWorkspace.sharedWorkspace.notificationCenter.removeObserver(@wake_observer)
-    @sleep_observer = nil
-    @wake_observer = nil
-  end
-
-  def going_to_sleep(notification)
-    @last_update_timer.invalidate unless @last_update_timer.nil?
-    @last_update_timer = nil
-  end
-
-  def waking_up(notification)
-    start_last_loaded_timer
-  end
-
-  def item_exists?(id)
-    @hn_items.keys.include?(id)
+  def menuWillOpen(menu)
+    update_last_loaded
   end
 
 end
