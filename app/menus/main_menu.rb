@@ -18,7 +18,11 @@ class MainMenu < MenuMotion::Menu
       if connected
         mp "Connected"
         App.delegate.update_status_item
-        build_menu
+        if @menu_built.nil?
+          build_menu
+        else
+          build_data_menu
+        end
       else
         mp "Disconnected"
         App.delegate.update_status_item('StatusError', 'StatusError')

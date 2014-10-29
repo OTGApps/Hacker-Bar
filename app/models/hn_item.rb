@@ -21,6 +21,8 @@ class HNItem
   end
 
   def update(data)
+    return if data.value.nil?
+
     PROPERTIES.each { |prop|
       self.send("#{prop}=", data.value[prop]) if data.value[prop]
     }
