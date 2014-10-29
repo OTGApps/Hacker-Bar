@@ -1,5 +1,4 @@
 class Machine
-
   def self.tracking_data
     @tracking_data ||= {
       app: App.identifier,
@@ -13,5 +12,4 @@ class Machine
     u = UniqueIdentifier.new
     u.uniqueIdentifier
   end
-
 end

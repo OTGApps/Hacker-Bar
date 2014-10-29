@@ -67,7 +67,7 @@ module ActionRows
   end
 
   def visit_hackernews
-    NSWorkspace.sharedWorkspace.openURL(NSURL.URLWithString("https://news.ycombinator.com/"))
+    App.open_url "https://news.ycombinator.com/"
   end
 
   def toggle_autolaunch(sender)
