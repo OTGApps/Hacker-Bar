@@ -22,7 +22,7 @@
             <subviews>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XSj-Uf-QFq">
                     <rect key="frame" x="0.0" y="0.0" width="480" height="22"/>
-                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="left" imageScaling="proportionallyDown" id="dra-XH-qa8"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageAlignment="topLeft" imageScaling="axesIndependently" id="dra-XH-qa8"/>
                 </imageView>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PJX-qx-Vte">
                     <rect key="frame" x="2" y="1" width="29" height="19"/>
