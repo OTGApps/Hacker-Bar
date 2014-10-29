@@ -15,21 +15,6 @@ class MainMenu < MenuMotion::Menu
     self
   end
 
-  def build_error_menu(message = 'Unknown Error')
-    NSApplication.sharedApplication.delegate.update_status_item('StatusError')
-    sections = []
-    sections += [{
-      rows: [{
-        title: "Error Retrieving data from YCombinator"
-      },{
-        title: message
-      }]
-    }]
-    sections += action_sections
-
-    build_menu_from_params(self, { sections: sections })
-  end
-
   def build_data_menu
     sections = []
     sections += news_sections
