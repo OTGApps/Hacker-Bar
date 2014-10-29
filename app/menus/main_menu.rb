@@ -25,15 +25,11 @@ class MainMenu < MenuMotion::Menu
     build_menu_from_params(self, { sections: sections })
   end
 
-  def item_exists?(id)
-    @hn_items.keys.include?(id)
-  end
-
   def build_menu
     HackerBase.shared.firebase['topstories'].on(:value) do |top_items|
       App::Persistence['last_update'] = Time.now.to_i
 
-      # Get the forst 30 top ids
+      # Get the first 30 top ids
       @hn_ids = top_items.value.first(30)
 
       # Add an HNItem to the items array
@@ -57,17 +53,6 @@ class MainMenu < MenuMotion::Menu
   def build_menu_from_params(root_menu, params)
     self.removeAllItems
     super
-  end
-
-  def start_last_loaded_timer
-    unless @last_update_timer.nil? # Invalidate the current timer.
-      @last_update_timer.invalidate
-      @last_update_timer = nil
-    end
-
-    @last_update_timer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "update_last_loaded", userInfo: nil, repeats: true)
-    @last_update_timer.setTolerance(10)
-    @last_update_timer.fire
   end
 
   def menu(menu, willHighlightItem:item)
@@ -104,6 +89,10 @@ class MainMenu < MenuMotion::Menu
 
   def waking_up(notification)
     start_last_loaded_timer
+  end
+
+  def item_exists?(id)
+    @hn_items.keys.include?(id)
   end
 
 end

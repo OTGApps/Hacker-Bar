@@ -33,6 +33,16 @@ module ActionRows
     }]
   end
 
+  def start_last_loaded_timer
+    unless @last_update_timer.nil? # Invalidate the current timer.
+      @last_update_timer.invalidate
+      @last_update_timer = nil
+    end
+
+    @last_update_timer = NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "update_last_loaded", userInfo: nil, repeats: true)
+    @last_update_timer.setTolerance(10)
+  end
+
   def update_last_loaded
     update_item_with_tag(:last_update_words, {
       title: last_update_words
