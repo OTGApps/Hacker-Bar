@@ -40,14 +40,28 @@ Motion::Project::App.setup do |app|
 
 end
 
-after :"build", :"build:development" do
-  helper_name = "HackerBarLauncher"
+class Motion::Project::App
+  class << self
+    #
+    # The original `build' method can be found here:
+    # https://github.com/HipByte/RubyMotion/blob/master/lib/motion/project/app.rb#L75-L77
+    #
+    alias_method :build_before_copy_helper, :build
+    def build platform, options = {}
 
-  destination = File.join(config.app_bundle(platform), 'Library/LoginItems')
-  info 'Create', destination
-  FileUtils.mkdir_p destination
+      helper_name = "HackerBarLauncher"
 
-  helper_path = File.join("./#{helper_name}", config.versionized_build_dir(platform)[1..-1], "#{helper_name}.app")
-  info 'Copy', helper_path
-  FileUtils.cp_r helper_path, destination
+      # First let the normal `build' method perform its work.
+      build_before_copy_helper(platform, options)
+      # Now the app is built, but not codesigned yet.
+
+      destination = File.join(config.app_bundle(platform), 'Library/LoginItems')
+      info 'Create', destination
+      FileUtils.mkdir_p destination
+
+      helper_path = File.join("./#{helper_name}", config.versionized_build_dir(platform)[1..-1], "#{helper_name}.app")
+      info 'Copy', helper_path
+      FileUtils.cp_r helper_path, destination
+    end
+  end
 end
