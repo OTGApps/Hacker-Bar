@@ -31,6 +31,14 @@ class HNItem
     kids.count
   end
 
+  def link
+    if @url.start_with?("http")
+      @url
+    else
+      comments_url
+    end
+  end
+
   def comments_url
     "https://news.ycombinator.com/item?id=#{id}"
   end

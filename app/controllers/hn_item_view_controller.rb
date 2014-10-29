@@ -39,38 +39,23 @@ class HNItemViewController < NSViewController
     @tag ||= @hnitem.id.to_s.to_sym
   end
 
-  def hide(should_i)
-    @comment_count.hidden = should_i
-    @votes_count.hidden = should_i
-    @comment_image.hidden = should_i
-  end
-
   def set_interface
     @headline.setStringValue @hnitem.title
+    @votes_image.setImage(comments_image)
 
-    if @hnitem.comments == "yc_advertisement"
-      hide(true)
-      @votes_image.setImage(NSImage.imageNamed('ad'))
-    else
-      hide(false)
-      @votes_image.setImage(NSImage.imageNamed('UpvotesBadge'))
+    comment_count = @hnitem.comments || 0
+    votes_count =   @hnitem.score.to_i || 0
 
-      comment_count = @hnitem.comments || 0
-      votes_count =   @hnitem.score.to_i || 0
+    comment_count = SI.convert(comment_count) if comment_count > 1000
+    votes_count   = SI.convert(votes_count)   if votes_count > 1000
 
-      comment_count = SI.convert(comment_count) if comment_count > 1000
-      votes_count =   SI.convert(votes_count) if   votes_count > 1000
-
-      @comment_count.setStringValue comment_count
-      @votes_count.setStringValue votes_count
-    end
-
+    @comment_count.setStringValue comment_count
+    @votes_count.setStringValue votes_count
   end
 
   def clicked_link(sender)
     NSLog "Clicked Item: #{@hnitem.link}, #{@hnitem.id}" if BW.debug?
 
-    # Log that the user went to that site.
     App::Persistence['clicked'] =  App::Persistence['clicked'].mutableCopy << @hnitem.id if @hnitem.id
     Mixpanel.sharedInstance.track("Link Click", properties:{link:@hnitem.link, id:@hnitem.id}) unless BW.debug?
 
@@ -80,6 +65,7 @@ class HNItemViewController < NSViewController
   def clicked_comments(sender)
     NSLog "Clicked Comments: #{@hnitem.comments_url}" if BW.debug?
     Mixpanel.sharedInstance.track("Comment Click", properties:{link:@hnitem.comments_url}) unless BW.debug?
+
     launch_comments
   end
 
@@ -100,6 +86,10 @@ class HNItemViewController < NSViewController
 
   def background_image
     @cached_background_image ||= NSImage.imageNamed("background")
+  end
+
+  def comments_image
+    @cached_comments_image ||= NSImage.imageNamed('UpvotesBadge')
   end
 
   def launch_link
@@ -129,6 +119,6 @@ class HNItemViewController < NSViewController
 
   def viewDidUnload
    self.releaseAllViews
- end
+  end
 
 end
