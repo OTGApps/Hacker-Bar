@@ -39,18 +39,29 @@ class HNItemViewController < NSViewController
     @tag ||= @hnitem.id.to_s.to_sym
   end
 
+  def hide(should_i)
+    @comment_count.hidden = should_i
+    @votes_count.hidden = should_i
+    @comment_image.hidden = should_i
+  end
+
   def set_interface
     @headline.setStringValue @hnitem.title
-    @votes_image.setImage(comments_image)
 
-    comment_count = @hnitem.comments || 0
-    votes_count =   @hnitem.score.to_i || 0
+    if @hnitem.type == "job"
+      hide(true)
+      @votes_image.setImage(ad_image)
+    else
+      @votes_image.setImage(comments_image)
+      comment_count = @hnitem.comments || 0
+      votes_count =   @hnitem.score.to_i || 0
 
-    comment_count = SI.convert(comment_count) if comment_count > 1000
-    votes_count   = SI.convert(votes_count)   if votes_count > 1000
+      comment_count = SI.convert(comment_count) if comment_count > 1000
+      votes_count   = SI.convert(votes_count)   if votes_count > 1000
 
-    @comment_count.setStringValue comment_count
-    @votes_count.setStringValue votes_count
+      @comment_count.setStringValue comment_count
+      @votes_count.setStringValue votes_count
+    end
   end
 
   def clicked_link(sender)
@@ -90,6 +101,10 @@ class HNItemViewController < NSViewController
 
   def comments_image
     @cached_comments_image ||= NSImage.imageNamed('UpvotesBadge')
+  end
+
+  def ad_image
+    @cached_ad_image ||= NSImage.imageNamed('ad')
   end
 
   def launch_link
