@@ -55,9 +55,18 @@ class AppDelegate
     end
   end
 
-  def update_status_item(image = 'Status', alternate_image = 'StatusHighlighted')
-    status_item.setImage(NSImage.imageNamed(image))
-    status_item.setAlternateImage(NSImage.imageNamed(alternate_image))
+  def update_status_item(image = 'Status', alternate_image = nil)
+    image = NSImage.imageNamed(image)
+    image.setTemplate(true)
+
+    status_item.setImage(image)
+
+    if alternate_image
+      alt_image = NSImage.imageNamed(alternate_image)
+      alt_image.setTemplate(true)
+
+      status_item.setAlternateImage(alt_image)
+    end
   end
 
 end
