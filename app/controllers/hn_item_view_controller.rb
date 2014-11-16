@@ -1,6 +1,7 @@
 class HNItemViewController < NSViewController
   extend IB
   include BW::KVO
+  include ControllerImages
 
   outlet :votes_count, NSTextField
   outlet :votes_image, NSImageView
@@ -48,20 +49,18 @@ class HNItemViewController < NSViewController
   def set_interface
     @headline.setStringValue @hnitem.title
 
-    if @hnitem.type == "job"
-      hide(true)
-      @votes_image.setImage(ad_image)
-    else
-      @votes_image.setImage(comments_image)
-      comment_count = @hnitem.comments || 0
-      votes_count =   @hnitem.score.to_i || 0
+    hide(@hnitem.type == "job")
 
-      comment_count = SI.convert(comment_count) if comment_count > 1000
-      votes_count   = SI.convert(votes_count)   if votes_count > 1000
+    comment_count = @hnitem.comments || 0
+    votes_count =   @hnitem.score.to_i || 0
 
-      @comment_count.setStringValue comment_count
-      @votes_count.setStringValue votes_count
-    end
+    comment_count = SI.convert(comment_count) if comment_count > 1000
+    votes_count   = SI.convert(votes_count)   if votes_count > 1000
+
+    @comment_count.setStringValue comment_count
+    @votes_count.setStringValue votes_count
+
+    set_colors
   end
 
   def clicked_link(sender)
@@ -81,30 +80,17 @@ class HNItemViewController < NSViewController
   end
 
   def highlight
-    # NSLog "Highlighting: #{@hnitem.title}" if BW.debug?
+    NSLog "Highlighting: #{@hnitem.title}" if BW.debug?
     @headline.setTextColor NSColor.highlightColor
-    @background_image.setImage(background_image)
+    @background_image.setImage(background_img)
     view.setNeedsDisplay true
   end
 
   def unhighlight
     # NSLog "Unhighlighting: #{@hnitem.title}" if BW.debug?
-    return if @background_image.image.nil?
     @headline.setTextColor NSColor.controlTextColor
     @background_image.setImage nil
     view.setNeedsDisplay true
-  end
-
-  def background_image
-    @cached_background_image ||= NSImage.imageNamed("background")
-  end
-
-  def comments_image
-    @cached_comments_image ||= NSImage.imageNamed('UpvotesBadge')
-  end
-
-  def ad_image
-    @cached_ad_image ||= NSImage.imageNamed('ad')
   end
 
   def launch_link
@@ -130,6 +116,40 @@ class HNItemViewController < NSViewController
       # TODO: Make this more betterer
       NSLog("Failed to open url: %@", url.description)
     end
+  end
+
+  def set_colors
+    return if @dark_mode.nil?
+
+    light_text = NSColor.controlTextColor
+    dark_text = light_text.invert
+
+    if @dark_mode
+      if @hnitem.type == "job"
+        @votes_image.setImage(ad_img_dark)
+      else
+        @votes_image.setImage(votes_img_dark)
+      end
+
+      @comment_image.setImage(comments_img_dark)
+      @votes_count.setTextColor dark_text
+      @comment_count.setTextColor light_text
+    else
+      if @hnitem.type == "job"
+        @votes_image.setImage(ad_img)
+      else
+        @votes_image.setImage(votes_img)
+      end
+
+      @comment_image.setImage(comments_img)
+      @votes_count.setTextColor dark_text
+      @comment_count.setTextColor light_text
+    end
+  end
+
+  def dark_mode=(boool)
+    @dark_mode = boool
+    set_colors
   end
 
   def viewDidUnload

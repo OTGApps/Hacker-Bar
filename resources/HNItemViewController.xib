@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6249" systemVersion="14A388a" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6250" systemVersion="14B23" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment version="1090" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6249"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6250"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="HNItemViewController">
@@ -26,13 +26,13 @@
                 </imageView>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PJX-qx-Vte">
                     <rect key="frame" x="2" y="1" width="29" height="19"/>
-                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="UpvotesBadge" id="vxI-Eu-Gxy"/>
+                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="upvotes_badge" id="vxI-Eu-Gxy"/>
                 </imageView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mit-H4-c65">
                     <rect key="frame" x="1" y="1" width="31" height="17"/>
                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" alignment="center" title="0" usesSingleLineMode="YES" id="hqD-Ps-Hjw">
                         <font key="font" metaFont="smallSystem"/>
-                        <color key="textColor" name="highlightColor" catalog="System" colorSpace="catalog"/>
+                        <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
@@ -82,7 +82,7 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
     </objects>
     <resources>
-        <image name="UpvotesBadge" width="29.408451080322266" height="19.267604827880859"/>
-        <image name="comments" width="24.338027954101562" height="19.267604827880859"/>
+        <image name="comments" width="24" height="19"/>
+        <image name="upvotes_badge" width="29" height="19"/>
     </resources>
 </document>

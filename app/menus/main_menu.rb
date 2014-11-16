@@ -103,6 +103,26 @@ class MainMenu < MenuMotion::Menu
 
   def menuWillOpen(menu)
     update_last_loaded
+    set_light_dark_mode
+  end
+
+  def set_light_dark_mode
+    return if @controllers.nil? || !NSAppearance.currentAppearance.respondsToSelector("name")
+
+    @dark_mode ||= false
+    if @dark_mode == false && NSAppearance.currentAppearance.name == "NSAppearanceNameVibrantDark"
+      mp "Dark Mode"
+      @dark_mode = true
+      @controllers.each do |c|
+        c.dark_mode = true
+      end
+    elsif @dark_mode == true && NSAppearance.currentAppearance.name != "NSAppearanceNameVibrantDark"
+      mp "Light Mode"
+      @dark_mode = false
+      @controllers.each do |c|
+        c.dark_mode = false
+      end
+    end
   end
 
 end
