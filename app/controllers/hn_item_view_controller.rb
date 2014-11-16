@@ -31,7 +31,7 @@ class HNItemViewController < NSViewController
     set_interface if @view_loaded
 
     observe(@hnitem, :version) do |old_value, new_value|
-      mp "Updating item's interface: #{@hnitem.id}"
+      # mp "Updating item's interface: #{@hnitem.id}"
       set_interface
     end
   end

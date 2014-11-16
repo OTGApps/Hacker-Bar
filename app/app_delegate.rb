@@ -20,6 +20,7 @@ class AppDelegate
       Mixpanel.sharedInstanceWithToken("69f9ad8b0b4679373d3a790ff5393b20")
       mixpanel = Mixpanel.sharedInstance
       mixpanel.identify(Machine.unique_id)
+      Mixpanel.sharedInstance.track("App Launch")
     end
 
     App::Persistence['launch_on_login'] ||= false

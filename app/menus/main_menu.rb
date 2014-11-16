@@ -16,7 +16,7 @@ class MainMenu < MenuMotion::Menu
   def observe_connectivity
     HackerBase.shared.firebase.connected? do |connected|
       if connected
-        mp "Connected"
+        # mp "Connected"
         App.delegate.update_status_item
         if @menu_built.nil?
           build_menu
@@ -24,7 +24,7 @@ class MainMenu < MenuMotion::Menu
           build_data_menu
         end
       else
-        mp "Disconnected"
+        # mp "Disconnected"
         App.delegate.update_status_item('StatusError', 'StatusError')
         build_error_menu("No Internet Connection")
       end
@@ -111,13 +111,13 @@ class MainMenu < MenuMotion::Menu
 
     @dark_mode ||= false
     if @dark_mode == false && NSAppearance.currentAppearance.name == "NSAppearanceNameVibrantDark"
-      mp "Dark Mode"
+      # mp "Dark Mode"
       @dark_mode = true
       @controllers.each do |c|
         c.dark_mode = true
       end
     elsif @dark_mode == true && NSAppearance.currentAppearance.name != "NSAppearanceNameVibrantDark"
-      mp "Light Mode"
+      # mp "Light Mode"
       @dark_mode = false
       @controllers.each do |c|
         c.dark_mode = false

@@ -4,6 +4,7 @@ bundle
 bundle exec rake clean
 cd HackerBarLauncher
 bundle exec rake clean
+bundle
 bundle exec rake
 killall Hacker\ Bar
 cd ..
