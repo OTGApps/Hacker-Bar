@@ -42,7 +42,6 @@ class HNItemViewController < NSViewController
 
   def hide(should_i)
     @comment_count.hidden = should_i
-    @votes_count.hidden = should_i
     @comment_image.hidden = should_i
   end
 
@@ -56,6 +55,7 @@ class HNItemViewController < NSViewController
 
     comment_count = SI.convert(comment_count) if comment_count > 1000
     votes_count   = SI.convert(votes_count)   if votes_count > 1000
+    votes_count = "AD" if @hnitem.type == "job"
 
     @comment_count.setStringValue comment_count
     @votes_count.setStringValue votes_count
@@ -119,29 +119,17 @@ class HNItemViewController < NSViewController
   end
 
   def set_colors
-    return if @dark_mode.nil?
-
     light_text = NSColor.controlTextColor
     dark_text = light_text.invert
 
-    if @dark_mode
-      if @hnitem.type == "job"
-        @votes_image.setImage(ad_img_dark)
-      else
-        @votes_image.setImage(votes_img_dark)
-      end
-
-      @comment_image.setImage(comments_img_dark)
+    if @dark_mode.nil? || @dark_mode == false
+      @votes_image.setImage(votes_img)
+      @comment_image.setImage(comments_img)
       @votes_count.setTextColor dark_text
       @comment_count.setTextColor light_text
     else
-      if @hnitem.type == "job"
-        @votes_image.setImage(ad_img)
-      else
-        @votes_image.setImage(votes_img)
-      end
-
-      @comment_image.setImage(comments_img)
+      @votes_image.setImage(votes_img_dark)
+      @comment_image.setImage(comments_img_dark)
       @votes_count.setTextColor dark_text
       @comment_count.setTextColor light_text
     end

@@ -10,7 +10,7 @@ end
 
 Motion::Project::App.setup do |app|
   app.name = 'Hacker Bar'
-  app.version = "1.2.0"
+  app.version = "1.2.1"
   app.short_version = (`git rev-list HEAD --count`.strip.to_i).to_s
   app.icon = 'AppIcon.icns'
   app.identifier = "com.mohawkapps.#{app.name.gsub(' ', '-').downcase}"
@@ -34,8 +34,10 @@ Motion::Project::App.setup do |app|
 
   app.release do
     app.info_plist['AppStoreRelease'] = true
-    app.codesign_certificate = "Developer ID Application: Mohawk Apps, LLC (DW9QQZR4ZL)"
-    # app.codesign_certificate = "3rd Party Mac Developer Application: Mohawk Apps, LLC (DW9QQZR4ZL)"
+    # Internet Release
+    # app.codesign_certificate = "Developer ID Application: Mohawk Apps, LLC (DW9QQZR4ZL)"
+    # App Store Release
+    app.codesign_certificate = "3rd Party Mac Developer Application: Mohawk Apps, LLC (DW9QQZR4ZL)"
   end
 
 end
